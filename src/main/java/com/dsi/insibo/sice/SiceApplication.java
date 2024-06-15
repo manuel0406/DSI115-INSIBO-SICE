@@ -20,6 +20,7 @@ public class SiceApplication {
 	public String holamundo( Model model) {
 		model.addAttribute("titulo", "Inicio");
 		return "home";
+		
 	}
 	
 }
