@@ -56,7 +56,7 @@ public class FichaAdministrativoPdf extends AbstractPdfView {
         headerTable.setWidths(new float[] { 0.55f, 3 }); // Anchos relativos de las columnas (1: imagen, 3: títulos)
 
         // Añadir logo
-        URL logoUrl = getClass().getResource("/static/imagenes/LogoINSIBO.jpg");
+        URL logoUrl = getClass().getResource("/static/Imagenes/LogoINSIBO.jpg");
         if (logoUrl != null) {
             try {
                 Image img = Image.getInstance(logoUrl);
@@ -81,7 +81,7 @@ public class FichaAdministrativoPdf extends AbstractPdfView {
                 headerTable.addCell(emptyCell);
             }
         } else {
-            System.err.println("Logo image not found at path: /static/imagenes/LogoINSIBO.jpg");
+            System.err.println("Logo image not found at path: /static/Imagenes/LogoINSIBO.jpg");
             PdfPCell emptyCell = new PdfPCell();
             emptyCell.setBorder(PdfPCell.NO_BORDER);
             headerTable.addCell(emptyCell);
