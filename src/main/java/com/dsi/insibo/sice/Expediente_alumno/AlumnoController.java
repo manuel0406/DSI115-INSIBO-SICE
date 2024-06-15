@@ -80,7 +80,7 @@ public class AlumnoController {
 		model.addAttribute("alumno", alumno);
 		model.addAttribute("bachilleratos", listaBachilleratos);
 		model.addAttribute("editar", true); // Indica que se está editando un docente
-		return "/Expediente_alumno/editar";
+		return "Expediente_alumno/editar";
 	}
 
 	@PostMapping("/actualizar")
@@ -155,7 +155,7 @@ public class AlumnoController {
 		model.addAttribute("titulo", "Información");
 		model.addAttribute("alumno", alumno);
 		model.addAttribute("bachillerato", bachillerato);
-		return "/Expediente_alumno/AlumnoInformacion";
+		return "Expediente_alumno/AlumnoInformacion";
 	}
 
 	@GetMapping("/Enfermedades/{nie}")
@@ -166,7 +166,7 @@ public class AlumnoController {
 		model.addAttribute("titulo", "Padecimientos");
 		model.addAttribute("alumno", alumno);
 		model.addAttribute("bachillerato", bachillerato);
-		return "/Expediente_alumno/AlumnoEnfermedad";
+		return "Expediente_alumno/AlumnoEnfermedad";
 	}
 
 	@GetMapping("/Responsable/{nie}")
@@ -177,7 +177,7 @@ public class AlumnoController {
 		model.addAttribute("alumno", alumno);
 		model.addAttribute("bachillerato", bachillerato);
 		model.addAttribute("titulo", "Encargado");
-		return "/Expediente_alumno/AlumnoDatosResponsable";  
+		return "Expediente_alumno/AlumnoDatosResponsable";  
 	}
 
 	@GetMapping(value = "/ver", produces = "application/pdf")
