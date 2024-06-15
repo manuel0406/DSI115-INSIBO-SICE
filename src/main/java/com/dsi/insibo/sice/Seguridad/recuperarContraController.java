@@ -49,13 +49,17 @@ public class recuperarContraController {
         }
 	}
 
+	@Autowired
+	EnvioCorreo envioCorreo;
 	@GetMapping("/enviarCorreo")
 	public String enviarCorreo(@ModelAttribute("Usuario") Usuario usuario){
 		
+		String destinatario = usuario.getCorreoUsuario();
+		String encabezado = "Recuperación de contraseña";
+		String texto= "Tu contraseña es: " + usuario.getContrasenaUsuario();
+		envioCorreo.sendEmail(destinatario, encabezado, texto);
 		System.out.println(usuario.getContrasenaUsuario());
 		
-
-
 		return "redirect:/iniciarSesion";
 	}	
 

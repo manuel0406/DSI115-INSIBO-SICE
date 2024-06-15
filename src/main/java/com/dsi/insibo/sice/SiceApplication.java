@@ -16,11 +16,10 @@ public class SiceApplication {
 		SpringApplication.run(SiceApplication.class, args);
 	}
 
-	@GetMapping("/")
+	@GetMapping("/home")
 	public String holamundo( Model model) {
 		model.addAttribute("titulo", "Inicio");
 		return "home";
-
 	}
 	
 }

@@ -22,8 +22,8 @@
       </div>
       <div class="card-body">
 
-        <form class="row g-3" th:object="${administrativo}" th:action="@{/expedienteadministrativo/guardar}"
-          method="post">
+        <form class="row g-3 needs-validation" novalidate th:object="${administrativo}"
+          th:action="@{/expedienteadministrativo/guardar}" method="post">
           <!-- Datos Personales -->
           <div class="col-12">
             <h4 class="text-center">Datos Personales</h4>
@@ -32,32 +32,48 @@
           <div class="col-md-6">
             <label for="administrativo_nombres" class="form-label">Nombres:</label>
             <input type="text" th:field="*{nombrePersonal}" class="form-control" id="administrativo_nombres" required>
+            <div class="invalid-feedback">
+              Es necesario agregar nombres
+            </div>
           </div>
 
           <div class="col-md-6">
             <label for="administrativo_apellidos" class="form-label">Apellidos:</label>
             <input type="text" th:field="*{apellidoPersonal}" class="form-control" id="administrativo_apellidos"
               required>
+            <div class="invalid-feedback">
+              Es necesario agregar apellidos
+            </div>
           </div>
 
           <div class="col-md-6">
             <label for="administrativo_profesion" class="form-label">Profesión:</label>
             <input type="text" th:field="*{profesionPersonal}" class="form-control" id="administrativo_profesion"
               required>
+            <div class="invalid-feedback">
+              Es necesario agregar la profesión
+            </div>
           </div>
 
           <div class="col-md-6">
             <label for="administrativo_fecha_nacimiento" class="form-label">Fecha de nacimiento:</label>
             <input type="date" th:field="*{fechaNacimientoP}" class="form-control" id="administrativo_fecha_nacimiento"
               required>
+            <div class="invalid-feedback">
+              Es necesario agregar la fecha de nacimiento
+            </div>
           </div>
 
           <div class="col-md-6">
             <label for="administrativo_grado_academico" class="form-label">Grado academico:</label>
             <input type="text" th:field="*{gradoAcademicoP}" class="form-control" id="administrativo_grado_academico"
               required>
+            <div class="invalid-feedback">
+              Es necesario agregar el grado academico
+            </div>
           </div>
 
+          
           <!-- Ubicación -->
           <div class="col-12">
             <h4 class="text-center">Ubicación</h4>
@@ -65,8 +81,12 @@
 
           <div class="col-12">
             <label for="administrativo_direccion" class="form-label">Dirección:</label>
-            <input type="text" th:field="*{direccionPersonal}" class="form-control" id="administrativo_direccion">
+            <input type="text" th:field="*{direccionPersonal}" class="form-control" id="administrativo_direccion"
+              required>
             <div id="direccionHelp" class="form-text">Dirección completa. Ej. Colonia Roma, Pasaje #4, Casa 6.</div>
+            <div class="invalid-feedback">
+              Es necesario agregar la direccion
+            </div>
           </div>
 
           <div class="col-md-6">
@@ -75,6 +95,9 @@
               th:data-selected="${administrativo.departamentoPersonal}" required>
               <option value="">Seleccionar...</option>
             </select>
+            <div class="invalid-feedback">
+              Es necesario seleccionar un departamento
+            </div>
           </div>
 
           <div class="col-md-6">
@@ -83,6 +106,9 @@
               th:data-selected="${administrativo.municipioPersonal}" required>
               <option value="">Seleccionar...</option>
             </select>
+            <div class="invalid-feedback">
+              Es necesario seleccionar un municipio
+            </div>
           </div>
 
           <div class="col-md-6">
@@ -91,6 +117,9 @@
               th:data-selected="${administrativo.distritoPersonal}" required>
               <option value="">Seleccionar...</option>
             </select>
+            <div class="invalid-feedback">
+              Es necesario seleccionar un distrito
+            </div>
           </div>
 
           <div class="col-md-6">
@@ -100,33 +129,54 @@
               <option value="Rural">Rural</option>
               <option value="Urbano">Urbano</option>
             </select>
+            <div class="invalid-feedback">
+              Es necesario seleccionar una zona
+            </div>
           </div>
+
 
           <!-- Documentos de Identificación -->
           <div class="col-12">
             <h4 class="text-center">Documentos de Identificación</h4>
           </div>
-          <div class="col-md-4">
+          <div class="col-md-6">
             <label for="administrativo_dui" class="form-label">DUI</label>
             <input type="text" th:field="*{duiPersonal}" class="form-control" id="administrativo_dui"
               th:readonly="${editar}" th:classappend="${editar} ? 'bg-light text-dark' : ''" required>
+            <div class="invalid-feedback">
+              Es necesario agregar el DUI
+            </div>
           </div>
 
-          <!--           <div class="col-md-6">
-            <label for="administrativo_nip" class="form-label">NIP</label>
-            <input type="text" th:field="*{nip}" class="form-control restricted-input" id="administrativo_nip" required>
-          </div> -->
+          <div class="col-md-6">
+            <label for="administrativo_nup" class="form-label">NUP</label>
+            <input type="text" th:field="*{nupPersonal}" class="form-control" id="administrativo_nup" required>
+            <div class="invalid-feedback">
+              Es necesario agregar el NUP
+            </div>
+          </div>
 
-          <div class="col-md-4">
+          <div class="col-md-6">
             <label for="administrativo_nit" class="form-label">NIT</label>
             <input type="text" th:field="*{nitPersonal}" class="form-control restricted-input" id="administrativo_nit"
               required>
+
+            <div class="col-auto mt-2">
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="nitOption" id="homologado" value="homologado">
+                <label class="form-check-label" for="homologado">NIT Homologado</label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="nitOption" id="convencional" value="convencional"
+                  checked>
+                <label class="form-check-label" for="convencional">NIT Convencional</label>
+              </div>
+            </div>
+            <div class="invalid-feedback">
+              Es necesario agregar el NIT
+            </div>
           </div>
 
-          <div class="col-md-4">
-            <label for="administrativo_nup" class="form-label">NUP</label>
-            <input type="text" th:field="*{nupPersonal}" class="form-control" id="administrativo_nup" required>
-          </div>
 
           <!-- Información de Contacto -->
           <div class="col-12">
@@ -139,11 +189,17 @@
               aria-describedby="correoHelp" required>
             <div id="correoHelp" class="form-text">Ingrese su correo institucional, en caso de no tener puede usar el
               personal.</div>
+            <div class="invalid-feedback">
+              Es necesario agregar el correo electronico
+            </div>
           </div>
 
           <div class="col-md-6">
             <label for="administrativo_celular" class="form-label">Celular:</label>
             <input type="text" th:field="*{telefonoPersonal}" class="form-control" id="administrativo_celular" required>
+            <div class="invalid-feedback">
+              Es necesario agregar el celular
+            </div>
           </div>
 
           <div class="col-md-6">
@@ -164,21 +220,6 @@
             <div id="especialidadHelp" class="form-text" required>Ingrese solo si estudia actualmente.</div>
           </div>
 
-          <!--           <div class="col-12">
-            <label for="administrativo_fecha_ingreso" class="form-label">Fecha de ingreso al MYNEDUCIT:</label>
-            <div class="row">
-              <div class="col-md-2">
-                <input type="date" th:field="*{fechaMineducyt}" class="form-control" id="administrativo_fecha_ingreso"
-                  name="fecha_ingreso" required>
-              </div>
-            </div>
-          </div> -->
-
-          <!--           <div class="col-12">
-            <label for="administrativo_titulo" class="form-label">Título que lo acredita como administrativo:</label>
-            <input type="text" th:field="*{tituloDocente}" class="form-control" id="administrativo_titulo" name="titulo"
-              required>
-          </div> -->
 
           <!-- Atestados -->
           <div class="col-12">
@@ -219,13 +260,19 @@
               <input type="date" th:field="*{fechaEntregaPersonal}" class="form-control"
                 id="administrativo_fecha_entrega" name="fecha_entrega" required>
             </div>
+            <div class="invalid-feedback">
+              Es necesario agregar la fecha de entrega del formulario
+            </div>
           </div>
 
           <div class="col-12">
             <div class="col-md-2">
               <label for="administrativo_fecha_ingreso" class="form-label">Fecha de ingreso:</label>
-              <input type="date" th:field="*{fechaIngresoPersonal}" class="form-control" id="administrativo_fecha_ingreso"
-                required>
+              <input type="date" th:field="*{fechaIngresoPersonal}" class="form-control"
+                id="administrativo_fecha_ingreso" required>
+            </div>
+            <div class="invalid-feedback">
+              Es necesario agregar la fecha de ingreso a la institucion
             </div>
           </div>
 
@@ -235,7 +282,8 @@
             </div>
 
             <div class="col-auto">
-              <a class="btn btn-danger" th:href="@{/expedienteadministrativo/plantaadministrativa}" th:text="Cancelar"></a>
+              <a class="btn btn-danger" th:href="@{/expedienteadministrativo/plantaadministrativa}"
+                th:text="Cancelar"></a>
             </div>
           </div>
 
@@ -245,24 +293,35 @@
 
     <footer th:replace="home :: footer"></footer>
     <script type="text/javascript" src="/js/direccion.js"></script>
+    <script type="text/javascript" src="/js/validacionRequired.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.js"></script>
 
     <script>
-      $('#administrativo_celular').mask('0000-0000');
-      $('#administrativo_telefono_fijo').mask('0000-0000');
-      $('#administrativo_dui').mask('00000000-0');
-      $('#administrativo_nup').mask('000000000000');
-    </script>
+      $(document).ready(function () {
+        $('#administrativo_celular').mask('0000-0000');
+        $('#administrativo_telefono_fijo').mask('0000-0000');
+        $('#administrativo_dui').mask('00000000-0');
+        $('#administrativo_nup').mask('000000000000');
+        $('#administrativo_nit').mask('0000-000000-000-0');
 
-    <script>
-      // funciona sobre todos los elementos con la clase "restricted-input"
-      const restrictedInputs = document.querySelectorAll('.restricted-input');
-      restrictedInputs.forEach(function (input) {
-        input.addEventListener('input', function (event) {
-          let value = this.value;
-          value = value.replace(/[^\d-]/g, '');
-          this.value = value;
+        // Variable para almacenar el último valor ingresado
+        let lastConventionalValue = '';
+
+        $('input[type=radio][name=nitOption]').change(function () {
+          if (this.value === 'homologado') {
+            // Guarda el valor actual antes de cambiar a homologado
+            lastConventionalValue = $('#administrativo_nit').val();
+            $('#administrativo_nit').prop('readonly', true);
+            $('#administrativo_nit').mask('00000000-0');
+            var duiValue = $('#administrativo_dui').val();
+            $('#administrativo_nit').val(duiValue);
+          } else if (this.value === 'convencional') {
+            // Restaura el último valor ingresado cuando se vuelve a convencional
+            $('#administrativo_nit').prop('readonly', false);
+            $('#administrativo_nit').mask('0000-000000-000-0');
+            $('#administrativo_nit').val(lastConventionalValue);
+          }
         });
       });
     </script>

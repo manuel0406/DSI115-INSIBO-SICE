@@ -22,7 +22,7 @@ import com.lowagie.text.pdf.PdfWriter;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-@Component("/Expediente_alumno/editar")
+@Component("Expediente_alumno/editar")
 public class FichaAlumnoPdf extends AbstractPdfView {
 
     @Override

@@ -22,7 +22,8 @@
             </div>
             <div class="card-body">
 
-                <form class="row g-3" th:object="${profesor}" th:action="@{/expedientedocente/guardar}" method="post">
+                <form class="row g-3 needs-validation" novalidate th:object="${profesor}"
+                    th:action="@{/expedientedocente/guardar}" method="post">
                     <!-- Datos Personales -->
                     <div class="col-12">
                         <h4 class="text-center">Datos Personales</h4>
@@ -32,37 +33,53 @@
                         <label for="docente_nombres" class="form-label">Nombres:</label>
                         <input type="text" th:field="*{nombreDocente}" class="form-control" id="docente_nombres"
                             required>
+                        <div class="invalid-feedback">
+                            Es necesario agregar nombres
+                        </div>
                     </div>
 
                     <div class="col-md-6">
                         <label for="docente_apellidos" class="form-label">Apellidos:</label>
                         <input type="text" th:field="*{apellidoDocente}" class="form-control" id="docente_apellidos"
                             required>
+                        <div class="invalid-feedback">
+                            Es necesario agregar apellidos
+                        </div>
                     </div>
 
                     <div class="col-md-6">
                         <label for="docente_profesion" class="form-label">Profesión:</label>
                         <input type="text" th:field="*{profesionDocente}" class="form-control" id="docente_profesion"
                             required>
+                        <div class="invalid-feedback">
+                            Es necesario agregar la profesión
+                        </div>
                     </div>
 
                     <div class="col-md-6">
                         <label for="docente_fecha_nacimiento" class="form-label">Fecha de nacimiento:</label>
                         <input type="date" th:field="*{fechaNacimientoD}" class="form-control"
                             id="docente_fecha_nacimiento" required>
+                        <div class="invalid-feedback">
+                            Es necesario agregar la fecha de nacimiento
+                        </div>
                     </div>
 
 
-                    <!-- Ubicación -->
-                    <div class="col-12">
+
+                    <!-- Ubicación --><div class="col-12">
                         <h4 class="text-center">Ubicación</h4>
                     </div>
 
                     <div class="col-12">
                         <label for="docente_direccion" class="form-label">Dirección:</label>
-                        <input type="text" th:field="*{direccionDocente}" class="form-control" id="docente_direccion">
+                        <input type="text" th:field="*{direccionDocente}" class="form-control" id="docente_direccion" ,
+                            required>
                         <div id="direccionHelp" class="form-text">Dirección completa. Ej. Colonia Roma, Pasaje #4, Casa
                             6.</div>
+                        <div class="invalid-feedback">
+                            Es necesario agregar la direccion
+                        </div>
                     </div>
 
                     <div class="col-md-6">
@@ -71,6 +88,9 @@
                             th:data-selected="${profesor.departamentoD}" required>
                             <option value="">Seleccionar...</option>
                         </select>
+                        <div class="invalid-feedback">
+                            Es necesario seleccionar un departamento
+                        </div>
                     </div>
 
                     <div class="col-md-6">
@@ -79,6 +99,9 @@
                             th:data-selected="${profesor.municipioD}" required>
                             <option value="">Seleccionar...</option>
                         </select>
+                        <div class="invalid-feedback">
+                            Es necesario seleccionar un municipio
+                        </div>
                     </div>
 
                     <div class="col-md-6">
@@ -87,6 +110,9 @@
                             th:data-selected="${profesor.distritoDocente}" required>
                             <option value="">Seleccionar...</option>
                         </select>
+                        <div class="invalid-feedback">
+                            Es necesario seleccionar un distrito
+                        </div>
                     </div>
 
                     <div class="col-md-6">
@@ -96,6 +122,9 @@
                             <option value="Rural">Rural</option>
                             <option value="Urbano">Urbano</option>
                         </select>
+                        <div class="invalid-feedback">
+                            Es necesario seleccionar una zona
+                        </div>
                     </div>
 
 
@@ -109,6 +138,9 @@
                         <label for="docente_dui" class="form-label">DUI</label>
                         <input type="text" th:field="*{duiDocente}" class="form-control" id="docente_dui"
                             th:readonly="${editar}" th:classappend="${editar} ? 'bg-light text-dark' : ''" required>
+                        <div class="invalid-feedback">
+                            Es necesario agregar el DUI
+                        </div>
                     </div>
                     <!-- aplica las propiedadades solo cuando se cumplea la condicion -->
 
@@ -116,17 +148,39 @@
                         <label for="docente_nip" class="form-label">NIP</label>
                         <input type="text" th:field="*{nip}" class="form-control restricted-input" id="docente_nip"
                             required>
+                        <div class="invalid-feedback">
+                            Es necesario agregar el NIP
+                        </div>
                     </div>
 
                     <div class="col-md-6">
                         <label for="docente_nit" class="form-label">NIT</label>
                         <input type="text" th:field="*{nit}" class="form-control restricted-input" id="docente_nit"
                             required>
+
+                        <div class="col-auto mt-2">
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="nitOption" id="homologado"
+                                    value="homologado">
+                                <label class="form-check-label" for="homologado">NIT Homologado</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="nitOption" id="convencional"
+                                    value="convencional" checked>
+                                <label class="form-check-label" for="convencional">NIT Convencional</label>
+                            </div>
+                        </div>
+                        <div class="invalid-feedback">
+                            Es necesario agregar el NIT
+                        </div>
                     </div>
 
                     <div class="col-md-6">
                         <label for="docente_nup" class="form-label">NUP</label>
                         <input type="text" th:field="*{nup}" class="form-control" id="docente_nup" required>
+                        <div class="invalid-feedback">
+                            Es necesario agregar el NUP
+                        </div>
                     </div>
 
 
@@ -141,12 +195,18 @@
                             id="docente_correo_institucional" aria-describedby="correoHelp" required>
                         <div id="correoHelp" class="form-text">Ingrese su correo institucional, en caso de no tener
                             puede usar el personal.</div>
+                        <div class="invalid-feedback">
+                            Es necesario agregar el correo electronico
+                        </div>
                     </div>
 
                     <div class="col-md-6">
                         <label for="docente_celular" class="form-label">Celular:</label>
                         <input type="text" th:field="*{telefonoDocente}" class="form-control" id="docente_celular"
                             required>
+                        <div class="invalid-feedback">
+                            Es necesario agregar el celular
+                        </div>
                     </div>
 
                     <div class="col-md-6">
@@ -174,6 +234,9 @@
                                 <input type="date" th:field="*{fechaMineducyt}" class="form-control"
                                     id="docente_fecha_ingreso" name="fecha_ingreso" required>
                             </div>
+                            <div class="invalid-feedback">
+                                Es necesario agregar la fecha de ingreso al MYNEDUCIT
+                            </div>
                         </div>
                     </div>
 
@@ -181,6 +244,9 @@
                         <label for="docente_titulo" class="form-label">Título que lo acredita como docente:</label>
                         <input type="text" th:field="*{tituloDocente}" class="form-control" id="docente_titulo"
                             name="titulo" required>
+                        <div class="invalid-feedback">
+                            Es necesario agregar el titulo que lo acredita
+                        </div>
                     </div>
 
 
@@ -224,42 +290,61 @@
                                 <input type="date" th:field="*{fechaEntrega}" class="form-control"
                                     id="docente_fecha_entrega" name="fecha_entrega" required>
                             </div>
-                        </div>
-
-                        <div class="row justify-content-center text-center  mt-4">
-                            <div class="col-auto">
-                                <button type="submit" class="btn btn-primary">Guardar</button>
-                            </div>
-
-                            <div class="col-auto">
-                                <a class="btn btn-danger" th:href="@{/expedientedocente/plantadocente}"
-                                    th:text="Cancelar"></a>
+                            <div class="invalid-feedback">
+                                Es necesario agregar la fecha de entrega del formulario
                             </div>
                         </div>
+                    </div>
+                    
+                    <div class="row justify-content-center text-center  mt-4">
+                        <div class="col-auto">
+                            <button type="submit" class="btn btn-primary">Guardar</button>
+                        </div>
+
+                        <div class="col-auto">
+                            <a class="btn btn-danger" th:href="@{/expedientedocente/plantadocente}"
+                                th:text="Cancelar"></a>
+                        </div>
+                    </div>
                 </form>
             </div>
         </div>
 
         <footer th:replace="home :: footer"></footer>
         <script type="text/javascript" src="/js/direccion.js"></script>
+        <script type="text/javascript" src="/js/validacionRequired.js"></script>
         <script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+            crossorigin="anonymous"></script>
 
         <script>
-            $('#docente_celular').mask('0000-0000');
-            $('#docente_telefono_fijo').mask('0000-0000');
-            $('#docente_dui').mask('00000000-0');
-            $('#docente_nup').mask('000000000000');
-        </script>
+            $(document).ready(function () {
+                $('#docente_celular').mask('0000-0000');
+                $('#docente_telefono_fijo').mask('0000-0000');
+                $('#docente_dui').mask('00000000-0');
+                $('#docente_nup').mask('000000000000');
+                $('#docente_nip').mask('0000000');
+                $('#docente_nit').mask('0000-000000-000-0');
 
-        <script>
-            // funciona sobre todos los elementos con la clase "restricted-input"
-            const restrictedInputs = document.querySelectorAll('.restricted-input');
-            restrictedInputs.forEach(function (input) {
-                input.addEventListener('input', function (event) {
-                    let value = this.value;
-                    value = value.replace(/[^\d-]/g, '');
-                    this.value = value;
+                // Variable para almacenar el último valor ingresado
+                let lastConventionalValue = '';
+
+                $('input[type=radio][name=nitOption]').change(function () {
+                    if (this.value === 'homologado') {
+                        // Guarda el valor actual antes de cambiar a homologado
+                        lastConventionalValue = $('#docente_nit').val();
+                        $('#docente_nit').prop('readonly', true);
+                        $('#docente_nit').mask('00000000-0');
+                        var duiValue = $('#docente_dui').val();
+                        $('#docente_nit').val(duiValue);
+                    } else if (this.value === 'convencional') {
+                        // Restaura el último valor ingresado cuando se vuelve a convencional
+                        $('#docente_nit').prop('readonly', false);
+                        $('#docente_nit').mask('0000-000000-000-0');
+                        $('#docente_nit').val(lastConventionalValue);
+                    }
                 });
             });
         </script>
