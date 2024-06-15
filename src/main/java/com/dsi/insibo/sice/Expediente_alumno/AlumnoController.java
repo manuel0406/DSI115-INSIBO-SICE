@@ -117,7 +117,7 @@ public class AlumnoController {
 		return "redirect:/ExpedienteAlumno/ver";
 	}
 
-	@GetMapping("/ver")
+	@GetMapping("/Ver")
 	public String verAlumno(Model model, @RequestParam(value = "carrera", required = false) String carrera,
 			@RequestParam(value = "grado", required = false) String grado,
 			@RequestParam(value = "seccion", required = false) String seccion) {
