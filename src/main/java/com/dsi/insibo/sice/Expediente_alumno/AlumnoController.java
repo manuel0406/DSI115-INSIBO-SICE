@@ -52,7 +52,7 @@ public class AlumnoController {
 		model.addAttribute("alumno", alumno);
 		model.addAttribute("bachilleratos", listaBachilleratos);
 
-		return "/Expediente_alumno/registro";
+		return "Expediente_alumno/registro";
 	}
 
 	@GetMapping("/editar/{nie}")
