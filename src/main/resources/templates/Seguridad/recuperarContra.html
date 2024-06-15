@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head th:fragment="head">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/x-icon" th:href="@{/imagenes/INSIBO.ico}">
+  <title>SICE - INSIBO</title>
+  <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
+  <link rel="stylesheet" th:href="@{/css/style.css}" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.7.2/font/bootstrap-icons.css" rel="stylesheet">
+</head>
+
+<body class="cuerpoRecuperar">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-md-6">
+          <div id="formContent" class="card">
+            <div class="card-body">
+              <!-- Tarjetero de titulos -->
+              <h2 class="tituloIniciarSesion"> Recuperar Contraseña  </h2>
+  
+              <!-- Icono -->
+              <div class="fadeIn first text-center my-3">
+                <img th:src="@{/imagenes/LogoINSIBO.jpg}" id="icon" alt="User Icon" class="img-fluid" style="max-width: 150px;" />
+              </div>
+
+              <div class="fadeIn first text-center my-3">
+                <p class="advertencia"><b>¡Importante aviso de seguridad!</b><br>
+                    Estamos comprometidos con la protección de tu cuenta. Si has solicitado restablecer tu contraseña, ten en cuenta que, por razones de seguridad, la nueva contraseña será enviada únicamente a tu correo registrado o comunicarte con el administrador. Si no encuentras el correo en tu bandeja de entrada, por favor verifica la carpeta de spam. Gracias por tu comprensión y colaboración en mantener tu cuenta segura.</p>
+              </div>
+
+              <div th:if="${mensaje != null and !#strings.isEmpty(mensaje)}" th:utext="${mensaje}" class="alert alert-danger"></div>
+
+              <!-- Formulario de iniciar sesión -->
+              <form id="formulario" th:object="${usuario}" method="post" th:action="@{/correoDeRecuperacion}" oninput="validateForm()">
+                <!-- Entrada de Usuario -->
+                <div class="form-group">
+                  <label class="entradaIniciarSesion" for="login">Correo Electrónico:</label>
+                  <div>
+                    <span id="correoInvalido" class="w-100 text-center">
+                      <i class="bi bi-exclamation-circle-fill"></i> Correo inválido
+                    </span>
+                  </div>
+                  <input th:field="*{correoUsuario}" type="text" id="correoIniciarSesion" class="form-control fadeIn second" name="login" placeholder="Ingrese su correo..." required>
+                </div>
+                <div class="form-group row">
+                  <div class="col">
+                    <input class="btnRecuperar" type="submit" value="Recuperar contraseña" id="botonRecuperar" onclick="recuperar()" disabled>
+                  </div>
+                  <div class="col">
+                    <a href="/iniciarSesion" class="btn btn-secondary btnCancelar">Cancelar</a>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script type="text/javascript" th:src="@{/js/recuperarContra.js}"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/js/bootstrap.min.js"></script>
+  </body>
+</html>

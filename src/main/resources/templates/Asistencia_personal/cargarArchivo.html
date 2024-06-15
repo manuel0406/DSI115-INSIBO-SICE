@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head th:replace="home :: head">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+    />
+    <title>Arquivo</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
+  </head>
+
+  <body>
+    <form>
+      <div class="d-flex justify-content-center align-items-center vh-100 flex-column">
+      <div class="contenedorI">
+        <div class="wrapper">
+          <div class="image">
+            <img src="" alt="" />
+          </div>
+          <div class="content">
+            <div class="icon text-center">
+              <i class="bi bi-cloud-arrow-up"></i>
+            </div>
+            <div class="text">Seleccione un archivo.</div>
+          </div>
+          <div id="cancel-btn">
+            <i class="bi bi-trash"></i>
+          </div>
+          <div class="file-name">Archivo seleccionado</div>
+        </div>
+        <button onclick="defaultBtnActive()" id="custom-btn">
+          Cargar Archivo
+        </button>
+        <input id="default-btn" type="file"  hidden />
+      </div>
+      <div class="my-2">
+        <input class="btn btn-secondary btn-display" value="Enviar" id="btn-enviar"/>
+      </div>
+    </div>
+    </form>
+    
+
+    <script type="text/javascript" th:src="@{/js/input-file.js}"></script>
+  </body>
+</html>

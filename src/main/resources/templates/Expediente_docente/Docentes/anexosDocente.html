@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="home :: head">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anexos Docente</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .tooltip-inner {
+            max-width: 200px;
+            /* Cambia esto según sea necesario */
+            width: auto;
+        }
+    </style>
+</head>
+
+<body>
+    <header th:replace="home :: header"></header>
+    <header th:replace="Expediente_docente/barra :: barraExpediente"></header>
+
+    <div class="container mt-5">
+        <h2>Documentos</h2>
+        <form>
+            <!-- Anexos Plantilla -->
+            <div class="form-group col-xs-12 col-sm-6 col-md-4">
+                <label for="anexos">Anexos Plantilla:</label>
+                <div class="input-group">
+                    <label class="input-group-btn">
+                        <span class="btn btn-primary btn-file">
+                            Seleccionar archivo <input accept=".doc,.docx,.pdf" class="hidden" name="anexos" type="file" id="anexos">
+                        </span>
+                    </label>
+                    <input class="form-control" id="anexos_captura" readonly="readonly" name="anexos_captura" type="text" value="">
+                </div>
+                <small id="anexosHelp" class="form-text text-muted" data-toggle="tooltip" data-placement="right" title="Archivo según la plantilla dada por subdirección">
+                    ¿Necesitas ayuda con el archivo?
+                </small>
+            </div>
+
+            <!-- Curriculum -->
+            <div class="form-group col-xs-12 col-sm-6 col-md-4">
+                <label for="curriculum">Curriculum:</label>
+                <div class="input-group">
+                    <label class="input-group-btn">
+                        <span class="btn btn-primary btn-file">
+                            Seleccionar archivo <input accept=".doc,.docx,.pdf" class="hidden" name="curriculum" type="file" id="curriculum">
+                        </span>
+                    </label>
+                    <input class="form-control" id="curriculum_captura" readonly="readonly" name="curriculum_captura" type="text" value="">
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script>
+        $(document).on('change', '.btn-file :file', function () {
+            var input = $(this),
+                numFiles = input.get(0).files ? input.get(0).files.length : 1,
+                label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
+            input.trigger('fileselect', [numFiles, label]);
+        });
+
+        $(document).ready(function () {
+            $('.btn-file :file').on('fileselect', function (event, numFiles, label) {
+                var input = $(this).parents('.input-group').find(':text'),
+                    log = numFiles > 1 ? numFiles + ' files selected' : label;
+                if (input.length) {
+                    input.val(log);
+                } else {
+                    if (log) alert(log);
+                }
+            });
+
+            $('[data-toggle="tooltip"]').tooltip();
+        });
+    </script>
+</body>
+
+</html>

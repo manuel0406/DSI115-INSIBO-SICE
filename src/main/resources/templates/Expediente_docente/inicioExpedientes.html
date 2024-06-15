@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="home :: head">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inicio Expedientes</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css">
+</head>
+<body>
+    <header th:replace="home :: header"></header>
+    <!-- <header th:replace="Expediente_docente/barra :: barraExpediente"></header> -->
+    
+    <div class="container mt-3">
+        <!-- Jumbotron -->
+        <div class="jumbotron p-5 mb-3 bg-light rounded-3">
+            <div class="container py-5">
+                <h1 class="display-5 fw-bold">Bienvenido al Módulo de Expedientes</h1>
+                <p class="col-md-10 fs-4">Accede a los expedientes de docentes y administrativos de manera rápida y sencilla.</p>
+<!--                 <button class="btn btn-primary btn-lg" type="button">Más información</button>
+ -->            </div>
+        </div>
+
+        <!-- Cards -->
+        <div class="row mb-3">
+            <div class="col-md-4">
+                <div class="card">
+                    <img src="https://img.freepik.com/vector-gratis/ilustracion-concepto-profesora_114360-2166.jpg?t=st=1718160385~exp=1718163985~hmac=3fa58e646075b5c92f473a982991838a352808b5a5a905a057a44fa7797e640c&w=826" class="card-img-top" alt="Docentes">
+                    <div class="card-body">
+                        <h5 class="card-title">Docentes</h5>
+                        <p class="card-text">Accede a los expedientes de los docentes de la institución.</p>
+                        <a th:href="@{/expedientedocente/plantadocente}" class="btn btn-primary">Ir a Sección</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <img src="https://img.freepik.com/vector-gratis/ilustracion-concepto-conexion-equipos_114360-595.jpg?t=st=1718160500~exp=1718164100~hmac=501bbde8ff13479459a4be78ee7c1f0befa29ea2e70973d7650ca3db7428ec5e&w=826" class="card-img-top" alt="Administrativos">
+                    <div class="card-body">
+                        <h5 class="card-title">Administrativos</h5>
+                        <p class="card-text">Consulta la información de los empleados administrativos.</p>
+                        <a th:href="@{/expedienteadministrativo/plantaadministrativa}" class="btn btn-primary">Ir a Sección</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <img src="imagenes/LogoINSIBO.jpg" class="card-img-top" alt="Noticias">
+                    <div class="card-body">
+                        <h5 class="card-title">Noticias</h5>
+                        <p class="card-text">Mantente informado con las últimas noticias y actualizaciones.</p>
+                        <a href="https://www.facebook.com/share/p/WdtcCUqcTGiFpy6k/" class="btn btn-primary">Ir a Sección</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer th:replace="home :: footer"></footer>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
