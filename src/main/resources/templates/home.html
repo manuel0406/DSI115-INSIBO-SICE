@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-
+  
 <head th:fragment="head">
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title th:text="${titulo}"></title>
+    <title   th:text="${titulo}"></title>
+    <link rel="shortcut icon" type="image/x-icon" th:href="@{/Imagenes/INSIBO2.ico}">
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
     <link rel="stylesheet" th:href="@{/css/style.css}" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.7.2/font/bootstrap-icons.css" rel="stylesheet">
@@ -16,23 +17,21 @@
         <nav class="navbar navbar-expand-lg custom-navbar">
             <div class="container-fluid">
                 <a class="navbar-brand text-white fw-bold text-center" href="#">SICE</a>
-                <button class="navbar-toggler text-white" type="button" data-bs-toggle="collapse"
-                    data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
-                    aria-expanded="false" aria-label="Toggle navigation">
+                <button class="navbar-toggler text-white" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+                    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">                 
 
                     <i class="bi bi-list text-white"></i>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0 d-flex ">
                         <li class="nav-item">
-                            <a class="nav-link active text-white" aria-current="page" href="#">
+                            <a class="nav-link active text-white" aria-current="page" th:href="@{/}">
                                 <i class="bi bi-house-door text-white"></i> Inicio
                             </a>
                         </li>
                     </ul>
                     <form class="d-flex" role="search">
-                        <button class="btn btn-outline-danger text-white" type="button"
-                            onclick="window.location.href='/iniciarSesion'">
+                        <button class="btn btn-outline-danger text-white" type="button" onclick="window.location.href='/iniciarSesion'">
                             <i class="bi bi-box-arrow-in-right"></i> Cerrar sesión
                         </button>
                     </form>
@@ -41,17 +40,75 @@
         </nav>
     </header>
 
-    <h1 class="container text-center">Esto es una prueba!</h1>
+    <div class="container mt-3">
+        <!-- Jumbotron -->
+        <div class="jumbotron  mb-3 bg-light rounded-3">
+            <div class="container py-5 text-center">
+                <h1 class="display-5 fw-bold ">Bienvenido a SICE</h1>
+                <p class="col-md-12 fs-4">Accede a los expedientes de docentes, alumnos y administrativos de manera rápida y sencilla.</p>
+<!--                 <button class="btn btn-primary btn-lg" type="button">Más información</button>
+ -->            </div>
+        </div>
 
+        <!-- Cards -->
+        <div class="row mb-3 ">
+            <div class="col-md-3 my-2">
+                <div class="card">
+                    <img src="https://img.freepik.com/vector-gratis/ilustracion-concepto-profesora_114360-2166.jpg?t=st=1718160385~exp=1718163985~hmac=3fa58e646075b5c92f473a982991838a352808b5a5a905a057a44fa7797e640c&w=826" class="card-img-top" alt="Docentes">
+                    <div class="card-body">
+                        <h5 class="card-title">Docentes</h5>
+                        <p class="card-text">Accede a los expedientes de los docentes de la institución.</p>
+                        <a th:href="@{/expedientedocente/plantadocente}" class="btn btn-primary">Ir a Sección</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 my-2">
+                <div class="card">
+                    <img src="https://img.freepik.com/vector-gratis/ilustracion-concepto-conexion-equipos_114360-595.jpg?t=st=1718160500~exp=1718164100~hmac=501bbde8ff13479459a4be78ee7c1f0befa29ea2e70973d7650ca3db7428ec5e&w=826" class="card-img-top" alt="Administrativos">
+                    <div class="card-body">
+                        <h5 class="card-title">Administrativos</h5>
+                        <p class="card-text">Consulta la información de los empleados administrativos.</p>
+                        <a th:href="@{/expedienteadministrativo/plantaadministrativa}" class="btn btn-primary">Ir a Sección</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 my-2">
+                <div class="card">
+                    <img src="https://img.freepik.com/vector-gratis/ilustracion-concepto-tesis_114360-7956.jpg?t=st=1718484239~exp=1718487839~hmac=df7ec944e5dd6797a6831e127890cd343e73ad2ace3d93537a30a80515c45d5c&w=826" class="card-img-top" alt="Docentes">
+                    <div class="card-body">
+                        <h5 class="card-title">Alumnos</h5>
+                        <p class="card-text">Accede a los expedientes de los alumnos de la institución.</p>
+                        <a th:href="@{/ExpedienteAlumno/ver}" class="btn btn-primary">Ir a Sección</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 my-2">
+                <div class="card">
+                    <img th:src="@{/Imagenes/LogoINSIBO.jpg}" class="card-img-top" alt="Noticias">
+                    <div class="card-body">
+                        <h5 class="card-title">Noticias</h5>
+                        <p class="card-text">Mantente informado con las últimas noticias y actualizaciones.</p>
+                        <a href="https://www.facebook.com/share/p/WdtcCUqcTGiFpy6k/" class="btn btn-primary">Ir a Sección</a>
+                    </div>
+                </div>
+            </div>
+           
+        </div>
+
+    </div>
+    
 
 
     <footer th:fragment="footer">
         <script type="text/javascript" th:src="@{/js/bootstrap.bundle.min.js}"></script>
-        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-        <script type="text/javascript" th:src="@{/js/popper.min.js}"></script>
+         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>    
+    <script type="text/javascript" th:src="@{/js/popper.min.js}"></script>
+   
+
+        
     </footer>
 
-
+    
 </body>
 
 </html>
