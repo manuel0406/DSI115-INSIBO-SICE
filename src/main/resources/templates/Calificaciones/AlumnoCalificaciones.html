@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:fragment="head">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title th:text="'Calificaciones del Alumno - ' + ${alumno.nie}">Calificaciones del Alumno</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.7.2/font/bootstrap-icons.css" rel="stylesheet">
+</head>
+
+<body>
+    <!--Esto es una barra de navegación-->
+    <header th:fragment="header">
+        <nav class="navbar navbar-expand-lg custom-navbar">
+            <div class="container-fluid">
+                <a class="navbar-brand text-white fw-bold text-center" href="#">SICE</a>
+                <button class="navbar-toggler text-white" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+                    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">                 
+
+                    <i class="bi bi-list text-white"></i>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0 d-flex ">
+                        <li class="nav-item">
+                            <a class="nav-link active text-white" aria-current="page" href="#">
+                                <i class="bi bi-house-door text-white"></i> Inicio
+                            </a>
+                        </li>
+                    </ul>
+                    <form class="d-flex" role="search">
+                        <button class="btn btn-outline-danger text-white" type="submit">
+                            <i class="bi bi-box-arrow-in-right"></i> Cerrar sesión
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!--Aca comienza-->
+    <div class="container-fluid">
+        <div class="row">
+            <!--Barra Lateral-->
+            <aside class="barra-lateral col-12 col-sm-auto p-0">
+                <div class="logo">
+                    <h2 class="py-4 m-0" th:text="'NIE: ' + ${alumno.nie}">NIE </h2>
+                </div>
+                <nav class="menu d-flex d-sm-block justify-content-center flex-wrap">
+                    <a href="/calificaciones">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-journal-check" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="M10.854 6.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7.5 8.793l2.646-2.647a.5.5 0 0 1 .708 0"/>
+                            <path d="M3 0h10a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-1h1v1a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v1H1V2a2 2 0 0 1 2-2"/>
+                            <path d="M1 5v-.5a.5.5 0 0 1 1 0V5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1zm0 3v-.5a.5.5 0 0 1 1 0V8h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1zm0 3v-.5a.5.5 0 0 1 1 0v.5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1z"/>
+                          </svg>
+                        Regresar
+                    </a>
+                </nav>
+            </aside>
+            <!--Fin Barra Lateral-->
+            <main class="main col">
+                <div class="container-fluid mt-3">
+                    <h3 class="text-center" th:text="'Calificaciones: ' + ${alumno.nombreAlumno}+' '+${alumno.apellidoAlumno}"></h2>
+                </div>
+                <!-- Formulario para seleccionar materia y periodo -->
+                <form th:action="@{/calificaciones/actividades}" method="get">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <div class="form-group">
+                                <label for="codMateria">Materia:</label>
+                                <select class="form-control" id="codMateria" name="codMateria" onchange="filtrarTabla()">
+                                    <option th:each="materia : ${materias}" th:value="${materia.nomMateria}" th:text="${materia.nomMateria}"></option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <div class="form-group">
+                                <label for="idPeriodo">Periodo:</label>
+                                <select class="form-control" id="idPeriodo" name="idPeriodo">
+                                    <option th:each="periodo : ${periodos}" th:value="${periodo.idPeriodo}"
+                                            th:text="${'Periodo ' + periodo.numeroPeriodo}"></option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                <!-- Listado de actividades -->
+                <!-- Tabla de notas -->
+                <div class="container-fluid mt-3">
+                    <table class="table table-striped" id="tablaNotas">
+                        <thead>
+                            <tr>
+                                <th>Actividad</th>
+                                <th>Materia</th>
+                                <th>Ponderación</th>
+                                <th>Nota Obtenida</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Iterar sobre las notas del alumno -->
+                            <tr th:each="nota : ${notas}" class="filaNota">
+                                <td th:text="${nota.actividad.nombreActividad}"></td>
+                                <td th:text="${nota.actividad.materia.nomMateria}"></td>
+                                <td th:text="${nota.actividad.ponderacionActividad + ' %'}"></td>
+                                <td th:text="${nota.notaObtenida}"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </main>
+        </div>
+    </div>
+
+    <footer th:fragment="footer">
+    </footer>
+
+    <script>
+         function filtrarTabla() {
+        var codMateriaSeleccionada = document.getElementById('codMateria').value.toUpperCase();
+        var filasNotas = document.getElementsByClassName('filaNota');
+
+        for (var i = 0; i < filasNotas.length; i++) {
+            var fila = filasNotas[i];
+            var materiaFila = fila.children[1].textContent.toUpperCase(); // Columna de materia
+
+            if (codMateriaSeleccionada === '' || materiaFila === codMateriaSeleccionada) {
+                fila.style.display = '';
+            } else {
+                fila.style.display = 'none';
+            }
+        }
+    }
+    </script>
+</body>
+
+</html>
