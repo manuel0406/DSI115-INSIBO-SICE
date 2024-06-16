@@ -1,11 +1,16 @@
 package com.dsi.insibo.sice.Calificaciones;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -56,8 +61,12 @@ public class calificacionesController {
 		List<Periodo> listaPeriodos = periodoService.listaPeriodos();
 		model.addAttribute("periodos", listaPeriodos);
 
+		//List<Alumno> alumnos = alumnoService.obtenerAlumnosPorMateriaYPeriodo(codMateria, idPeriodo);
+        
 		//List<Materia> listaMaterias = materiaService.listaMaterias();
 		//model.addAttribute("materias", listaMaterias);
+		//model.addAttribute("materias", new ArrayList<Materia>());
+        //model.addAttribute("alumnos", new ArrayList<Alumno>());
 
 		return "Calificaciones/vistaCalificaciones";
 	}
@@ -70,20 +79,41 @@ public class calificacionesController {
     }
 
 	@GetMapping("calificaciones/alumnosPorBachillerato")
-    @ResponseBody
-    public List<Alumno> getAlumnosPorBachillerato(@RequestParam String codigoBachillerato) {
-        return alumnoService.findAlumnosByBachilleratoCodigoBachillerato(codigoBachillerato);
-    }
+	public String getAlumnosPorBachillerato(@RequestParam String codigoBachillerato, Model model) {
+		List<Alumno> alumnos = alumnoService.findAlumnosByBachilleratoCodigoBachillerato(codigoBachillerato);
+		model.addAttribute("alumnos", alumnos);
 
-	@GetMapping("calificaciones/actividadesPorMateria")
-    @ResponseBody
-    public List<Actividad> getActividadesPorMateria(@RequestParam String codMateria) {
-        return actividadService.findActividadesByMateriaCodMateria(codMateria);
-    }
-	
-	@GetMapping("calificaciones/notasPorAlumno")
-    @ResponseBody
-    public List<Nota> getNotasPorAlumno(@RequestParam int nie, @RequestParam String codMateria, @RequestParam int idPeriodo) {
-        return notaService.findNotasByAlumnoMateriaPeriodo(nie, codMateria, idPeriodo);
-    }
+		// Recuperar y agregar nuevamente la lista de Bachilleratos
+		List<Bachillerato> listaBachilleratos = gradoService.listaBachilleratos();
+		model.addAttribute("grados", listaBachilleratos);
+		return "Calificaciones/vistaCalificaciones";
+	}
+
+	@GetMapping("/calificaciones/Alumno/{nie}")
+	public String informacionAlumno(@PathVariable("nie") int nie, Model model) {
+		// Recuperar la información del alumno por NIE
+		Alumno alumno = alumnoService.buscarPorIdAlumno(nie);
+		
+		List<Materia> materias = materiaService.listaMaterias();
+        List<Periodo> periodos = periodoService.listaPeriodos();
+
+		model.addAttribute("materias", materias);
+        model.addAttribute("periodos", periodos);
+
+		if (alumno != null) {
+			model.addAttribute("alumno", alumno);
+			
+			List<Nota> notas = notaService.findNotasByAlumno(alumno);
+			 // Asumiendo que tienes un servicio para buscar notas por alumno
+        	model.addAttribute("notas", notas);
+			// Puedes agregar más atributos al modelo si es necesario, como las notas del alumno
+			// model.addAttribute("notas", notasService.findNotasByAlumnoNie(nie));
+		} else {
+			// Manejar el caso donde no se encuentra el alumno (opcional)
+			model.addAttribute("error", "Alumno no encontrado");
+		}
+		
+		
+		return "Calificaciones/AlumnoCalificaciones";
+	}
 }

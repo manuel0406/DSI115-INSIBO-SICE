@@ -59,8 +59,8 @@ public class actividadesController {
 		List<Periodo> listaPeriodos = periodoService.listaPeriodos();
 		model.addAttribute("periodos", listaPeriodos);
 
-		//List<Materia> listaMaterias = materiaService.listaMaterias();
-		//model.addAttribute("materias", listaMaterias);
+		List<Materia> listaMaterias = materiaService.listaMaterias();
+		model.addAttribute("materias", listaMaterias);
 
 		List<Actividad> listaActividads = actividadService.listaActividades();
 		model.addAttribute("actividades", listaActividads);

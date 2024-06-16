@@ -3,7 +3,10 @@ package com.dsi.insibo.sice.Expediente_alumno;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import com.dsi.insibo.sice.Calificaciones.NotaRepository;
+import com.dsi.insibo.sice.entity.Actividad;
 import com.dsi.insibo.sice.entity.Alumno;
+import com.dsi.insibo.sice.entity.Nota;
 
 /**
  * Servicio que proporciona métodos para interactuar con la entidad Alumno.
@@ -14,6 +17,8 @@ public class AlumnoService {
 
     @Autowired
     private AlumnoRepository alumnoRepository;
+    @Autowired
+    private NotaRepository notaRepository;
 
     /**
      * Devuelve una lista de alumnos según los parámetros proporcionados.
