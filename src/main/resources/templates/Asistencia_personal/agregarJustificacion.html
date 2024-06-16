@@ -17,51 +17,29 @@
         </div>
       </div>
       <p class="text-center">Nombre Persona</p>
-      <form>
+      <form method="post" enctype="multipart/form-data" th:action="@{/asistenciaPersonal/uploadJustificacion}">
         <div class="w-50 mx-auto">
         <div class="d-flex flex-column">
           <div class="mb-3">
-            <label for="comentario" class="mb-2 ps-2">Comentario</label>
+            <label for="descripcionJustificacion" class="mb-2 ps-2">Comentario</label>
             <textarea
-              name="comentario"
+              name="descripcionJustificacion"
               id=""
               rows="5"
               class="w-100 rounded-3 p-2"
-              style="border-color: #4d82bc" th:field="*{descripcionJustificacion}"
+              style="border-color: #4d82bc" required
             ></textarea>
           </div>
-          <div class="container-modal">
-            <div class="wrapper-modal">
-              <div class="image">
-                <img src="" alt="" />
-              </div>
-              <div class="content">
-                <div class="icon text-center">
-                  <i class="bi bi-cloud-arrow-up"></i>
-                </div>
-                <div class="text">Seleccione un archivo.</div>
-              </div>
-              <div id="cancel-btn-m">
-                <i class="bi bi-trash"></i>
-              </div>
-              <div class="file-name">Archivo seleccionado</div>
-            </div>
-            <button
-              onclick="defaultBtnActiveM()"
-              id="custom-btn-m"
-              class="btn btn-success"
-            >
-              Cargar Archivo
-            </button>
-            <input id="default-btn-m" type="file" th:field="*{archivo}" hidden />
+          <div class="input-group">
+            <input type="file" name="archivo"  class="form-control" id="" aria-describedby="inputGroupFileAddon04" aria-label="Upload" required>
           </div>
         </div>
       </div>
       <div class="my-2 d-flex justify-content-center">
         <input
-          class="btn btn-secondary fw-bold btn-display"
+          class="btn btn-secondary fw-bold"
           value="Enviar"
-          id="btn-enviarj"
+          id="" type="submit"
         />
       </div>
       </form>
@@ -69,39 +47,6 @@
     </div>
   </body>
   <script type="text/javascript">
-    const wrapperM = document.querySelector(".wrapper-modal");
-    const fileNameM = document.querySelector(".file-name");
-    const defaultBtnM = document.querySelector("#default-btn-m");
-    const customBtnM = document.querySelector("#custom-btn-m");
-    const cancelBtnM = document.querySelector("#cancel-btn-m i");
-    const imgM = document.querySelector("img");
-    const btn = document.querySelector("#btn-enviarj");
-    let regExpM = /[0-9a-zA-Z\^\&\'\@\{\}\[\]\,\$\=\!\-\#\(\)\.\%\+\~\_ ]+$/;
-    function defaultBtnActiveM() {
-      defaultBtnM.click();
-    }
 
-    defaultBtnM.addEventListener("change", function () {
-      const file = this.files[0];
-      if (file) {
-        const reader = new FileReader();
-        reader.onload = function () {
-          const result = reader.result;
-          imgM.src = result;
-          btn.classList.remove("btn-display");
-          wrapperM.classList.add("active");
-        };
-        cancelBtnM.addEventListener("click", function () {
-          imgM.src = "";
-          wrapperM.classList.remove("active");
-          btn.classList.add("btn-display");
-        });
-        reader.readAsDataURL(file);
-      }
-      if (this.value) {
-        let valueStore = this.value.match(regExpM);
-        fileNameM.textContent = valueStore;
-      }
-    });
   </script>
 </html>

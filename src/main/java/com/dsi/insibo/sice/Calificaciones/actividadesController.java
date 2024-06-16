@@ -66,6 +66,7 @@ public class actividadesController {
 		model.addAttribute("actividades", listaActividads);
 
 		model.addAttribute("actividad", new Actividad());
+		
 
 		return "Calificaciones/vistaActividades";
 	}

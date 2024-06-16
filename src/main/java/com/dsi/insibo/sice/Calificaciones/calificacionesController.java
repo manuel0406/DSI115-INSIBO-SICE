@@ -68,6 +68,7 @@ public class calificacionesController {
 		//model.addAttribute("materias", new ArrayList<Materia>());
         //model.addAttribute("alumnos", new ArrayList<Alumno>());
 
+		
 		return "Calificaciones/vistaCalificaciones";
 	}
 
