@@ -60,6 +60,11 @@
                                 title="Ver Ficha">
                                 <i class="bi bi-file-earmark-text"></i>
                             </a> -->
+                                <a class="btn btn-success btn-sm mx-1"
+                                    th:href="@{/expedientedocente/consultarexpediente/} + ${docenteDTO.docente.duiDocente}"
+                                    data-bs-toggle="tooltip" data-bs-placement="top" title="Consultar">
+                                    <i class="bi bi-file-earmark-text"></i>
+                                </a>
 
                                 <a class="btn btn-primary btn-sm mx-1"
                                     th:href="@{/expedientedocente/editarexpediente/} + ${docenteDTO.docente.duiDocente}"

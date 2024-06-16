@@ -79,6 +79,23 @@ public class AdministrativoController {
         return "Expediente_docente/Administrativos/listarAdministrativos";
     }
 
+
+        // Habilitando la consulta
+        @GetMapping("/consultarexpediente/{id}")
+        public String consultarAdministrativo(@PathVariable("id") String idAdministrativo, Model model,
+                RedirectAttributes attribute) {
+            PersonalAdministrativo administrativo = administrativoService.buscarPorIdAdministrativo(idAdministrativo);
+            //Por si ingresa un id inexistente desde URL
+            if (administrativo == null) {
+                System.out.println("El docente no existe");
+                attribute.addFlashAttribute("error", "El expediente no existe");
+                return "redirect:/expedienteadministrativo/plantaadministrativa";
+            }
+    
+            model.addAttribute("administrativo", administrativo);
+            return "Expediente_docente/Administrativos/fichaAdministrativoConsult";
+        }
+
     // Habilitando la edición
     @GetMapping("/editarexpediente/{id}")
     public String editarAdministrativo(@PathVariable("id") String idAdministrativo, Model model,

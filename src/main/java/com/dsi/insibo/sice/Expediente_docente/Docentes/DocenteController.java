@@ -118,6 +118,22 @@ public class DocenteController {
         return "Expediente_docente/Docentes/listarDocentes"; // Vista HTML
     }
 
+        // Consultando docente
+        @GetMapping("/consultarexpediente/{id}")
+        public String consultarDocente(@PathVariable("id") String idDocente, Model model, RedirectAttributes attribute) {
+    
+            Docente profesor = docenteService.buscarPorIdDocente(idDocente);
+            if (profesor == null) {
+                System.out.println("El docente no existe");
+                attribute.addFlashAttribute("error", "El expediente no existe");
+                return "redirect:/expedientedocente/plantadocente";
+            }
+    
+            model.addAttribute("profesor", profesor);
+            model.addAttribute("editar", true); // Indica que se está editando un docente
+            return "Expediente_docente/Docentes/fichaDocenteConsult";
+        }
+
     // Editando docente
     @GetMapping("/editarexpediente/{id}")
     public String editarDocente(@PathVariable("id") String idDocente, Model model, RedirectAttributes attribute) {

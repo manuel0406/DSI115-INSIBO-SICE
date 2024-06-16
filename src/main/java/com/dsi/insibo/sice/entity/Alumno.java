@@ -2,20 +2,16 @@ package com.dsi.insibo.sice.entity;
 
 import java.io.Serializable;
 import java.sql.Date;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
-import jakarta.validation.constraints.NotEmpty;
 
 
 @Entity 
 public class Alumno implements Serializable{
     
-    @Id    
-    
-    private int nie;
-   
+    @Id        
+    private int nie;   
     private String nombreAlumno;    
     private String apellidoAlumno;
     private String sexoAlumno;
