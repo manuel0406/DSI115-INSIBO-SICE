@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
-<head th:replace="home :: head">
+<head th:fragment="head">
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Gestión de Actividades</title>
+     <link rel="shortcut icon" type="image/x-icon" th:href="@{/Imagenes/INSIBO2.ico}">
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
     <link rel="stylesheet" th:href="@{/css/style.css}" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.7.2/font/bootstrap-icons.css" rel="stylesheet">
@@ -12,7 +13,7 @@
 
 <body>
     <!--Esto es una barra de navegación-->
-    <header th:replace="home :: header"></header>
+     <header th:replace="home :: header"></header>
 
     <!--Aca comienza-->
     <div class="container-fluid">
