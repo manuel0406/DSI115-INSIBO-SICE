@@ -49,7 +49,7 @@ public class gestionarBloqueados {
         int cantidad = (int) Math.ceil((double) totalUsuario.size() / 7);
         model.addAttribute("Cantidad", cantidad);
     
-        return "/seguridad/gestionarBloqueados";
+        return "Seguridad/gestionarBloqueados";
     }
 
 
@@ -104,6 +104,6 @@ public class gestionarBloqueados {
    
         model.addAttribute("Cantidad", 0);
         model.addAttribute("Usuarios", usuarioConNombre);
-        return "/seguridad/gestionarBloqueados";
+        return "Seguridad/gestionarBloqueados";
     }
 }
