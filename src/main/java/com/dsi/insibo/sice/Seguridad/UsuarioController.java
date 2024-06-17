@@ -22,7 +22,7 @@ public class UsuarioController {
         Usuario usuario = new Usuario();
         model.addAttribute("usuario", usuario);
         model.addAttribute("mensaje", mensaje);
-        return "/seguridad/iniciarSesion";
+        return "Seguridad/iniciarSesion";
     }
 
     @PostMapping("/validarCorreo")

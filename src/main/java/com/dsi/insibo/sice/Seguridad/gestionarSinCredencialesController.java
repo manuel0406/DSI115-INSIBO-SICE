@@ -51,7 +51,7 @@ public class gestionarSinCredencialesController {
         int cantidad = (int) Math.ceil((double) totalUsuario.size() / 7);
         model.addAttribute("Cantidad", cantidad);
     
-        return "/seguridad/gestionarSinCredenciales";
+        return "Seguridad/gestionarSinCredenciales";
     }
 
     @GetMapping("/rechazarUsuario/{id}")
@@ -156,7 +156,7 @@ public class gestionarSinCredencialesController {
    
         model.addAttribute("Cantidad", 0);
         model.addAttribute("Usuarios", usuarioConNombre);
-        return "/seguridad/gestionarSinCredenciales";
+        return "Seguridad/gestionarSinCredenciales";
     }
 
 
