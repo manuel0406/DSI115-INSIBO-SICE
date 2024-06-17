@@ -119,7 +119,7 @@ public class gestionarCredencialesController {
    
         model.addAttribute("Cantidad", 0);
         model.addAttribute("Usuarios", usuarioConNombre);
-        return "/seguridad/gestionarCredenciales";
+        return "Seguridad/gestionarCredenciales";
     }
 
 }
