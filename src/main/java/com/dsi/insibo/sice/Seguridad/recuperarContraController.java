@@ -56,10 +56,12 @@ public class recuperarContraController {
 		
 		String destinatario = usuario.getCorreoUsuario();
 		String encabezado = "Recuperación de contraseña";
-		String texto= "Tu contraseña es: " + usuario.getContrasenaUsuario();
+		String texto= "Les saluda el Instituto Nacional Simón Bolivar [INSIBO] \n" +
+					  "Ante su solicitud de recuperación de contraseña, por este medio se la hacemos llegar, " +
+					  "aconsejamos guardarla de manera privada para evitar contratiempos en el desarrollo de sus actividades \n" +
+					  "Tu contraseña es: " + usuario.getContrasenaUsuario() + "\n" +
+					  "Att. Administrador del Sistema Integral de Control y Progreso Educativo INSIBO [SICE - INSIBO] ";
 		envioCorreo.sendEmail(destinatario, encabezado, texto);
-		System.out.println(usuario.getContrasenaUsuario());
-		
 		return "redirect:/iniciarSesion";
 	}	
 

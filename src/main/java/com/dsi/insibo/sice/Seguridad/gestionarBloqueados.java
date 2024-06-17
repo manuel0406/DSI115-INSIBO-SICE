@@ -61,5 +61,49 @@ public class gestionarBloqueados {
         usuarioService.guardarUsuario(usuario);
         return "redirect:/gestionarBloqueados";
     }
-    
+
+    @GetMapping("/buscarUsuarioBloqueado")
+    public String buscarUsuario(@RequestParam("correoUsuario") String correoUsuario, RedirectAttributes redirectAttributes, Model model) {
+        Usuario usuarioBuscado = usuarioService.buscarPorCorreo(correoUsuario);
+        
+
+        if (usuarioBuscado == null) {
+            // Usuario no encontrado, añadir mensaje de error
+            redirectAttributes.addFlashAttribute("Error", "<b>¡Usuario no encontrado!</b> Verificar si ha escrito correctamente el correo.");
+            return "redirect:/gestionarBloqueados"; // Redirigir a la página de gestión de credenciales
+        }
+
+        if (!usuarioBuscado.getEstadoUsuario().equals("Bloqueado")) {
+            // Usuario no encontrado, añadir mensaje de error
+            redirectAttributes.addFlashAttribute("Error", "<b>¡Advertencia!</b> Su usuario no se encuentra bloqueado.");
+            return "redirect:/gestionarBloqueados"; // Redirigir a la página de gestión de credenciales
+        }
+        
+        String nombre="";
+        if(usuarioBuscado.getRolUsuario().equals("Administrador")){
+            nombre = "Administrador";
+        }
+        if(usuarioBuscado.getRolUsuario().equals("Docente")){
+
+            nombre = usuarioBuscado.getDocente().getNombreDocente() + " " + usuarioBuscado.getDocente().getApellidoDocente() ;
+        }
+        if(usuarioBuscado.getRolUsuario().equals("Personal Administrativo")){
+            nombre = usuarioBuscado.getPersonalAdministrativo().getNombrePersonal()+ " " + usuarioBuscado.getDocente().getApellidoDocente();
+        }
+
+        //OCULTAMIENTO DE CONTRASEÑA
+        Integer tamanyoContra = usuarioBuscado.getContrasenaUsuario().length();
+        String codificacion="";
+
+        for(int i = 0; i < tamanyoContra ;i++){
+            codificacion = codificacion + "*";
+        }
+        usuarioBuscado.setContrasenaUsuario(codificacion);
+
+        UsuarioConNombre usuarioConNombre = new UsuarioConNombre(usuarioBuscado, nombre);
+   
+        model.addAttribute("Cantidad", 0);
+        model.addAttribute("Usuarios", usuarioConNombre);
+        return "/seguridad/gestionarBloqueados";
+    }
 }

@@ -49,7 +49,7 @@ public class UsuarioController {
             if ("Administrador".equals(usuario.getRolUsuario())) {
                 return "redirect:/gestionarCredenciales?pagina=1";
             } else {
-                return "redirect:/recuperarContra";
+                return "redirect:/";
             }
         }
     }

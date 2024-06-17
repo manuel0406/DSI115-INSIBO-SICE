@@ -16,7 +16,6 @@ public class EnvioCorreo {
     public void sendEmail(String to, String subject, String content) {
 
         SimpleMailMessage email = new SimpleMailMessage();
-        //email.setFrom("insibo.sice@gmail.com");
         email.setTo(to);
         email.setSubject(subject);
         email.setText(content);
