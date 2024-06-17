@@ -59,7 +59,7 @@
                                                     <label for="selectBachillerato" class="col-form-label">Seleccione Grado:</label>
                                                 </div>
                                                 <div class="col-9">
-                                                    <select id="codigoBachillerato" name="codigoBachillerato" class="form-select" aria-label="Default select example" onchange="actualizarMaterias(); guardarSeleccion(this);">
+                                                    <select id="codigoBachillerato" name="codigoBachillerato" class="form-select" aria-label="Default select example" onchange="actualizarMaterias()">
                                                         <option value="">Seleccione Carrera</option>
                                                         <option th:each="bachillerato : ${grados}" th:value="${bachillerato.codigoBachillerato}" th:text="${bachillerato.grado +'° '+ bachillerato.nombreCarrera  + ' - Sección ' + bachillerato.seccion}"></option>
                                                     </select>
@@ -113,21 +113,6 @@
 
     <script th:inline="javascript">
 
-        // Función para guardar la selección actual en localStorage
-        function guardarSeleccion(selectElement) {
-            var seleccion = selectElement.value;
-            localStorage.setItem('seleccionBachillerato', seleccion);
-        }
-
-        // Función para restaurar la selección desde localStorage
-        document.addEventListener('DOMContentLoaded', function() {
-            var selectElement = document.getElementById('codigoBachillerato');
-            var seleccionGuardada = localStorage.getItem('seleccionBachillerato');
-            
-            if (seleccionGuardada) {
-                selectElement.value = seleccionGuardada;
-            }
-        });
     </script>
 </body>
 

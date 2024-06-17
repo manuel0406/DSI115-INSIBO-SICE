@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.dsi.insibo.sice.Expediente_alumno.AlumnoService;
 import com.dsi.insibo.sice.entity.Actividad;
@@ -72,16 +73,21 @@ public class actividadesController {
 	}
 
 	@PostMapping("/Actividades/add")
-    public String addActividadFromModal(@ModelAttribute Actividad actividad, Model model) {
+    public String addActividadFromModal(@ModelAttribute Actividad actividad, Model model,RedirectAttributes redirectAttributes) {
         actividadRepository.save(actividad);
+		redirectAttributes.addFlashAttribute("successMessage", "Actividad agregada exitosamente.");
 
         return "redirect:/Actividades";
     }
 
 	@GetMapping("/Actividades/delete/{idActividad}")
-	public String deleteActividad(@PathVariable Integer idActividad) {
-		actividadRepository.deleteById(idActividad);
-
+	public String deleteActividad(@PathVariable Integer idActividad,RedirectAttributes redirectAttributes) {
+		try {
+			actividadRepository.deleteById(idActividad);
+			redirectAttributes.addFlashAttribute("successMessage", "Actividad eliminada exitosamente.");
+		} catch (Exception e) {
+			redirectAttributes.addFlashAttribute("errorMessage", "La actividad ya cuenta con calificaciones registradas, asegurese de eliminar las calificaciones para poder eliminar esta actividad.");
+		}
 		return "redirect:/Actividades";
 	}
 

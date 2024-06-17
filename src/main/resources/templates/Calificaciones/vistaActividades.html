@@ -97,7 +97,6 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <button class="btn btn-primary" type="buscar">Mostrar Actividades</button>
 
                                     </div>
                                     <!-- Botón para abrir modal de nueva actividad -->
@@ -150,8 +149,15 @@
 
                             <!-- Tabla para mostrar las actividades -->
                 <div class="row mt-3">
+                    <!-- Mensajes de error y éxito -->
+                    <div th:if="${errorMessage}" class="alert alert-danger" role="alert">
+                        <span th:text="${errorMessage}"></span>
+                    </div>
+                    <div th:if="${successMessage}" class="alert alert-success" role="alert">
+                        <span th:text="${successMessage}"></span>
+                    </div>
                     <div class="col-12">
-                        <table class="table">
+                        <table class="table table-hover" id=""tablaNotas>
                             <thead>
                                 <tr>
                                     <th scope="col">Nombre</th>
@@ -274,20 +280,24 @@
     </script>
     <script>
         function filtrarTabla() {
-        var codMateriaSeleccionada = document.getElementById('materia').value.toUpperCase();
-        var filasActividades = document.getElementsByClassName('filaActividad');
+            var select = document.getElementById("materia");
+            var filtro = select.options[select.selectedIndex].text.toUpperCase();
+            var filas = document.getElementsByClassName("filaActividad");
 
-        for (var i = 0; i < filasActividades.length; i++) {
-            var fila = filasActividades[i];
-            var materiaFila = fila.children[5].textContent.toUpperCase(); // Columna de materia
-
-            if (codMateriaSeleccionada === '' || materiaFila === codMateriaSeleccionada) {
-                fila.style.display = '';
-            } else {
-                fila.style.display = 'none';
+            for (var i = 0; i < filas.length; i++) {
+                var columnaMateria = filas[i].getElementsByTagName("td")[4].innerText.toUpperCase();
+                if (filtro === "" || columnaMateria.includes(filtro)) {
+                    filas[i].style.display = "";
+                } else {
+                    filas[i].style.display = "none";
+                }
             }
         }
-    }
+
+         // Llamar a la función filtrarTabla al cargar la página para mostrar la tabla vacía inicialmente
+         window.onload = function() {
+            filtrarTabla();
+        }
     </script>
     <script th:inline="javascript">
         function actualizarMaterias() {

@@ -12,8 +12,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import com.dsi.insibo.sice.Calificaciones.NotaService;
 import com.dsi.insibo.sice.entity.Alumno;
 import com.dsi.insibo.sice.entity.Bachillerato;
+import com.dsi.insibo.sice.entity.Nota;
 
 /**
  * Controlador para gestionar las operaciones del expediente de alumnos.
@@ -26,6 +29,8 @@ public class AlumnoController {
 	private AlumnoService alumnoService;
 	@Autowired
 	private BachilleratoService bachilleratoService;
+	@Autowired
+	private NotaService notaService;
 
 	/**
 	 * Controlador para guardar un nuevo alumno en la base de datos.
@@ -207,6 +212,7 @@ public class AlumnoController {
 		}
 
 		// Elimina el registro del alumno y añade un mensaje de confirmación
+		notaService.deleteNotasByAlumnoNie(nie);
 		alumnoService.eliminar(nie);
 		attributes.addFlashAttribute("warning", "¡Registro eliminado con éxito!");
 		return "redirect:/ExpedienteAlumno/ver"; // Redirige a la vista de listado de alumnos

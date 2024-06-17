@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
@@ -20,4 +21,9 @@ public interface NotaRepository extends JpaRepository<Nota, Integer> {
     List<Nota> findByAlumnoNieAndActividadMateriaCodMateriaAndActividadPeriodoIdPeriodo(int nie, String codMateria, int idPeriodo);
 
     List<Nota> findByAlumno(Alumno alumno);
+    
+    
+    @Modifying
+    @Query("DELETE FROM Nota n WHERE n.alumno.nie = :nie ")
+    void deleteByAlumnoNie(int nie);
 }

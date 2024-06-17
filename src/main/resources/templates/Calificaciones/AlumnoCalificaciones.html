@@ -64,6 +64,13 @@
                 <!-- Listado de actividades -->
                 <!-- Tabla de notas -->
                 <div class="container-fluid mt-3">
+                    <!-- Mensajes de error y éxito -->
+        <div th:if="${errorMessage}" class="alert alert-danger" role="alert">
+            <span th:text="${errorMessage}"></span>
+        </div>
+        <div th:if="${successMessage}" class="alert alert-success" role="alert">
+            <span th:text="${successMessage}"></span>
+        </div>
                     <table class="table table-striped" id="tablaNotas">
                         <thead>
                             <tr>
@@ -93,7 +100,7 @@
     </footer>
 
     <script>
-         function filtrarTabla() {
+        function filtrarTabla() {
         var codMateriaSeleccionada = document.getElementById('codMateria').value.toUpperCase();
         var filasNotas = document.getElementsByClassName('filaNota');
 

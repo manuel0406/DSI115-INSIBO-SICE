@@ -51,7 +51,7 @@ public class gestionarRechazados {
         int cantidad = (int) Math.ceil((double) totalUsuario.size() / 7);
         model.addAttribute("Cantidad", cantidad);
     
-        return "/seguridad/gestionarRechazados";
+        return "Seguridad/gestionarRechazados";
     }
 
     @GetMapping("/aceptarUsuarioRechazado/{id}")
@@ -146,6 +146,6 @@ public class gestionarRechazados {
    
         model.addAttribute("Cantidad", 0);
         model.addAttribute("Usuarios", usuarioConNombre);
-        return "/seguridad/gestionarRechazados";
+        return "Seguridad/gestionarRechazados";
     }
 }

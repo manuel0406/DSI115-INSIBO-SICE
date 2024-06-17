@@ -9,6 +9,8 @@ import com.dsi.insibo.sice.entity.Actividad;
 import com.dsi.insibo.sice.entity.Alumno;
 import com.dsi.insibo.sice.entity.Nota;
 
+import jakarta.transaction.Transactional;
+
 @Service
 public class NotaService {
 
@@ -26,5 +28,10 @@ public class NotaService {
 
     public List<Nota> findNotasByAlumno(Alumno alumno) {
         return notaRepository.findByAlumno(alumno);
+    }
+
+    @Transactional
+    public void deleteNotasByAlumnoNie(int nie) {
+        notaRepository.deleteByAlumnoNie(nie);
     }
 }
