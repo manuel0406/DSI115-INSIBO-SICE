@@ -64,7 +64,7 @@ public class gestionarCredencialesController {
         model.addAttribute("Cantidad", cantidad);
 
 
-        return "/seguridad/gestionarCredenciales";
+        return "Seguridad/gestionarCredenciales";
     }
 
 
