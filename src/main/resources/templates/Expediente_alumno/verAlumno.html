@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head th:replace="home :: head">
+<head th:replace="~{home :: head}">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
@@ -10,9 +10,8 @@
 </head>
 
 <body>
-    <header th:replace="home :: header"></header>
-    <!--Mensajes-->
-
+    <header th:replace="~{home :: header}"></header>
+    <!--Mensajes-->    
     <div class="alert alert-success alert-dismissible fade show mt-1 ms-2 mr-2" th:if="${success != null}">
         <label th:text="${success}"></label>
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
@@ -28,14 +27,16 @@
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
 
-    <div class="container my-4 flex-wrap" >
+    <div class="container my-4 flex-wrap">
 
         <div class="text-end mb-3">
-            <a class="btn btn-secondary" th:href="@{/ExpedienteAlumno/ver(format='pdf', carrera=${carrera}, grado=${grado}, seccion=${seccion})}" data-bs-toggle="tooltip"
-            data-bs-placement="top" title="Imprimir listado actual" target="_blank" onclick="openInPopup(this.href); return false;">
-            <i class="bi bi-printer"></i> Imprimir listado
-         </a>
-         
+            <a class="btn btn-secondary"
+                th:href="@{/ExpedienteAlumno/ver(format='pdf', carrera=${carrera}, grado=${grado}, seccion=${seccion})}"
+                data-bs-toggle="tooltip" data-bs-placement="top" title="Imprimir listado actual" target="_blank"
+                onclick="openInPopup(this.href); return false;">
+                <i class="bi bi-printer"></i> Imprimir listado
+            </a>
+
             <a th:href="@{/ExpedienteAlumno/Crear}" class="btn btn-success" th:text="'Agregar Alumno'"></a>
         </div>
 
@@ -126,6 +127,38 @@
                         </tr>
                     </tbody>
                 </table>
+                <!-- Contenedor de navegación para la paginación -->
+                <nav aria-label="...">
+                    <!-- Lista de elementos de paginación centrada -->
+                    <ul class="pagination justify-content-center">
+                        <!-- Elemento de la lista para el enlace "Anterior" -->
+                        <!-- Si la página actual es la primera, se desactiva el enlace -->
+                        <li class="page-item" th:classappend="${page == 1} ? 'disabled' : ''">
+                            <!-- Enlace que lleva a la página anterior -->
+                            <a class="page-link"
+                                th:href="@{/ExpedienteAlumno/ver(page=${page - 1}, carrera=${carrera}, grado=${grado}, seccion=${seccion})}">Anterior</a>
+                        </li>
+                        <!-- Bucle que genera los enlaces para cada página -->
+                        <!-- Se usa th:each para iterar desde 1 hasta el total de páginas -->
+                        <!-- Se resalta el enlace de la página actual con la clase "active" -->
+                        <li class="page-item" th:each="i : ${#numbers.sequence(1, totalPages)}"
+                            th:classappend="${i == page} ? 'active' : ''">
+                            <!-- Enlace que lleva a la página correspondiente -->
+                            <a class="page-link"
+                                th:href="@{/ExpedienteAlumno/ver(page=${i}, carrera=${carrera}, grado=${grado}, seccion=${seccion})}"
+                                th:text="${i}"></a>
+                        </li>
+                        <!-- Elemento de la lista para el enlace "Siguiente" -->
+                        <!-- Si la página actual es la última, se desactiva el enlace -->
+                        <li class="page-item" th:classappend="${page == totalPages} ? 'disabled' : ''">
+                            <!-- Enlace que lleva a la página siguiente -->
+                            <a class="page-link"
+                                th:href="@{/ExpedienteAlumno/ver(page=${page + 1}, carrera=${carrera}, grado=${grado}, seccion=${seccion})}">Siguiente</a>
+                        </li>
+                    </ul>
+                </nav>
+
+
             </div>
         </div>
     </div>
@@ -150,7 +183,7 @@
         </div>
     </div>
 
-    <footer th:replace="home :: footer"></footer>
+    <footer th:replace="~{home :: footer}"></footer>
 
     <!-- Incluye Bootstrap JS y Popper.js -->
 

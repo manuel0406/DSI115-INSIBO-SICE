@@ -7,6 +7,30 @@ restrictedInputs.forEach(function (input) {
         this.value = value;
     });
 });
+(() => {
+    'use strict'
+
+    const forms = document.querySelectorAll('.needs-validation')
+    Array.from(forms).forEach(form => {
+        form.addEventListener('submit', event => {
+            if (!form.checkValidity()) {
+                event.preventDefault()
+                event.stopPropagation()
+
+                // Find the first invalid element
+                const firstInvalidElement = form.querySelector(':invalid')
+                if (firstInvalidElement) {
+                    // Scroll to the first invalid element
+                    firstInvalidElement.scrollIntoView({ behavior: 'smooth', block: 'center' })
+                    // Optionally focus on the first invalid element
+                    firstInvalidElement.focus()
+                }
+            }
+
+            form.classList.add('was-validated')
+        }, false)
+    })
+})()
 
 document.getElementById('formulario').addEventListener('submit', function (event) {
     var nieInput = document.getElementById('nie');
@@ -16,7 +40,7 @@ document.getElementById('formulario').addEventListener('submit', function (event
         event.preventDefault();
     }
 
-    var duiInput = document.getElementById('dui');
+    var duiInput = document.getElementById('duiEncargado');
     var duiValue = duiInput.value;
     if (duiValue.length < 10) {
         showErrorModal('El DUI debe tener al menos 10 caracteres.');
@@ -38,9 +62,12 @@ document.getElementById('formulario').addEventListener('submit', function (event
     }
 });
 
+
 function showErrorModal(message) {
     document.getElementById('errorMessage').innerText = message;
     var errorModal = new bootstrap.Modal(document.getElementById('errorModal'));
     errorModal.show();
 }
+
+
 

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
-<head th:replace="home :: head">
+<head th:replace="~{home :: head}">
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Crear</title>
@@ -11,10 +11,11 @@
 </head>
 
 <body>
-    <header th:replace="home :: header"></header>
+    <header th:replace="~{home :: header}"></header>
     <div class="container my-4">
 
-        <form th:action="@{/ExpedienteAlumno/actualizar}" th:object="${alumno}" method="post" id="formulario">
+        <form class="row g-3 needs-validation" novalidate th:action="@{/ExpedienteAlumno/guardar}" th:object="${alumno}"
+            method="post" id="formulario">
 
             <div class="row g-3 align-items-center text-center">
                 <h3 class="text-center custom-h2">
@@ -22,11 +23,16 @@
                 </h3>
                 <div class="col-12 col-md-8 mx-auto">
                     <label for="exampleInputPassword1" class="form-label fs-6">Especialidad del bachillerato:</label>
+
                     <select th:field="*{bachillerato}" class="form-select" aria-label="Default select example" required>
+                        <option value="" selected>Seleccione</option>
                         <option th:each="bachillerato : ${bachilleratos}" th:value="${bachillerato.codigoBachillerato}"
                             th:text="${bachillerato.grado +'° '+ bachillerato.nombreCarrera  + ' - Sección ' + bachillerato.seccion}">
                         </option>
                     </select>
+                    <div class="invalid-feedback">
+                        Es necesario seleccionar una especialidad
+                    </div>
                 </div>
             </div>
 
@@ -37,20 +43,28 @@
 
                 <div class="col-12 col-md-4">
                     <label for="exampleInputEmail1" class="form-label fs-6">NIE:</label>
-                    <input type="text" th:field="*{nie}" class="form-control restricted-input" id="nie"  
-                    th:readonly="${editar}" th:classappend="${editar} ? 'bg-light text-dark' : ''" required
+                    <input type="text" th:field="*{nie}" class="form-control restricted-input" id="nie"
+                        th:readonly="${editar}" th:classappend="${editar} ? 'bg-light text-dark' : ''" required
                         minlength="7" maxlength="7" />
+                    <div class="invalid-feedback">
+                        Es necesario agregar el NIE
+                    </div>
+
                 </div>
 
                 <div class="col-12 col-md-4">
                     <label for="exampleInputEmail1" class="form-label fs-6">DUI:</label>
-                    <input type="text" th:field="*{duiAlumno}" class="form-control " id="dui" required />
+                    <input type="text" th:field="*{duiAlumno}" class="form-control " id="duiAlumno" />
                 </div>
 
                 <div class="col-12 col-md-4">
                     <label for="exampleInputEmail1" class="form-label fs-6">Teléfono:</label>
                     <input type="text" th:field="*{telefonoAlumno}" class="form-control restricted-input" id="telefono"
                         required minlength="9" maxlength="" />
+                    <div class="invalid-feedback">
+                        Es necesario agregar el telefóno del estudiante
+                    </div>
+
                 </div>
             </div>
 
@@ -59,12 +73,19 @@
                     <label for="exampleInputEmail1" class="form-label fs-6">Nombres:</label>
                     <input type="text" th:field="*{nombreAlumno}" class="form-control" id="nombres" required
                         maxlength="50" />
+                    <div class="invalid-feedback">
+                        Es necesario agregar los nombres del estudiante
+                    </div>
                 </div>
 
                 <div class="col-12 col-md-6">
                     <label for="exampleInputEmail1" class="form-label fs-6">Apellidos:</label>
                     <input type="text" th:field="*{apellidoAlumno}" class="form-control" id="apellidos" required
                         maxlength="50" />
+                    <div class="invalid-feedback">
+                        Es necesario agregar los apellidos del estudiante
+                    </div>
+
                 </div>
             </div>
 
@@ -73,12 +94,20 @@
                     <label for="exampleInputEmail1" class="form-label fs-6">Fecha de Nacimiento:</label>
                     <input type="date" th:field="*{fechaNacimientoAlumno}" class="form-control" id="fechaNacimiento"
                         required />
+                    <div class="invalid-feedback">
+                        Es necesario agregar la fecha de nacimiento del estudiante
+                    </div>
+
                 </div>
 
                 <div class="col-12 col-md-4">
                     <label for="exampleInputEmail1" class="form-label fs-6">Dirección actual:</label>
                     <input type="text" th:field="*{direccionAlumno}" class="form-control" id="direccion" required
                         maxlength="60" />
+                    <div class="invalid-feedback">
+                        Es necesario agregar el dirección donde vive el estudiante
+                    </div>
+
                 </div>
 
                 <div class="col-12 col-md-4">
@@ -88,14 +117,18 @@
                         <option value="M">M</option>
                         <option value="F">F</option>
                     </select>
+                    <div class="invalid-feedback">
+                        Es necesario agregar el genero del estudiante
+                    </div>
+
                 </div>
             </div>
 
             <div class="row my-2">
                 <div class="col-12 col-md-6">
                     <label for="exampleInputEmail1" class="form-label fs-6">Correo electrónico:</label>
-                    <input type="email" th:field="*{correoAlumno}" class="form-control" id="correo" required
-                        maxlength="50" />
+                    <input type="email" th:field="*{correoAlumno}" class="form-control" id="correo" maxlength="50" />
+
                 </div>
                 <div class="col-12 col-md-6">
                     <label for="exampleInputEmail1" class="form-label fs-6">Vive con:</label>
@@ -109,25 +142,29 @@
                         <option value="Tía">Tía</option>
                         <option value="Tío">Tío</option>
                     </select>
+                    <div class="invalid-feedback">
+                        Es necesario seleccionar con quien vive
+                    </div>
+
                 </div>
             </div>
 
             <div class="row my-2">
                 <div class="col-12 col-md-4">
                     <label for="padecimientos" class="form-label fs-6">Padece enfermedad:</label>
-                    <input type="text" th:field="*{padecimientos}" class="form-control" id="enfermedad" required
+                    <input type="text" th:field="*{padecimientos}" class="form-control" id="enfermedad"
                         maxlength="50" />
+
                 </div>
 
                 <div class="col-12 col-md-4">
                     <label for="medicamento" class="form-label fs-6">Medicamento:</label>
-                    <input type="text" th:field="*{medicamento}" class="form-control" id="medicamento" required
-                        maxlength="50" />
+                    <input type="text" th:field="*{medicamento}" class="form-control" id="medicamento" maxlength="50" />
                 </div>
 
                 <div class="col-12 col-md-4">
                     <label for="formaMedicacion" class="form-label fs-6">Forma medicación:</label>
-                    <input type="text" th:field="*{formaMedicacion}" class="form-control" id="formaMedicacion" required
+                    <input type="text" th:field="*{formaMedicacion}" class="form-control" id="formaMedicacion"
                         maxlength="50" />
                 </div>
             </div>
@@ -141,6 +178,10 @@
                     <label for="exampleInputEmail1" class="form-label fs-6">DUI:</label>
                     <input type="text" th:field="*{duiEncargado}" class="form-control" id="duiEncargado" required
                         minlength="10" maxlength="10" />
+                    <div class="invalid-feedback">
+                        Es necesario agregar el DUI del responble del alumno
+                    </div>
+
                 </div>
 
                 <div class="col-12 col-md-4">
@@ -155,12 +196,20 @@
                         <option value="Hermano/a">Hermano/a</option>
                         <option value="Primo/a">Primo/a</option>
                     </select>
+                    <div class="invalid-feedback">
+                        Es necesario seleccionar el parentesto
+                    </div>
+
                 </div>
 
                 <div class="col-12 col-md-4">
                     <label for="telefonoEncargado" class="form-label fs-6">Teléfono:</label>
                     <input type="text" th:field="*{telefonoEncargado}" class="form-control " id="telefonoEncargado"
                         required minlength="8" maxlength="8" />
+                    <div class="invalid-feedback">
+                        Es necesario agregar el telefóno del responsable
+                    </div>
+
                 </div>
             </div>
 
@@ -169,12 +218,19 @@
                     <label for="nombresEncargado" class="form-label fs-6">Nombres:</label>
                     <input type="text" th:field="*{nombreEncargado}" class="form-control" id="nombreResponsable"
                         required maxlength="50" />
+                    <div class="invalid-feedback">
+                        Es necesario agregar los nombres del responsable
+                    </div>
+
                 </div>
 
                 <div class="col-12 col-md-6">
                     <label for="apellidoEncargado" class="form-label fs-6">Apellidos:</label>
                     <input type="text" th:field="*{apellidoEncargado}" class="form-control" id="apellidoResponsable"
                         required maxlength="50" />
+                    <div class="invalid-feedback">
+                        Es necesario agregar los apellidos del responsable
+                    </div>
                 </div>
             </div>
 
@@ -183,12 +239,15 @@
                     <label for="lugarDeTrabajo" class="form-label fs-6">Lugar de trabajo:</label>
                     <input type="text" th:field="*{lugarDeTrabajo}" class="form-control" id="nombreResponsable" required
                         maxlength="30" />
+                    <div class="invalid-feedback">
+                        Es necesario agregar el lugar de trabajo
+                    </div>
                 </div>
 
                 <div class="col-12 col-md-8">
                     <label for="correoEncargado" class="form-label fs-6">Correo electrónico:</label>
                     <input type="email" th:field="*{correoEncargado}" class="form-control" id="apellidoResponsable"
-                        required maxlength="50" />
+                        maxlength="50" />
                 </div>
             </div>
 
@@ -235,11 +294,11 @@
         $('#nie').mask('0000000');
     </script>
 
-    
 
-<script type="text/javascript" th:src="@{/js/validacionAlumno.js}"></script>
+
+    <script type="text/javascript" th:src="@{/js/validacionAlumno.js}"></script>
 </body>
 
-<footer th:replace="home ::footer"></footer>
+<footer th:replace="~{home ::footer}"></footer>
 
 </html>

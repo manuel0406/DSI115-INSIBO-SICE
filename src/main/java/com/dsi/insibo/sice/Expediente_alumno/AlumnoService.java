@@ -4,6 +4,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.dsi.insibo.sice.entity.Alumno;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 /**
  * Servicio que proporciona métodos para interactuar con la entidad Alumno.
@@ -14,7 +16,6 @@ public class AlumnoService {
 
     @Autowired
     private AlumnoRepository alumnoRepository;
-   
 
     /**
      * Devuelve una lista de alumnos según los parámetros proporcionados.
@@ -53,6 +54,49 @@ public class AlumnoService {
         }
         // Si todos son nulos, devuelve todos los alumnos
         return alumnoRepository.findAll();
+    }
+
+    /**
+     * Método que devuelve una página de alumnos filtrados y paginados según los
+     * parámetros proporcionados.
+     * 
+     * Filtra la lista de alumnos en base a los parámetros opcionales de carrera,
+     * grado y sección,
+     * utilizando el repositorio de alumnos correspondiente. Si alguno de los
+     * parámetros es nulo,
+     * se omite ese filtro específico.
+     * 
+     * @param carrera  El parámetro opcional de carrera del alumno.
+     *                 Si es nulo, se omite el filtro por carrera.
+     * @param grado    El parámetro opcional de grado del alumno.
+     *                 Si es nulo, se omite el filtro por grado.
+     * @param seccion  El parámetro opcional de sección del alumno.
+     *                 Si es nulo, se omite el filtro por sección.
+     * @param pageable La información de paginación que incluye el número de página
+     *                 y tamaño de página.
+     * @return Una página paginada de objetos Alumno que cumplen con los criterios
+     *         de filtro especificados.
+     *         Si todos los parámetros son nulos, devuelve todos los alumnos
+     *         paginados.
+     */
+    public Page<Alumno> listarAlumnosPaginados(String carrera, String grado, String seccion, Pageable pageable) {
+        if (carrera != null && grado != null && seccion != null) {
+            return alumnoRepository.findAll(carrera, grado, seccion, pageable);
+        } else if (carrera != null && grado == null && seccion == null) {
+            return alumnoRepository.findAllPorCarrera(carrera, pageable);
+        } else if (carrera == null && grado != null && seccion == null) {
+            return alumnoRepository.findAllPorGrado(grado, pageable);
+        } else if (carrera == null && grado == null && seccion != null) {
+            return alumnoRepository.findAllPorSeccion(seccion, pageable);
+        } else if (carrera != null && grado != null && seccion == null) {
+            return alumnoRepository.findAllCarreraGrado(carrera, grado, pageable);
+        } else if (carrera != null && grado == null && seccion != null) {
+            return alumnoRepository.findAllCarreraSeccion(carrera, seccion, pageable);
+        } else if (carrera == null && grado != null && seccion != null) {
+            return alumnoRepository.findAllGradoSeccion(grado, seccion, pageable);
+        }
+        // Si todos son nulos, devuelve todos los alumnos paginados
+        return alumnoRepository.findAll(pageable);
     }
 
     /**

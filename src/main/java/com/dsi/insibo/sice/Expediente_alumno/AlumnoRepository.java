@@ -4,6 +4,8 @@ import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import com.dsi.insibo.sice.entity.Alumno;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 /**
  * Repositorio que define las operaciones para acceder y manipular la entidad
@@ -90,5 +92,28 @@ public interface AlumnoRepository extends JpaRepository<Alumno, Integer> {
      * return Lista de alumnos que cumplen con los criterios de búsqueda.
      */
     List<Alumno> findByBachilleratoCodigoBachillerato(String codigoBachillerato);
+
+    // Métodos de consulta paginados
+    @Query("SELECT a FROM Alumno a JOIN a.bachillerato b WHERE b.nombreCarrera = :carrera AND b.grado = :grado AND b.seccion = :seccion")
+    public Page<Alumno> findAll(String carrera, String grado, String seccion, Pageable pageable);
+
+    @Query("SELECT a FROM Alumno a JOIN a.bachillerato b WHERE b.nombreCarrera = :carrera AND b.grado = :grado")
+    public Page<Alumno> findAllCarreraGrado(String carrera, String grado, Pageable pageable);
+
+    @Query("SELECT a FROM Alumno a JOIN a.bachillerato b WHERE b.nombreCarrera = :carrera AND b.seccion = :seccion")
+    public Page<Alumno> findAllCarreraSeccion(String carrera, String seccion, Pageable pageable);
+
+    @Query("SELECT a FROM Alumno a JOIN a.bachillerato b WHERE b.grado = :grado AND b.seccion = :seccion")
+    public Page<Alumno> findAllGradoSeccion(String grado, String seccion, Pageable pageable);
+
+    @Query("SELECT a FROM Alumno a JOIN a.bachillerato b WHERE b.nombreCarrera = :carrera")
+    public Page<Alumno> findAllPorCarrera(String carrera, Pageable pageable);
+
+    @Query("SELECT a FROM Alumno a JOIN a.bachillerato b WHERE b.grado = :grado")
+    public Page<Alumno> findAllPorGrado(String grado, Pageable pageable);
+
+    @Query("SELECT a FROM Alumno a JOIN a.bachillerato b WHERE b.seccion = :seccion")
+    public Page<Alumno> findAllPorSeccion(String seccion, Pageable pageable);
+
 
 }
