@@ -268,9 +268,10 @@ public class AlumnoController {
 
 		// Obtener la lista de carreras (bachilleratos)
 		List<Bachillerato> listaCarreras = bachilleratoService.listaCarrera();
-
+		
+		
 		// Agregar atributos al modelo para ser utilizados en la vista
-		model.addAttribute("titulo", "Ver");
+		model.addAttribute("titulo", "Alumnos");		
 		model.addAttribute("alumnos", listaAlumnos);
 		model.addAttribute("bachilleratos", listaCarreras);
 		model.addAttribute("carrera", carrera);

@@ -11,7 +11,7 @@
 
 <body>
     <header th:replace="~{home :: header}"></header>
-    <!--Mensajes-->    
+    <!--Mensajes-->
     <div class="alert alert-success alert-dismissible fade show mt-1 ms-2 mr-2" th:if="${success != null}">
         <label th:text="${success}"></label>
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
@@ -29,17 +29,28 @@
 
     <div class="container my-4 flex-wrap">
 
-        <div class="text-end mb-3">
-            <a class="btn btn-secondary"
-                th:href="@{/ExpedienteAlumno/ver(format='pdf', carrera=${carrera}, grado=${grado}, seccion=${seccion})}"
-                data-bs-toggle="tooltip" data-bs-placement="top" title="Imprimir listado actual" target="_blank"
-                onclick="openInPopup(this.href); return false;">
-                <i class="bi bi-printer"></i> Imprimir listado
-            </a>
+        <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap">
+            <h3 class="text-start col-lg-9" th:text="${carrera != null || grado != null || seccion != null ?
+                'Alumnos de ' +
+                (grado != null ? grado + '° ' : '') +
+                (carrera != null ? carrera : '') +
+                (carrera != null && seccion != null ? ', ' : '') +
+                (seccion != null ? 'secciones: ' + seccion : '') : 
+                'Listado de alumnos'}"><!-- Si todas las variables son null, establece el texto como 'Listado de alumnos' -->
+            </h3>
 
-            <a th:href="@{/ExpedienteAlumno/Crear}" class="btn btn-success" th:text="'Agregar Alumno'"></a>
+
+            <div class="d-flex gap-2">
+                <a class="btn btn-secondary"
+                    th:href="@{/ExpedienteAlumno/ver(format='pdf', carrera=${carrera}, grado=${grado}, seccion=${seccion})}"
+                    data-bs-toggle="tooltip" data-bs-placement="top" title="Imprimir listado actual" target="_blank"
+                    onclick="openInPopup(this.href); return false;">
+                    <i class="bi bi-printer"></i> Imprimir listado
+                </a>
+
+                <a th:href="@{/ExpedienteAlumno/Crear}" class="btn btn-success" th:text="'Agregar Alumno'"></a>
+            </div>
         </div>
-
         <div class="row my-2">
             <div class="col-md-4 col-lg-3 mb-3">
                 <div class="card">
