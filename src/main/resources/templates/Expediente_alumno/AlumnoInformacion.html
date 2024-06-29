@@ -35,6 +35,12 @@
                                 <span class="fs-6 ms-2 d-none d-sm-inline"> Datos del responsable</span>
                             </a>
                         </li>
+                        <li class="nav-item py-2 py-sm-0 my-2">
+                            <a class="nav-link text-white"  th:href="@{/ExpedienteAlumno/Documentos/} + ${alumno.nie}">
+                                <i class="bi bi-file-earmark-pdf"></i>
+                                <span class="fs-6 ms-2 d-none d-sm-inline"> Documentos</span>
+                            </a>
+                        </li>
                     </ul>
                 </div>
             </nav>
@@ -107,16 +113,16 @@
                                   </tr>
                                   <tr>
                                     <th class="text-start">Carrera</th>
-                                    <td class="text-start"  th:text="${bachillerato.nombreCarrera}"></td>
+                                    <td class="text-start"  th:text="${alumno.bachillerato.nombreCarrera}"></td>
                                 </tr>
                                   <tr>
                                     <th  class="text-start">Año</th>                                    
-                                    <td  class="text-start" th:text="${bachillerato.grado}"></td>
+                                    <td  class="text-start" th:text="${alumno.bachillerato.grado}"></td>
                                   </tr>
                                   <tr>
                                     <th  class="text-start">Sección</th>
                                     
-                                    <td  class="text-start" th:text="${bachillerato.seccion}"></td>
+                                    <td  class="text-start" th:text="${alumno.bachillerato.seccion}"></td>
                                   </tr>
                             </tbody>
                         </table>

@@ -18,6 +18,7 @@ import org.springframework.data.domain.Sort;
 
 import com.dsi.insibo.sice.Calificaciones.NotaService;
 import com.dsi.insibo.sice.entity.Alumno;
+import com.dsi.insibo.sice.entity.AnexoAlumno;
 import com.dsi.insibo.sice.entity.Bachillerato;
 
 
@@ -34,7 +35,9 @@ public class AlumnoController {
 	private BachilleratoService bachilleratoService;
 	@Autowired
 	private NotaService notaService;
-
+	@Autowired
+	private AnexoAlumnoService anexoAlumnoService;
+	
 	/**
 	 * Controlador para guardar un nuevo alumno en la base de datos.
 	 * 
@@ -61,6 +64,14 @@ public class AlumnoController {
 		if (alumnoExistente != null) {
 			attributes.addFlashAttribute("error", "Error: El NIE ya está registrado.");
 			return "redirect:/ExpedienteAlumno/ver";
+		}
+
+		if (alumno.getPadecimientos().isEmpty()) {
+			alumno.setPadecimientos("No");
+		}if (alumno.getMedicamento().isEmpty()) {
+			alumno.setMedicamento("No");
+		}if (alumno.getFormaMedicacion().isEmpty()) {
+			alumno.setFormaMedicacion("No");
 		}
 
 		// Guarda el nuevo alumno
@@ -317,12 +328,11 @@ public class AlumnoController {
 			attributes.addFlashAttribute("error", "Error: ¡El NIE ingresado no es válido!");
 			return "redirect:/ExpedienteAlumno/ver";
 		}
-		// Obtener el bachillerato asociado al alumno
-		Bachillerato bachillerato = alumno.getBachillerato();
+		
 		// Agregar atributos al modelo para ser utilizados en la vista
 		model.addAttribute("titulo", "Información");
 		model.addAttribute("alumno", alumno);
-		model.addAttribute("bachillerato", bachillerato);
+		//model.addAttribute("bachillerato", bachillerato);
 
 		// Retornar el nombre de la vista a ser renderizada
 		return "Expediente_alumno/AlumnoInformacion";
@@ -362,14 +372,10 @@ public class AlumnoController {
 			attributes.addFlashAttribute("error", "Error: ¡El NIE ingresado no es válido!");
 			return "redirect:/ExpedienteAlumno/ver";
 		}
-
-		// Obtener el bachillerato asociado al alumno
-		Bachillerato bachillerato = alumno.getBachillerato();
-
+		
 		// Agregar atributos al modelo para ser utilizados en la vista
 		model.addAttribute("titulo", "Padecimientos");
-		model.addAttribute("alumno", alumno);
-		model.addAttribute("bachillerato", bachillerato);
+		model.addAttribute("alumno", alumno);		
 
 		// Retornar el nombre de la vista a ser renderizada
 		return "Expediente_alumno/AlumnoEnfermedad";
@@ -408,16 +414,45 @@ public class AlumnoController {
 			attributes.addFlashAttribute("error", "Error: ¡El NIE ingresado no es válido!");
 			return "redirect:/ExpedienteAlumno/ver";
 		}
-		// Obtener el bachillerato asociado al alumno
-		Bachillerato bachillerato = alumno.getBachillerato();
-
+		
 		// Agregar atributos al modelo para ser utilizados en la vista
-		model.addAttribute("alumno", alumno);
-		model.addAttribute("bachillerato", bachillerato);
+		model.addAttribute("alumno", alumno);		
 		model.addAttribute("titulo", "Encargado");
 
 		// Retornar el nombre de la vista a ser renderizada
 		return "Expediente_alumno/AlumnoDatosResponsable";
+	}
+	@GetMapping("Documentos/{nie}")
+	public String alumnoDocumentos(@PathVariable("nie") int nie, Model model, RedirectAttributes attributes){
+		
+		Alumno alumno = null;
+		if (nie > 0) {
+			// Busca al alumno por su número de identificación estudiantil (NIE)
+			alumno = alumnoService.buscarPorIdAlumno(nie);
+
+			// Verifica que el alumno exista
+			if (alumno == null) {
+				System.out.println("Error: ¡El NIE ingresado no existe!");
+				attributes.addFlashAttribute("error", "Error: ¡El NIE ingresado no existe!");
+				return "redirect:/ExpedienteAlumno/ver";
+			}
+
+		} else {
+			// Maneja el caso donde el NIE no es válido
+			System.out.println("Error: ¡El NIE ingresado no es válido!");
+			attributes.addFlashAttribute("error", "Error: ¡El NIE ingresado no es válido!");
+			return "redirect:/ExpedienteAlumno/ver";
+		}
+		
+		//Obtener los anexos asociados al alumno
+		AnexoAlumno anexos= anexoAlumnoService.buscarAlumno(nie);
+
+		// Agregar atributos al modelo para ser utilizados en la vista
+		model.addAttribute("alumno", alumno);		
+		model.addAttribute("anexos", anexos);
+		model.addAttribute("titulo", "Documentos");
+
+		return "Expediente_alumno/AlumnoDocumentos";
 	}
 
 	/**
@@ -464,6 +499,7 @@ public class AlumnoController {
 		ModelAndView modelAndView = new ModelAndView("Expediente_alumno/verAlumnoPdf");
 
 		// Agregar atributos al ModelAndView para ser utilizados en la vista
+		model.addAttribute("titulo", "Alumnos");
 		modelAndView.addObject("alumnos", listaAlumnos);
 		modelAndView.addObject("bachilleratos", listaCarreras);
 		modelAndView.addObject("carrera", carrera);

@@ -48,7 +48,8 @@
                     <i class="bi bi-printer"></i> Imprimir listado
                 </a>
 
-                <a th:href="@{/ExpedienteAlumno/Crear}" class="btn btn-success" th:text="'Agregar Alumno'"></a>
+                <a th:href="@{/ExpedienteAlumno/Crear}" class="btn btn-success"
+                data-bs-toggle="tooltip" data-bs-placement="top" title="Agregar alumno" th:text="'Agregar alumno'"></a>
             </div>
         </div>
         <div class="row my-2">
@@ -117,10 +118,12 @@
                             <td class="text-center fs-6" th:text="${alumno.bachillerato.seccion}"></td>
                             <td class="text-center fs-6" th:text="${alumno.bachillerato.grado}"></td>
                             <td class="text-center">
-                                <a class="btn btn-success" th:href="@{/ExpedienteAlumno/Alumno/} + ${alumno.nie}">
+                                <a class="btn btn-success" th:href="@{/ExpedienteAlumno/Alumno/} + ${alumno.nie}"
+                                data-bs-toggle="tooltip" data-bs-placement="top" title="Consultar">
                                     <i class="bi bi-file-earmark-text"></i>
                                 </a>
-                                <a class="btn btn-primary" th:href="@{/ExpedienteAlumno/editar/} + ${alumno.nie}">
+                                <a class="btn btn-primary" th:href="@{/ExpedienteAlumno/editar/} + ${alumno.nie}"
+                                data-bs-toggle="tooltip" data-bs-placement="top" title="Editar">
                                     <i class="bi bi-pencil-square"></i>
                                 </a>
                                 <a class="btn btn-danger delete-btn"

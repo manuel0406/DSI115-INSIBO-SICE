@@ -16,6 +16,7 @@ public class AlumnoService {
 
     @Autowired
     private AlumnoRepository alumnoRepository;
+   
 
     /**
      * Devuelve una lista de alumnos según los parámetros proporcionados.
@@ -137,5 +138,7 @@ public class AlumnoService {
     public List<Alumno> findAlumnosByBachilleratoCodigoBachillerato(String codigoBachillerato) {
         return alumnoRepository.findByBachilleratoCodigoBachillerato(codigoBachillerato);
     }
+
+   
 
 }

@@ -42,10 +42,10 @@
                 </h3>
 
                 <div class="col-12 col-md-4">
-                    <label for="exampleInputEmail1" class="form-label fs-6">NIE:</label>
+                    <label for="nie" class="form-label fs-6">NIE:</label>
                     <input type="text" th:field="*{nie}" class="form-control restricted-input" id="nie"
                         th:readonly="${editar}" th:classappend="${editar} ? 'bg-light text-dark' : ''" required
-                        minlength="7" maxlength="7" />
+                        minlength="7" maxlength="7" placeholder="0000000" />
                     <div class="invalid-feedback">
                         Es necesario agregar el NIE
                     </div>
@@ -54,13 +54,14 @@
 
                 <div class="col-12 col-md-4">
                     <label for="exampleInputEmail1" class="form-label fs-6">DUI:</label>
-                    <input type="text" th:field="*{duiAlumno}" class="form-control " id="duiAlumno" />
+                    <input type="text" th:field="*{duiAlumno}" class="form-control " id="dui"
+                    placeholder="00000000-0" />
                 </div>
 
                 <div class="col-12 col-md-4">
                     <label for="exampleInputEmail1" class="form-label fs-6">Teléfono:</label>
                     <input type="text" th:field="*{telefonoAlumno}" class="form-control restricted-input" id="telefono"
-                        required minlength="9" maxlength="" />
+                        required minlength="9" maxlength="" placeholder="0000-0000"/>
                     <div class="invalid-feedback">
                         Es necesario agregar el telefóno del estudiante
                     </div>
@@ -177,7 +178,7 @@
                 <div class="col-12 col-md-4">
                     <label for="exampleInputEmail1" class="form-label fs-6">DUI:</label>
                     <input type="text" th:field="*{duiEncargado}" class="form-control" id="duiEncargado" required
-                        minlength="10" maxlength="10" />
+                        minlength="10" maxlength="10" placeholder="00000000-0"/>
                     <div class="invalid-feedback">
                         Es necesario agregar el DUI del responble del alumno
                     </div>
@@ -205,7 +206,7 @@
                 <div class="col-12 col-md-4">
                     <label for="telefonoEncargado" class="form-label fs-6">Teléfono:</label>
                     <input type="text" th:field="*{telefonoEncargado}" class="form-control " id="telefonoEncargado"
-                        required minlength="8" maxlength="8" />
+                        required minlength="8" maxlength="8" placeholder="0000-0000"/>
                     <div class="invalid-feedback">
                         Es necesario agregar el telefóno del responsable
                     </div>
