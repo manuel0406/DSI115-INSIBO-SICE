@@ -28,8 +28,6 @@ public class FichaAlumnoPdf extends AbstractPdfView {
     @Override
     protected void buildPdfDocument(Map<String, Object> model, Document document, PdfWriter writer,
             HttpServletRequest request, HttpServletResponse response) throws Exception {
-        // TODO Auto-generated method stub
-
         Alumno alumno = (Alumno) model.get("alumno");
         document.setPageSize(PageSize.LETTER);
         document.setMargins(85, 85, 36, 72); // Margen de 3 cm a los lados y 2.5 cm abajo

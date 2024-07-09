@@ -18,7 +18,7 @@
           <div id="formContent" class="card">
             <div class="card-body">
               <!-- Tarjetero de titulos -->
-              <h2 class="tituloIniciarSesion"> Recuperar Contraseña  </h2>
+              <h2 class="tituloIniciarSesion"> Restablecer Contraseña  </h2>
   
               <!-- Icono -->
               <div class="fadeIn first text-center my-3">
@@ -46,10 +46,10 @@
                 </div>
                 <div class="form-group row">
                   <div class="col">
-                    <input class="btnRecuperar" type="submit" value="Recuperar contraseña" id="botonRecuperar" onclick="recuperar()" disabled>
+                    <input class="btnRecuperar" type="submit" value="Restablecer contraseña" id="botonRecuperar" onclick="recuperar()">
                   </div>
                   <div class="col">
-                    <a href="/iniciarSesion" class="btn btn-secondary btnCancelar">Cancelar</a>
+                    <a th:href="@{/login}" class="btn btn-secondary btnCancelar">Cancelar</a>
                   </div>
                 </div>
               </form>

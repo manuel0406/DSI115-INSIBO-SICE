@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
+<html xmlns:sec="http://www.thymeleaf.org/extras/spring-security"></html>
 
-<head th:replace="home :: head">
+<head th:replace="~{home :: head}">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ficha Personal Docente</title>
@@ -14,10 +15,10 @@
 </head>
 
 <body>
-    <header th:replace="home :: header"></header>
-    <header th:replace="Expediente_docente/barra :: barraExpediente"></header>
+    <header th:replace="~{home :: header}"></header>
+    <header th:replace="~{Expediente_docente/barra :: barraExpediente}"></header>
 
-    <div class="container mt-2">
+    <div class="container">
 
         <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap">
             <h1 class="text-start col-lg-3" th:text="${titulo}"></h1>
@@ -31,7 +32,6 @@
                 <a th:href="@{/expedientedocente/formulario}" class="btn btn-primary">Nuevo Docente</a>
             </div>
         </div>
-
 
         <div class="table-responsive">
             <table class="table table-striped table-hover">
@@ -47,7 +47,8 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr th:each="docenteDTO : ${Docentes}">
+                    <!-- Agrega la referencia al elemento que maneja la paginación (page.content) -->
+                    <tr th:each="docenteDTO : ${page.content}">
                         <td th:text="${docenteDTO.docente.nombreDocente}"></td>
                         <td th:text="${docenteDTO.docente.apellidoDocente}"></td>
                         <td th:text="${docenteDTO.docente.profesionDocente}"></td>
@@ -60,12 +61,14 @@
                                 title="Ver Ficha">
                                 <i class="bi bi-file-earmark-text"></i>
                             </a> -->
-                                <a class="btn btn-success btn-sm mx-1"
+                            <div sec:authorize="hasAnyRole('ADMINISTRADOR','SECRETARIA', 'SUBDIRECTORA', 'DIRECTOR')">
+                                <a  class="btn btn-success btn-sm mx-1"
                                     th:href="@{/expedientedocente/consultarexpediente/} + ${docenteDTO.docente.duiDocente}"
                                     data-bs-toggle="tooltip" data-bs-placement="top" title="Consultar">
                                     <i class="bi bi-file-earmark-text"></i>
                                 </a>
-
+                            </div>
+                                
                                 <a class="btn btn-primary btn-sm mx-1"
                                     th:href="@{/expedientedocente/editarexpediente/} + ${docenteDTO.docente.duiDocente}"
                                     data-bs-toggle="tooltip" data-bs-placement="top" title="Editar">
@@ -85,15 +88,41 @@
                                     <i class="bi bi-printer"></i>
                                 </a>
 
+
+                                <a class="btn btn-warning btn-sm mx-1"
+                                th:href="@{/expedientedocente/Documentos/} + ${docenteDTO.docente.duiDocente}"
+                                data-bs-toggle="tooltip" data-bs-placement="top" title="Ver Documentos">
+                                    <i class="bi bi-file-earmark-text"></i>
+                                </a>
                             </div>
                         </td>
                     </tr>
                 </tbody>
             </table>
+
+            <!-- Maneja la paginacion  -->
+            <nav aria-label="...">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item" th:classappend="${page.number == 0} ? 'disabled'">
+                        <a class="page-link"
+                            th:href="@{'/expedientedocente/plantadocente?page=' + ${page.number - 1}}">Anterior</a>
+                    </li>
+                    <li class="page-item" th:each="i : ${#numbers.sequence(0, page.totalPages - 1)}"
+                        th:classappend="${page.number == i} ? 'active'">
+                        <a class="page-link" th:href="@{'/expedientedocente/plantadocente?page=' + ${i}}"
+                            th:text="${i + 1}">1</a>
+                    </li>
+                    <li class="page-item" th:classappend="${page.number + 1 >= page.totalPages} ? 'disabled'">
+                        <a class="page-link"
+                            th:href="@{'/expedientedocente/plantadocente?page=' + ${page.number + 1}}">Siguiente</a>
+                    </li>
+
+
+                </ul>
+            </nav>
         </div>
-
-
     </div>
+
 
     <!-- Modal de Confirmación -->
     <div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-labelledby="confirmDeleteModalLabel"
@@ -116,9 +145,7 @@
     </div>
 
 
-
-
-    <footer th:replace="home :: footer"></footer>
+    <footer th:replace="~{home :: footer}"></footer>
     <script type="text/javascript" src="/js/modalEliminacion.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>

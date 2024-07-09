@@ -5,6 +5,8 @@ import org.springframework.stereotype.Service;
 
 import com.dsi.insibo.sice.entity.AnexoAlumno;
 
+import jakarta.transaction.Transactional;
+
 @Service
 public class AnexoAlumnoService {
 
@@ -25,5 +27,10 @@ public class AnexoAlumnoService {
 
        
         return  anexoRepository.findByAlumnoNie(nie);
+    }
+
+    @Transactional
+    public void eliminarAnexoAlumno(int nie) {
+        anexoRepository.deleteByAlumnoNie(nie);
     }
 }

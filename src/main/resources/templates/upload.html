@@ -10,9 +10,9 @@
 <body>
     <header th:replace="~{home :: header}"></header>
 
-    <div class="container my-4">
+    <div class="container my-4 py-5">
         <div class="row justify-content-center">
-            <div class="col-8">
+            <div class="col-6">
                 <h2 class="text-center" th:text="${tituloB}"></h2>
                 <form method="POST" enctype="multipart/form-data" th:action="@{/upload/}+${clave}+@{/}+${nie}">
                     <div class="mb-3">
@@ -23,6 +23,15 @@
                     <button class="btn btn-primary" type="submit">Guardar</button>
                     <a class="btn btn-danger my-2" th:href="${enlace}" th:text="Cancelar"></a>
                 </form>
+            </div>
+            <div class="col-6">
+                <div class="alert alert-info alert-dismissible fade show mt-1 ms-2 mr-2">
+                    <label th:utext="'Para que el documento sea incorporado en su expediente, tome en cuenta los siguientes detalles del archivo:
+                    <br>- Tipo de archivo PDF (*.pdf)
+                    <br>- El nombre del archivo no debe contener espacios, ni tildes.
+                    <br>- Un máximo de 5 MB de tamaño.'"></label>
+                   
+                </div>
             </div>
         </div>
     </div>

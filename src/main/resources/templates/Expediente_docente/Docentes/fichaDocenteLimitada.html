@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 
-<head th:replace="home :: head">
+<head th:replace="~{home :: head}">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ficha Docente</title>
@@ -27,8 +27,8 @@
 </head>
 
 <body>
-    <header th:replace="home :: header"></header>
-    <header th:replace="Expediente_docente/barra :: barraExpediente"></header>
+    <header th:replace="~{home :: header}"></header>
+    <header th:replace="~{Expediente_docente/barra :: barraExpediente}"></header>
 
 
     <div class="container mt-4">
@@ -40,7 +40,8 @@
             </div>
             <div class="card-body">
 
-                <form class="row g-3" th:object="${profesor}" th:action="@{/expedientedocente/guardar}" method="post">
+                <form class="row g-3 needs-validation" novalidate th:object="${profesor}"
+                    th:action="@{/expedientedocente/actualizar}" method="post">
                     <!-- Datos Personales -->
                     <div class="col-12">
                         <h4 class="text-center">Datos Personales</h4>
@@ -79,9 +80,13 @@
 
                     <div class="col-12">
                         <label for="docente_direccion" class="form-label">Dirección:</label>
-                        <input type="text" th:field="*{direccionDocente}" class="form-control" id="docente_direccion">
+                        <input type="text" th:field="*{direccionDocente}" class="form-control" id="docente_direccion" ,
+                            required>
                         <div id="direccionHelp" class="form-text">Dirección completa. Ej. Colonia Roma, Pasaje #4, Casa
                             6.</div>
+                        <div class="invalid-feedback">
+                            Es necesario agregar la direccion
+                        </div>
                     </div>
 
                     <div class="col-md-6">
@@ -90,6 +95,9 @@
                             th:data-selected="${profesor.departamentoD}" required>
                             <option value="">Seleccionar...</option>
                         </select>
+                        <div class="invalid-feedback">
+                            Es necesario seleccionar un departamento
+                        </div>
                     </div>
 
                     <div class="col-md-6">
@@ -98,6 +106,9 @@
                             th:data-selected="${profesor.municipioD}" required>
                             <option value="">Seleccionar...</option>
                         </select>
+                        <div class="invalid-feedback">
+                            Es necesario seleccionar un municipio
+                        </div>
                     </div>
 
                     <div class="col-md-6">
@@ -106,6 +117,9 @@
                             th:data-selected="${profesor.distritoDocente}" required>
                             <option value="">Seleccionar...</option>
                         </select>
+                        <div class="invalid-feedback">
+                            Es necesario seleccionar un distrito
+                        </div>
                     </div>
 
                     <div class="col-md-6">
@@ -115,6 +129,9 @@
                             <option value="Rural">Rural</option>
                             <option value="Urbano">Urbano</option>
                         </select>
+                        <div class="invalid-feedback">
+                            Es necesario seleccionar una zona
+                        </div>
                     </div>
 
 
@@ -157,20 +174,28 @@
                             id="docente_correo_institucional" aria-describedby="correoHelp" required>
                         <div id="correoHelp" class="form-text">Ingrese su correo institucional, en caso de no tener
                             puede usar el personal.</div>
-                    </div>
-
-                    <div class="col-md-6">
-                        <label for="docente_telefono_fijo" class="form-label">Telefono Fijo:</label>
-                        <input type="text" th:field="*{telefonoFijoDocente}" class="form-control"
-                            id="docente_telefono_fijo">
+                        <div class="invalid-feedback">
+                            Es necesario agregar el correo electronico
+                        </div>
                     </div>
 
                     <div class="col-md-6">
                         <label for="docente_celular" class="form-label">Celular:</label>
                         <input type="text" th:field="*{telefonoDocente}" class="form-control" id="docente_celular"
-                            required>
+                            minlength="9" required>
+                        <div class="invalid-feedback">
+                            Es necesario agregar un numero de celular valido
+                        </div>
                     </div>
 
+                    <div class="col-md-6">
+                        <label for="docente_telefono_fijo" class="form-label">Telefono Fijo:</label>
+                        <input type="text" th:field="*{telefonoFijoDocente}" class="form-control"
+                            id="docente_telefono_fijo" minlength="9">
+                        <div class="invalid-feedback">
+                            Es necesario agregar un numero de telefono valido
+                        </div>
+                    </div>
 
                     <!-- Otros Datos -->
                     <div class="col-12">
@@ -253,29 +278,15 @@
             </div>
         </div>
 
-        <footer th:replace="home :: footer"></footer>
+        <footer th:replace="~{home :: footer}"></footer>
         <script type="text/javascript" src="/js/direccion.js"></script>
+        <script type="text/javascript" src="/js/validacionRequired.js"></script>
+        <script type="text/javascript" src="/js/mascarasDocentes.js"></script>
         <script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.js"></script>
-
-        <script>
-            $('#docente_celular').mask('0000-0000');
-            $('#docente_telefono_fijo').mask('0000-0000');
-            $('#docente_dui').mask('00000000-0');
-            $('#docente_nup').mask('000000000000');
-        </script>
-
-        <script>
-            // funciona sobre todos los elementos con la clase "restricted-input"
-            const restrictedInputs = document.querySelectorAll('.restricted-input');
-            restrictedInputs.forEach(function (input) {
-                input.addEventListener('input', function (event) {
-                    let value = this.value;
-                    value = value.replace(/[^\d-]/g, '');
-                    this.value = value;
-                });
-            });
-        </script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+            crossorigin="anonymous"></script>
 </body>
 
 </html>

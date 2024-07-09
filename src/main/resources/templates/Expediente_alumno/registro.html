@@ -12,7 +12,8 @@
 
 <body>
     <header th:replace="~{home :: header}"></header>
-    <div class="container my-4">
+
+    <div class="container my-4 py-5">
 
         <form class="row g-3 needs-validation" novalidate th:action="@{/ExpedienteAlumno/guardar}" th:object="${alumno}"
             method="post" id="formulario">

@@ -53,7 +53,7 @@ public class AnexoAlumnoController {
         model.addAttribute("nie", nie);
         model.addAttribute("titulo", "Documentos");
         model.addAttribute("enlace", "/ExpedienteAlumno/Documentos/"+nie);
-        System.out.println("NIE: " + nie); // Imprime el NIE en la consola
+        //System.out.println("NIE: " + nie); // Imprime el NIE en la consola
 
 
         // Retorna la vista "upload"

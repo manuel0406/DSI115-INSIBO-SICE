@@ -52,30 +52,7 @@
             </nav>
 
             <div class="col-md-10 offset-md-2">
-                <nav class="navbar navbar-expand-lg custom-navbar fixed-top">
-                    <div class="container-fluid">
-                        <a class="navbar-brand text-white fw-bold text-center" href="#">SICE</a>
-                        <button class="navbar-toggler text-white" type="button" data-bs-toggle="collapse"
-                            data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
-                            aria-expanded="false" aria-label="Toggle navigation">
-                            <i class="bi bi-list text-white"></i>
-                        </button>
-                        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                            <ul class="navbar-nav me-auto mb-2 mb-lg-0 d-flex ">
-                                <li class="nav-item">
-                                    <a class="nav-link active text-white" aria-current="page" th:href="@{/}">
-                                        <i class="bi bi-house-door text-white"></i> Inicio
-                                    </a>
-                                </li>
-                            </ul>
-                            <form class="d-flex ms-auto" role="search">
-                                <button class="btn btn-outline-danger text-white" type="submit">
-                                    <i class="bi bi-box-arrow-in-right"></i> Cerrar sesión
-                                </button>
-                            </form>
-                        </div>
-                    </div>
-                </nav>
+                <header th:replace="~{home :: header}"></header>
 
                 <div class="container-fluid" style="padding-top: 56px;">
                     <!--Mensajes-->
@@ -114,7 +91,7 @@
                                     <!-- Aquí empieza la sección de subida y visualización de documentos -->
                                     <td th:if="${anexos == null || anexos.nombreDui == null}">
                                         <a class="btn btn-primary" th:href="@{/Subir/dui/}+${alumno.nie}"
-                                        data-bs-toggle="tooltip" data-bs-placement="top" title="Adjuntar documento">
+                                            data-bs-toggle="tooltip" data-bs-placement="top" title="Adjuntar documento">
                                             <i class="bi bi-upload"></i>
                                         </a>
                                     </td>
@@ -127,7 +104,7 @@
                                             <i class="fs-4 bi bi-file-earmark-pdf"></i>
                                         </a>
                                         <!-- Eliminar documento -->
-                                        <a class="btn btn-outline-danger mx-2"
+                                        <a class="btn btn-outline-danger mx-2 delete-btn"
                                             th:href="@{/delete/dui/}+${anexos.idAnexoAlumno}+@{/}+${alumno.nie}"
                                             data-bs-toggle="tooltip" data-bs-placement="top"
                                             title="Click para eliminar documento">
@@ -150,7 +127,7 @@
                                     <!-- Aquí empieza la sección de subida y visualización de documentos -->
                                     <td th:if="${anexos == null || anexos.nombrePartidaNacimiento == null}">
                                         <a class="btn btn-primary" th:href="@{/Subir/PartidaNacimiento/}+${alumno.nie}"
-                                        data-bs-toggle="tooltip" data-bs-placement="top" title="Adjuntar documento">
+                                            data-bs-toggle="tooltip" data-bs-placement="top" title="Adjuntar documento">
                                             <i class="bi bi-upload"></i>
                                         </a>
                                     </td>
@@ -164,7 +141,7 @@
                                             <i class="fs-4 bi bi-file-earmark-pdf"></i>
                                         </a>
                                         <!-- Eliminar documento -->
-                                        <a class="btn btn-outline-danger mx-2"
+                                        <a class="btn btn-outline-danger mx-2 delete-btn"
                                             th:href="@{/delete/PartidaNacimiento/}+${anexos.idAnexoAlumno}+@{/}+${alumno.nie}"
                                             data-bs-toggle="tooltip" data-bs-placement="top"
                                             title="Click para eliminar documento">
@@ -190,7 +167,28 @@
 
 </body>
 
+<!-- Modal de Confirmación -->
+<div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-labelledby="confirmDeleteModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmDeleteModalLabel">Confirmar Eliminación</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                ¿Estás seguro de eliminar este documento? Esta acción no puede deshacerse.
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-danger" id="confirmDeleteButton">Eliminar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <footer th:replace="~{home :: footer}"></footer>
+<script type="text/javascript" th:src="@{/js/modalEliminacion.js}"></script>
 
 
 </html>

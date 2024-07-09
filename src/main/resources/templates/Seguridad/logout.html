@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Vuelve pronto</title>
+    <link rel="shortcut icon" type="image/x-icon" th:href="@{/Imagenes/INSIBO2.ico}">
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
+</head>
+<body class="cuerpoLogout">
+    <div class="container text-center">
+        <div class="row justify-content-center align-items-center minh-75">
+            <div class="col-12 col-md-8 col-lg-6">
+                <img th:src="@{/Imagenes/gracias-por-visitar.jpg}" alt="Gracias por visitarnos" class="img-fluid mb-4 imagenLogout" />
+                <h1 class="mb-3 tituloDesp"><b>Gracias por visitarnos</b></h1>
+                <p class="mb-4 textDeps"><b>¡Vuelve pronto!</b></p>
+                <a th:href="@{/login}" class="btn regresoIniciar">Volver a iniciar sesión</a>
+            </div>
+        </div>
+    </div>
+    <footer th:fragment="footer">
+        <script type="text/javascript" th:src="@{/js/bootstrap.bundle.min.js}"></script>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script type="text/javascript" th:src="@{/js/popper.min.js}"></script>
+    </footer>
+</body>
+</html>

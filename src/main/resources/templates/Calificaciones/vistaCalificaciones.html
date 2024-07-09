@@ -13,10 +13,10 @@
 
 <body>
     <!--Esto es una barra de navegación-->
-     <header th:replace="home :: header"></header>
+     <header th:replace="~{home :: header}"></header>
 
     <!--Aca comienza-->
-    <div class="container-fluid">
+    <div class="container-fluid my-2 py-5">
         <div class="row">
             <!--Barra Lateral-->
             <aside class="barra-lateral col-12 col-sm-auto p-0">
@@ -108,8 +108,7 @@
         </div>
     </div>
 
-    <footer th:fragment="footer">
-    </footer>
+    <footer th:replace="~{home :: footer}"></footer>
 
     <script th:inline="javascript">
 
