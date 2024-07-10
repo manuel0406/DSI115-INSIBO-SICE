@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{home :: head}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ficha Personal Docente</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css">
+</head>
+
+<body>
+    <header th:replace="~{home :: header}"></header>
+    <header th:replace="~{Expediente_docente/barra :: barraExpediente}"></header>
+
+    <div class="container mt-8">
+        <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap">
+
+            <!-- Titulo -->
+            <h1 class="flex-grow-1">Documentos del docente</h1>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-striped table-hover">
+                <thead class="table-dark">
+                    <tr>
+                        <th style="text-align: left;">Tipo</th>
+                        <th>Fecha</th>
+                        <th style="width: 15%; text-align: center;">Archivo</th>
+                    </tr>
+                </thead>
+                <tbody class="table-group-divider">
+
+                    <!-- Gestión del archivo "DUI" -->
+                    <tr>
+                        <th class="text-start">DUI</th>
+                        <!-- Verifica si anexos es null -->
+                        <td class="text-center" th:if="${anexos == null || anexos.fechaDuiDocente == null}"
+                            th:text="${' '}"></td>
+                        <!-- Verifica si anexos no es null y fechaDui no es null -->
+                        <td class="text-center" th:if="${anexos != null && anexos.fechaDuiDocente != null}"
+                            th:text="${#dates.format(anexos.fechaDuiDocente,'dd/MM/yyyy')}"></td>
+
+                        <!-- Aquí empieza la sección de subida y visualización de documentos -->
+                        <td th:if="${anexos == null || anexos.nombreDuiDocente == null}">
+                            <a class="btn btn-primary"
+                                th:href="@{/docente/Subir/dui/}+${docente.duiDocente}"  
+                                data-bs-toggle="tooltip" data-bs-placement="top" title="Adjuntar documento">
+                                <i class="bi bi-upload"></i>
+                            </a>
+                        </td>
+
+                        <td class="text-center" th:if="${anexos != null && anexos.nombreDuiDocente != null}">
+                            <!-- Ver documento -->
+                            <a class="btn btn-outline-primary"
+                                th:href="@{/docente/expedientedocente/files/dui/}+${anexos.idAnexoDocente}"
+                                data-bs-toggle="tooltip" data-bs-placement="bottom" title="Click para ver documento"
+                                target="_blank">
+                                <i class="fs-4 bi bi-file-earmark-pdf"></i>
+                            </a>
+
+                            <!-- Eliminar documento -->
+                            <a class="btn btn-outline-danger mx-2 delete-btn"
+                                th:href="@{/docente/delete/dui/}+${anexos.idAnexoDocente}+@{/}+${docente.duiDocente}"
+                                data-bs-toggle="tooltip" data-bs-placement="top"
+                                title="Click para eliminar documento">
+                                <i class="fs-4 bi bi-x-circle"></i>
+                            </a>
+                        </td>
+                    </tr>
+
+                    <!-- Gestión del archivo "Curriculum" -->
+                    <tr>
+                        <th class="text-start">Curriculum Vitae</th>
+                        <!-- Verifica si anexos es null -->
+                        <td class="text-center" th:if="${anexos == null || anexos.fechaCurriculumDocente == null}"
+                            th:text="${' '}"></td>
+                        <!-- Verifica si anexos no es null y fechaDui no es null -->
+                        <td class="text-center" th:if="${anexos != null && anexos.fechaCurriculumDocente != null}"
+                            th:text="${#dates.format(anexos.fechaCurriculumDocente,'dd/MM/yyyy')}"></td>
+
+                        <!-- Aquí empieza la sección de subida y visualización de documentos, docente.duiDocente es el #DUI-->
+                        <td th:if="${anexos == null || anexos.nombreCurriculumDocente == null}">
+                            <a class="btn btn-primary"
+                                th:href="@{/docente/Subir/curriculum/}+${docente.duiDocente}"
+                                data-bs-toggle="tooltip" data-bs-placement="top" title="Adjuntar documento">
+                                <i class="bi bi-upload"></i>
+                            </a>
+                        </td>
+
+                        <td class="text-center"
+                            th:if="${anexos != null && anexos.nombreCurriculumDocente != null}">
+                            <!-- Ver documento -->
+                            <a class="btn btn-outline-primary"
+                                th:href="@{/docente/expedientedocente/files/curriculum/}+${anexos.idAnexoDocente}"
+                                data-bs-toggle="tooltip" data-bs-placement="bottom" title="Click para ver documento"
+                                target="_blank">
+                                <i class="fs-4 bi bi-file-earmark-pdf"></i>
+                            </a>
+
+                            <!-- Eliminar documento -->
+                            <a class="btn btn-outline-danger mx-2 delete-btn"
+                                th:href="@{/docente/delete/curriculum/}+${anexos.idAnexoDocente}+@{/}+${docente.duiDocente}"
+                                data-bs-toggle="tooltip" data-bs-placement="top"
+                                title="Click para eliminar documento">
+                                <i class="fs-4 bi bi-x-circle"></i>
+                            </a>
+                        </td>
+                    </tr>
+
+                    <!-- Gestión del archivo "NUP" -->
+                    <tr>
+                        <th class="text-start">NUP</th>
+                        <!-- Verifica si anexos es null -->
+                        <td class="text-center" th:if="${anexos == null || anexos.fechaNupDocente == null}"
+                            th:text="${' '}"></td>
+                        <!-- Verifica si anexos no es null y fechaDui no es null -->
+                        <td class="text-center" th:if="${anexos != null && anexos.fechaNupDocente != null}"
+                            th:text="${#dates.format(anexos.fechaNupDocente,'dd/MM/yyyy')}"></td>
+
+                        <!-- Aquí empieza la sección de subida y visualización de documentos, docente.duiDocente es el #DUI-->
+                        <td th:if="${anexos == null || anexos.nombreNupDocente == null}">
+                            <a class="btn btn-primary"
+                                th:href="@{/docente/Subir/nup/}+${docente.duiDocente}"
+                                data-bs-toggle="tooltip" data-bs-placement="top" title="Adjuntar documento">
+                                <i class="bi bi-upload"></i>
+                            </a>
+                        </td>
+
+                        <td class="text-center" th:if="${anexos != null && anexos.nombreNupDocente != null}">
+                            <!-- Ver documento -->
+                            <a class="btn btn-outline-primary"
+                                th:href="@{/docente/expedientedocente/files/nup/}+${anexos.idAnexoDocente}"
+                                data-bs-toggle="tooltip" data-bs-placement="bottom" title="Click para ver documento"
+                                target="_blank">
+                                <i class="fs-4 bi bi-file-earmark-pdf"></i>
+                            </a>
+
+                            <!-- Eliminar documento -->
+                            <a class="btn btn-outline-danger mx-2 delete-btn"
+                                th:href="@{/docente/delete/nup/}+${anexos.idAnexoDocente}+@{/}+${docente.duiDocente}"
+                                data-bs-toggle="tooltip" data-bs-placement="top"
+                                title="Click para eliminar documento">
+                                <i class="fs-4 bi bi-x-circle"></i>
+                            </a>
+                        </td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+        <div class="text-start">
+            <a th:href="@{/expedientedocente/plantadocente}" class="btn btn-primary "
+                th:text="'Regresar'"> </a>
+        </div>
+    </div>
+
+
+    <!-- Modal de Confirmación -->
+    <div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-labelledby="confirmDeleteModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="confirmDeleteModalLabel">Confirmar Eliminación</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    ¿Estás seguro de eliminar el registro? Esta acción no puede deshacerse.
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-danger" id="confirmDeleteButton">Eliminar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer th:replace="~{home :: footer}"></footer>
+    <script type="text/javascript" src="/js/modalEliminacion.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

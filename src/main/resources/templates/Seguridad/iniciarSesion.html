@@ -26,33 +26,32 @@
             <div class="fadeIn first text-center my-3">
               <img th:src="@{/Imagenes/LogoINSIBO.jpg}" id="icon" alt="User Icon" class="img-fluid" style="max-width: 150px;" />
             </div>
-            <div th:if="${mensaje != null and !#strings.isEmpty(mensaje)}" th:utext="${mensaje}" class="alert alert-danger"></div>
+            <div th:if="${error != null and !#strings.isEmpty(error)}" th:utext="${error}" class="alert alert-danger"></div>
             <!-- Formulario de iniciar sesión -->
-            <form id="formulario" th:object="${usuario}"  method="post" th:action="@{/validarCorreo}" oninput="validateForm()">
+            <form id="formulario" method="post" th:action="@{/login}" oninput="validateForm()">
               <!-- Entrada de Usuario -->
               <div class="form-group">
-                <label class="entradaIniciarSesion" for="correo">Correo Electrónico:</label>
+                <label class="entradaIniciarSesion" for="username">Correo Electrónico:</label>
                 <div>
                   <span id="correoInvalido" class="w-100 text-center">
                     <i class="bi bi-exclamation-circle-fill"></i> Correo inválido
                   </span>
                 </div>
-                <input th:field="*{correoUsuario}" type="text" id="correoIniciarSesion" class="form-control fadeIn second" name="correoUsuario" placeholder="Ingrese su correo..." required>
-              </div>
-              <!-- Salida de Usuario -->
-              <div class="form-group">
-                <label class="entradaIniciarSesion" for="contra">Contraseña:</label>
-                <input  th:field="*{contrasenaUsuario}" type="password" id="passwordIniciarSesion" class="form-control fadeIn third" name="password" placeholder="Ingrese su contraseña..." required>
+                <input type="text" id="username" name="username" class="form-control fadeIn second" placeholder="Ingrese su correo..." required>
               </div>
               <div class="form-group">
-                <input class="btnIniciarSesion" type="submit" value="Iniciar Sesión" id="botonIniciar" disabled>
+                <label class="entradaIniciarSesion" for="password">Contraseña:</label>
+                <input type="password" id="password" name="password" class="form-control fadeIn third" placeholder="Ingrese su contraseña..." required>
+              </div>
+              <div class="form-group">
+                <button class="btnIniciarSesion" type="submit" id="botonIniciar" disabled>Iniciar Sesion</button>
               </div>
             </form>            
           </div>
           <!-- Recordar contraseña -->
           <div id="formFooter" class="text-center mt-3 bg-light">
             <div id="formFooter" class="text-center mt-3 bg-light">
-              <p class="preguntaRecuperar">¿Haz olvidado tu contraseña? <a class="enlaceRecuperar" href="/recuperarContra">Recuperar contraseña</a></p>
+              <p class="preguntaRecuperar">¿Haz olvidado tu contraseña? <a class="enlaceRecuperar" th:href="@{/recuperarContra}">Restablecer tu contraseña</a></p>
             </div>            
           </div>
         </div>

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            background-color: #f9f9f9;
+        }
+        .container {
+            padding: 20px;
+            background-color: #ffffff;
+            border: 1px solid #ddd;
+            max-width: 600px;
+            margin: auto;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .header {
+            background-color: #003366; /* Color azul */
+            padding: 10px;
+            text-align: center;
+        }
+        .header h1 {
+            color: #ffffff;
+            margin: 0;
+            font-size: 24px;
+        }
+        .logo {
+            text-align: center;
+            margin: 20px 0;
+        }
+        .logo img {
+            max-width: 150px; /* Reducir el tamaño del logo */
+        }
+        .content {
+            text-align: left;
+        }
+        .content h2 {
+            color: #003366;
+            text-align: center;
+        }
+        .content p {
+            margin: 10px 0;
+        }
+        .footer {
+            margin-top: 20px;
+            font-size: 12px;
+            color: #888;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Instituto Nacional Simón Bolívar - SICE</h1>
+        </div>
+        <div class="logo">
+            <img src="cid:logoINSIBO" alt="Instituto Nacional Simón Bolívar">
+        </div>
+        <div class="content">
+            <h2 th:text="${titulo}">Asunto del correo</h2>
+            <p>Les saluda el Instituto Nacional Simón Bolívar [INSIBO]</p>
+            <p>Ante su solicitud de recuperación de contraseña, por este medio se la hacemos llegar, aconsejamos guardarla de manera privada para evitar contratiempos en el desarrollo de sus actividades.</p>
+            <p><strong>Tu usuario es:</strong> <span th:text="${usuarioCorreo}">[Correo de Usuario]</span></p>
+            <p><strong>Tu nueva contraseña es:</strong> <span th:text="${nuevaContrasena}">[Nueva Contraseña]</span></p>
+            <p>Att. Administrador del Sistema Integral de Control y Progreso Educativo INSIBO [SICE - INSIBO]</p>
+        </div>
+        <div class="footer">
+            <p>Gracias por usar nuestro servicio.</p>
+        </div>
+    </div>
+</body>
+</html>

@@ -41,6 +41,97 @@ th, td{
   padding: 20px;
 }
 
+/* ----------------------------------------------------------------------------------------- */
+/*                               ESTILO DE LOG-OUT-SUCCESS                                   */
+/* ----------------------------------------------------------------------------------------- */
+
+.cuerpoLogout {
+  background-color: #f8f9fa;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  min-height: 100vh;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.tituloDesp {
+  font-size: 2.5rem;
+  color: #343a40;
+  word-wrap: break-word;
+}
+
+.textDeps {
+  font-size: 1.25rem;
+  color: #6c757d;
+  word-wrap: break-word;
+}
+
+.regresoIniciar {
+  background-color: #005187;
+  border-color: #005187;
+  color: #f8f9fa;
+}
+
+.regresoIniciar:hover {
+  background-color: #0985d8;
+  border-color: #0985d8;
+  color: #f8f9fa;
+}
+
+.imagenLogout {
+  max-width: 100%;
+  height: auto;
+  max-height: 400px; /* Limitar la altura máxima de la imagen */
+}
+
+/* ----------------------------------------------------------------------------------------- */
+/*                             ESTILO DE ERROR 403 PROHIBIDO                                 */
+/* ----------------------------------------------------------------------------------------- */
+.body403 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+  left: -75px; /* Ajusta según necesites */
+  font-family: Arial, sans-serif;
+  background-image: 
+      linear-gradient(45deg, #005187 25%, #f0f8ff 25%, #f0f8ff 50%, #005187 50%, #005187 75%, #f0f8ff 75%, #f0f8ff 100%);
+}
+
+.con403 {
+  text-align: center;
+  max-width: 600px; /* Limitar el ancho máximo del contenedor */
+  padding: 20px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1); /* Sombra ligera */
+  background-color: #ffffff; /* Fondo blanco */
+  border-radius: 10px; /* Bordes redondeados */
+}
+
+.imgStop img {
+  max-width: 200px; /* Ajustar tamaño máximo de la imagen */
+  max-height: 200px;
+}
+
+.btnVolver {
+  padding: 15px 30px;
+  color: #ffffff;
+  background-color: #005187; /* Fondo azul oscuro */
+  border: 1px solid #005187; /* Borde azul oscuro de 1 píxel */
+  border-radius: 5px;
+  font-size: 1em;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.btnVolver:hover {
+  background-color: #0985d8; /* Fondo azul claro al pasar el mouse */
+  border-color: #0985d8; /* Borde azul claro al pasar el mouse */
+  color: #f8f9fa; /* Color del texto blanco al pasar el mouse */
+}
+
 
 /* ----------------------------------------------------------------------------------------- */
 /*                               ESTILO DE INICIAR SESION                                    */
@@ -51,7 +142,6 @@ th, td{
   display: flex;
   justify-content: center;
   align-items: center;
-  font-family: Verdana, sans-serif;
 }
 
 .tituloIniciarSesion {
@@ -141,7 +231,6 @@ th, td{
   display: flex;
   justify-content: center;
   align-items: center;
-  font-family: Verdana, sans-serif;
   margin: auto; /* Centra el contenido horizontalmente */
   text-align: justify; /* Justifica el texto */
 }
@@ -161,19 +250,19 @@ th, td{
   display: flex;
   justify-content: center;
   align-items: center;
-  font-family: Verdana, sans-serif;
   margin: auto; /* Centra el contenido horizontalmente */
   text-align: justify; /* Justifica el texto */
 }
 
 
-.btnCerrarSesion:hover, .btnBuscar:hover{
+.btnBuscar:hover{
   background-color: rgb(0, 0, 0);
   color: rgb(250, 250, 250);
   border-color: rgb(255, 255, 255);
+  text-decoration: none;
 }
 
-.btnCerrarSesion, .btnBuscar{
+.btnBuscar{
   background-color: #ffffff; /* Cambio de color de fondo */
   color: rgb(0, 0, 0); /* Color del texto */
   font-weight: bold; /* Texto en negrita */
@@ -181,6 +270,7 @@ th, td{
   border: 1px solid rgb(0, 0, 0); /* Borde blanco alrededor del botón */
   border-radius: 10px; /* Esquinas redondeadas */
   padding: 10px 20px; /* Espaciado interno del botón */
+  text-decoration: none;
 }
 
 .barraLateral {

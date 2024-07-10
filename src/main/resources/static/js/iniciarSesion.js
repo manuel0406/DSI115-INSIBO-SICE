@@ -25,27 +25,27 @@ function moveToNextInput(event) {
 }
 
 // Llamar a la función validarCorreo al quitar el foco del campo de entrada
-document.getElementById('correoIniciarSesion').addEventListener('blur', function() {
-    validarCorreo('correoIniciarSesion', 'correoInvalido');
+document.getElementById('username').addEventListener('blur', function() {
+    validarCorreo('username', 'correoInvalido');
 });
 
 // También llamar a la función validarCorreo al presionar la tecla Enter
-document.getElementById('correoIniciarSesion').addEventListener('keypress', function(event) {
+document.getElementById('username').addEventListener('keypress', function(event) {
     if (event.key === 'Enter') {
-        validarCorreo('correoIniciarSesion', 'correoInvalido');
+        validarCorreo('username', 'correoInvalido');
         moveToNextInput(event);
     }
 });
 
-document.getElementById('passwordIniciarSesion').addEventListener('keypress', function(event) {
+document.getElementById('password').addEventListener('keypress', function(event) {
     if (event.key === 'Enter') {
         moveToNextInput(event);
     }
 });
 
 function validateForm() {
-    const correo = document.getElementById('correoIniciarSesion').value;
-    const password = document.getElementById('passwordIniciarSesion').value;
+    const correo = document.getElementById('username').value;
+    const password = document.getElementById('password').value;
     const botonIniciar = document.getElementById('botonIniciar');
 
     if (correo && password) {

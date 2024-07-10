@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 
-<head th:replace="home :: head">
+<head th:replace="~{home :: head}">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ficha Docente</title>
@@ -10,8 +10,8 @@
 </head>
 
 <body>
-    <header th:replace="home :: header"></header>
-    <header th:replace="Expediente_docente/barra :: barraExpediente"></header>
+    <header th:replace="~{home :: header}"></header>
+    <header th:replace="~{Expediente_docente/barra :: barraExpediente}"></header>
 
     <div class="container mt-4">
         <div class="card">
@@ -154,7 +154,7 @@
             </div>
         </div>
 
-        <footer th:replace="home :: footer"></footer>
+        <footer th:replace="~{home :: footer}"></footer>
         <script type="text/javascript" src="/js/direccion.js"></script>
         <script type="text/javascript" src="/js/validacionRequired.js"></script>
         <script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>

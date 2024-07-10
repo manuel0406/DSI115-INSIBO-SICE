@@ -15,6 +15,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 import com.dsi.insibo.sice.Calificaciones.NotaService;
 import com.dsi.insibo.sice.entity.Alumno;
@@ -27,6 +28,7 @@ import com.dsi.insibo.sice.entity.Bachillerato;
  */
 @Controller
 @RequestMapping("/ExpedienteAlumno")
+@PreAuthorize("hasRole('ADMINISTRADOR')") // SOLO PARA DOCENTES
 public class AlumnoController {
 
 	@Autowired
@@ -224,9 +226,12 @@ public class AlumnoController {
 			attributes.addFlashAttribute("error", "Error: ¡El NIE ingresado no es válido!");
 			return "redirect:/ExpedienteAlumno/ver";
 		}
-
+		
+		//Elimino primero los anexos relacionados al alumno encontrado
+		anexoAlumnoService.eliminarAnexoAlumno(nie);
+		//Se eliminar las notas relacionadas a ese alumno
+		notaService.deleteNotasByAlumnoNie(nie);		
 		// Elimina el registro del alumno y añade un mensaje de confirmación
-		notaService.deleteNotasByAlumnoNie(nie);
 		alumnoService.eliminar(nie);
 		attributes.addFlashAttribute("warning", "¡Registro eliminado con éxito!");
 		return "redirect:/ExpedienteAlumno/ver"; // Redirige a la vista de listado de alumnos

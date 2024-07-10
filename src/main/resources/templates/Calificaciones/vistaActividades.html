@@ -14,11 +14,11 @@
 <body>
     <body>
         <!--Esto es el fragmento de la barra de navegación superior-->
-        <header th:replace="home :: header"></header>
+        <header th:replace="~{home :: header}"></header>
     
     
     <!--Aca comienza-->
-    <div class="container-fluid">
+    <div class="container-fluid my-2 py-5">
         <div class="row">
             <aside class="barra-lateral col-12 col-sm-auto p-0">
                 <div class="logo">
@@ -267,12 +267,9 @@
         </div>
     </div>
 
-    <footer th:fragment="footer">
-        <script type="text/javascript" th:src="@{/js/bootstrap.bundle.min.js}"></script>
-    </footer>
 
     <script type="text/javascript" src="/js/modalEliminacion.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    
     <script>
         function openInPopup(url) {
             window.open(url, 'popup', 'width=800,height=600');
@@ -343,4 +340,5 @@
     </script>
 </body>
 
+<footer th:replace="~{home :: footer}"></footer>
 </html>

@@ -17,8 +17,15 @@
   <!-- Navbar fija -->
   <nav class="navbar fixed-top barraArriba">
     <div class="container-fluid">
+      <a class="nav-link active text-white" aria-current="page" th:href="@{/}">
+        <i class="bi bi-house-door text-white"></i> Inicio
+      </a>
       <h3 class="tituloBarra mx-auto"><b>SICE - Gestionar de Permisos/Roles</b></h3>
-      <button class="btnCerrarSesion" type="button" onclick="window.location.href='/iniciarSesion'">Cerrar sesión</button>
+      <form class="d-flex"th:action="@{/logout}" method="post">
+        <button class="btn btn-outline-danger text-white" type="submit" th:href = "@{/logout}">
+            <i class="bi bi-box-arrow-in-right"></i> Cerrar sesión
+        </button>
+      </form>
     </div>
   </nav>
 
@@ -73,7 +80,12 @@
               <tr th:each="user : ${Usuarios}">
                 <td th:text="${user.nombre}"></td>
                 <td th:text="${user.usuario.correoUsuario}"></td>
-                <td th:text="${user.usuario.rolUsuario}"></td>
+                <td>
+                  <!-- Iterar sobre los roles del usuario -->
+                  <span th:each="rol : ${user.usuario.rolesUsuario}">
+                      <span th:text="${rol.roleEnum}"></span>
+                  </span>
+                </td>
                 <td>
                   <a th:href = "@{aceptarUsuarioRechazado/} + ${user.usuario.idUsuario}" type="button" class="btn btn-outline-dark btn-accept"><i class="bi bi-check2"></i></a>
                 </td>
