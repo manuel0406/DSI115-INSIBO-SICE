@@ -14,8 +14,11 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import com.dsi.insibo.sice.Expediente_docente.Administrativos.Anexos.AnexoAdministrativoService;
+import com.dsi.insibo.sice.Seguridad.SeguridadService.UsuarioService;
 import com.dsi.insibo.sice.entity.AnexoPersonalAdministrativo;
 import com.dsi.insibo.sice.entity.PersonalAdministrativo;
+import com.dsi.insibo.sice.entity.Usuario;
+
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,6 +30,8 @@ public class AdministrativoController {
     @Autowired
     private AdministrativoService administrativoService;
     @Autowired
+    private UsuarioService usuarioService;
+    @Autowired
     private AnexoAdministrativoService anexoadministrativoService;
 
     // Habilitando formulario de creación
@@ -35,6 +40,7 @@ public class AdministrativoController {
         PersonalAdministrativo administrativo = new PersonalAdministrativo();
 
         model.addAttribute("administrativo", administrativo);
+        model.addAttribute("titulo", "Nuevo usuario");
         return "Expediente_docente/Administrativos/fichaAdministrativo";
     }
 
@@ -43,7 +49,7 @@ public class AdministrativoController {
     public String guardar(@Validated @ModelAttribute PersonalAdministrativo administrativo,
             @RequestParam("administrativoRol") String rolSeleccionado, BindingResult result,
             Model model, RedirectAttributes attribute) {
-
+        
         if (result.hasErrors()) {
             model.addAttribute("administrativo", administrativo);
             System.out.println("Se tienen errores en el formulario");
@@ -58,11 +64,34 @@ public class AdministrativoController {
             attribute.addFlashAttribute("error", "Error: Este DUI ya esta siendo utilizado.");
             return "redirect:plantaadministrativa";
         } else {
-            // Imprimiendo el rol seleccionado
+            
+            // CREACIÓN DEL USUARIO
+            Usuario usuario = new Usuario();
+            usuario.setPersonalAdministrativo(administrativo);      // DUI-DOCENTE
+            usuario.setCorreoUsuario(administrativo.getCorreoPersonal());// Correo
+            usuario.setEnabled(false);                      // Activo
+            usuario.setAccountLocked(true);           // Bloqueado  
+            usuario.setAccountNoExpired(true);     // Expirado
+            usuario.setCredentialNoExpired(true); // Credencial expirada
+            usuario.setPrimerIngreso(true);           // Primera vez
+            usuario.setContrasenaUsuario(" ");    // Contraseña
+            Long idRol = 4L;
             System.out.println(rolSeleccionado);
+            switch (rolSeleccionado) {
+                case "Secretaria":
+                    idRol = 3L;
+                    break;
+                case "Bibliotecaria":
+                    idRol = 7L;
+                    break;                              
+                default:
+                    idRol = 4L;
+                    break;
+            }
 
             // Guardando el administrativo
             administrativoService.guardarAdministrativo(administrativo);
+            usuarioService.asignarRol(usuario, idRol);
             attribute.addFlashAttribute("success", "Expediente creado con exito!");
             return "redirect:plantaadministrativa";
         }
@@ -74,8 +103,24 @@ public class AdministrativoController {
             @RequestParam("administrativoRol") String rolSeleccionado, BindingResult result,
             Model model, RedirectAttributes attribute) {
 
-        // Imprimiendo el rol seleccionado
-        System.out.println(rolSeleccionado);
+        // Actualizamos el usuario
+        Usuario usuario = usuarioService.buscarPorIdPersonal(administrativo.getDuiPersonal());
+        usuario.setCorreoUsuario(administrativo.getCorreoPersonal());   // Nuevo Correo
+        usuario.getRolesUsuario().clear();
+        Long idRol = 4L;
+        System.out.println(rolSeleccionado);                    
+        switch (rolSeleccionado) {                              // Nuevo Rol
+            case "Secretaria":
+                idRol = 3L;
+            break;
+            case "Bibliotecaria":
+                idRol = 7L;
+            break;                              
+            default:
+                idRol = 4L;
+            break;
+        }
+        usuarioService.asignarRol(usuario, idRol);          // Guardamos la actualización
         administrativoService.guardarAdministrativo(administrativo);
         attribute.addFlashAttribute("success", "Expediente actualizado con exito!");
         return "redirect:plantaadministrativa";
@@ -154,6 +199,7 @@ public class AdministrativoController {
 
         // Primero elimina los anexos
         anexoadministrativoService.eliminarAnexoAdministrativo(idAdministrativo);
+        usuarioService.eliminarUsuarioPorPersonalId(idAdministrativo);
         administrativoService.eliminar(idAdministrativo);
         attribute.addFlashAttribute("warning", "El expediente se elimino");
         return "redirect:/expedienteadministrativo/plantaadministrativa";

@@ -19,6 +19,10 @@ public class Alumno implements Serializable{
     private String duiAlumno;
     private String telefonoAlumno;
     private String direccionAlumno;
+    private String municipioAlumno;
+    private String departamentoAlumno;
+    private String distritoAlumno;
+    private String zonaAlumno;
     private String correoAlumno;
     private String viveCon;
     private String medicamento;
@@ -168,8 +172,30 @@ public class Alumno implements Serializable{
     public void setTelefonoAlumno(String telefonoAlumno) {
         this.telefonoAlumno = telefonoAlumno;
     }
- 
-
-    
+    public String getMunicipioAlumno() {
+        return municipioAlumno;
+    }
+    public void setMunicipioAlumno(String municipioAlumno) {
+        this.municipioAlumno = municipioAlumno;
+    }
+    public String getDepartamentoAlumno() {
+        return departamentoAlumno;
+    }
+    public void setDepartamentoAlumno(String departamentoAlumno) {
+        this.departamentoAlumno = departamentoAlumno;
+    }
+    public String getDistritoAlumno() {
+        return distritoAlumno;
+    }
+    public void setDistritoAlumno(String distritoAlumno) {
+        this.distritoAlumno = distritoAlumno;
+    }
+    public String getZonaAlumno() {
+        return zonaAlumno;
+    }
+    public void setZonaAlumno(String zonaAlumno) {
+        this.zonaAlumno = zonaAlumno;
+    }
+     
 
 }

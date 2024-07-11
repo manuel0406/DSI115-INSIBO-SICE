@@ -1,10 +1,10 @@
 package com.dsi.insibo.sice.Seguridad.Configuraciones;
 
+import com.dsi.insibo.sice.Seguridad.SeguridadService.UsuarioRepository;
 import com.dsi.insibo.sice.entity.Usuario;
 
 import jakarta.transaction.Transactional;
 
-import com.dsi.insibo.sice.Seguridad.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

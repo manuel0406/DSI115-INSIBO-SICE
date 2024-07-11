@@ -6,5 +6,6 @@ public enum UsuarioRoleEnum {
     SECRETARIA,
     PERSONAL_ADMINISTRATIVO,
     SUBDIRECTORA,
-    DIRECTOR
+    DIRECTOR,
+    BIBLIOTECARIO
 }

@@ -56,13 +56,13 @@
                 <div class="col-12 col-md-4">
                     <label for="exampleInputEmail1" class="form-label fs-6">DUI:</label>
                     <input type="text" th:field="*{duiAlumno}" class="form-control " id="dui"
-                    placeholder="00000000-0" />
+                        placeholder="00000000-0" />
                 </div>
 
                 <div class="col-12 col-md-4">
                     <label for="exampleInputEmail1" class="form-label fs-6">Teléfono:</label>
                     <input type="text" th:field="*{telefonoAlumno}" class="form-control restricted-input" id="telefono"
-                        required minlength="9" maxlength="" placeholder="0000-0000"/>
+                        required minlength="9" maxlength="" placeholder="0000-0000" />
                     <div class="invalid-feedback">
                         Es necesario agregar el telefóno del estudiante
                     </div>
@@ -92,7 +92,7 @@
             </div>
 
             <div class="row my-2">
-                <div class="col-12 col-md-4">
+                <div class="col-12 col-md-6">
                     <label for="exampleInputEmail1" class="form-label fs-6">Fecha de Nacimiento:</label>
                     <input type="date" th:field="*{fechaNacimientoAlumno}" class="form-control" id="fechaNacimiento"
                         required />
@@ -102,17 +102,7 @@
 
                 </div>
 
-                <div class="col-12 col-md-4">
-                    <label for="exampleInputEmail1" class="form-label fs-6">Dirección actual:</label>
-                    <input type="text" th:field="*{direccionAlumno}" class="form-control" id="direccion" required
-                        maxlength="60" />
-                    <div class="invalid-feedback">
-                        Es necesario agregar el dirección donde vive el estudiante
-                    </div>
-
-                </div>
-
-                <div class="col-12 col-md-4">
+                <div class="col-12 col-md-6">
                     <label for="exampleInputEmail1" class="form-label fs-6">Género:</label>
                     <select th:field="*{sexoAlumno}" class="form-select" aria-label="Default select example" required>
                         <option value="" selected>Seleccione</option>
@@ -125,6 +115,65 @@
 
                 </div>
             </div>
+            <div class="row my-2">
+                <div class="col-12 col-md-12">
+                    <label for="exampleInputEmail1" class="form-label fs-6">Dirección actual:</label>
+                    <input type="text" th:field="*{direccionAlumno}" class="form-control" id="direccion" required
+                        maxlength="60" />
+                    <div class="invalid-feedback">
+                        Es necesario agregar el dirección donde vive el estudiante
+                    </div>
+                </div>
+            </div>
+            <div class="row my-2">
+                <div class="col-12 col-md-6">
+                    <label for="docente_departamento" class="form-label">Departamento</label>
+                    <select id="docente_departamento" th:field="*{departamentoAlumno}" class="form-select"
+                        th:data-selected="${alumno.departamentoAlumno}" required>
+                        <option value="">Seleccionar...</option>
+                    </select>
+                    <div class="invalid-feedback">
+                        Es necesario seleccionar un departamento
+                    </div>
+                </div>
+
+                <div class="col-12 col-md-6">
+                    <label for="docente_municipio" class="form-label">Municipio</label>
+                    <select id="docente_municipio" th:field="*{municipioAlumno}" class="form-select"
+                        th:data-selected="${alumno.municipioAlumno}" required>
+                        <option value="">Seleccionar...</option>
+                    </select>
+                    <div class="invalid-feedback">
+                        Es necesario seleccionar un municipio
+                    </div>
+                </div>
+            </div>
+
+            <div class="row my-2">
+                <div class="col-12 col-md-6">
+                    <label for="docente_distrito" class="form-label">Distrito</label>
+                    <select id="docente_distrito" th:field="*{distritoAlumno}" class="form-select"
+                        th:data-selected="${alumno.distritoAlumno}" required>
+                        <option value="">Seleccionar...</option>
+                    </select>
+                    <div class="invalid-feedback">
+                        Es necesario seleccionar un distrito
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <label for="alumno_zona" class="form-label">Zona</label>
+                    <select id="alumno_zona" th:field="*{zonaAlumno}" class="form-select" required>
+                        <option value="" selected>Seleccionar...</option>
+                        <option value="Rural">Rural</option>
+                        <option value="Urbano">Urbano</option>
+                    </select>
+                    <div class="invalid-feedback">
+                        Es necesario seleccionar una zona
+                    </div>
+                </div>
+            </div>
+
 
             <div class="row my-2">
                 <div class="col-12 col-md-6">
@@ -179,7 +228,7 @@
                 <div class="col-12 col-md-4">
                     <label for="exampleInputEmail1" class="form-label fs-6">DUI:</label>
                     <input type="text" th:field="*{duiEncargado}" class="form-control" id="duiEncargado" required
-                        minlength="10" maxlength="10" placeholder="00000000-0"/>
+                        minlength="10" maxlength="10" placeholder="00000000-0" />
                     <div class="invalid-feedback">
                         Es necesario agregar el DUI del responble del alumno
                     </div>
@@ -207,7 +256,7 @@
                 <div class="col-12 col-md-4">
                     <label for="telefonoEncargado" class="form-label fs-6">Teléfono:</label>
                     <input type="text" th:field="*{telefonoEncargado}" class="form-control " id="telefonoEncargado"
-                        required minlength="8" maxlength="8" placeholder="0000-0000"/>
+                        required minlength="8" maxlength="8" placeholder="0000-0000" />
                     <div class="invalid-feedback">
                         Es necesario agregar el telefóno del responsable
                     </div>
@@ -299,8 +348,11 @@
 
 
     <script type="text/javascript" th:src="@{/js/validacionAlumno.js}"></script>
+    <script type="text/javascript" src="/js/direccion.js"></script>
 </body>
 
-<footer th:replace="~{home ::footer}"></footer>
+<footer th:replace="~{home ::footer}">
+    
+</footer>
 
 </html>

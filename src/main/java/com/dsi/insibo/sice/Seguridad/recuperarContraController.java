@@ -11,6 +11,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.dsi.insibo.sice.Seguridad.ClasesDeSeguridad.EnvioCorreo;
 import com.dsi.insibo.sice.Seguridad.ClasesDeSeguridad.PasswordGenerator;
+import com.dsi.insibo.sice.Seguridad.SeguridadService.UsuarioService;
 import com.dsi.insibo.sice.entity.Usuario;
 
 @Controller
