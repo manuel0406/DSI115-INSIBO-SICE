@@ -64,7 +64,7 @@
                                     <span class="fs-6 ms-2 d-none d-sm-inline">Documentos</span>
                                 </a>
                             </li>
-                            <li class="nav-item py-2 py-sm-0 my-2"  sec:authorize="hasAnyRole('ADMINISTRADOR','DIRECTOR','SUBDIRECTORA')">
+                            <li class="nav-item py-2 py-sm-0 my-2"  sec:authorize="hasAnyRole('DOCENTE','ADMINISTRADOR','DIRECTOR','SUBDIRECTORA')">
                                 <a class="nav-link text-white" th:if="${sanciones != false}"
                                     th:href="@{/ExpedienteAlumno/Sanciones/} + ${alumno.idAlumno}">
                                     <i class="bi bi-file-earmark-excel"></i>
