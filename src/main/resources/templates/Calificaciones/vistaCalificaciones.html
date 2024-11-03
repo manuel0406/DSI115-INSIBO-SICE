@@ -223,7 +223,8 @@
                                                 th:text="${notasPorAlumno[alumno.idAlumno][actividad.idActividad]?.notaObtenida ?: '-'}"></span>
                                         </td>
                                         <!-- Mostrar el total de notas por alumno -->
-                                        <td th:text="${totalNotasPorAlumno[alumno.idAlumno]}"></td>
+                                        <td th:text="${#numbers.formatDecimal(totalNotasPorAlumno[alumno.idAlumno], 1, 2)}">0.00
+                                        <!-- <td th:text="${totalNotasPorAlumno[alumno.idAlumno]}"></td> -->
                                     </tr>
                                 </tbody>
                             </table>
