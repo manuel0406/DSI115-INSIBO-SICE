@@ -10,8 +10,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.session.SessionInformation;
-import org.springframework.security.core.session.SessionRegistry;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -85,32 +85,20 @@ public class SiceApplication {
 		return "Administrativo/homeAdministracion.html";
 	}
 
-	@Autowired
-	private SessionRegistry sessionRegistry;
-
 	@GetMapping("/session")
 	public ResponseEntity<?> getDetailResponseEntity() {
-		String sessionId = "";
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		User userObject = null;
-		List<Object> sessions = sessionRegistry.getAllPrincipals();
 
-		for (Object session : sessions) {
-			if (session instanceof User) {
-				userObject = (User) session;
-			}
-			// Usuario a recuperar y no incluimos las sesiones expiradas
-			List<SessionInformation> sessionInformations = sessionRegistry.getAllSessions(session, false);
-			for (SessionInformation sessionInformation : sessionInformations) {
-				sessionId = sessionInformation.getSessionId();
-			}
-
+		if (authentication != null && authentication.getPrincipal() instanceof User) {
+			userObject = (User) authentication.getPrincipal();
 		}
 
 		Map<String, Object> response = new HashMap<>();
 		response.put("response", "Hello World");
-		response.put("Session ID", sessionId);
 		response.put("sessionUser", userObject);
 
 		return ResponseEntity.ok(response);
 	}
+
 }
