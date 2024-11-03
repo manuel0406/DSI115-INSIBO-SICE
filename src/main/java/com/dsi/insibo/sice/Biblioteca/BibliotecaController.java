@@ -43,7 +43,7 @@ public class BibliotecaController {
     public String inicioBiblioteca(Model model){
         model.addAttribute("titulo","Gestión de Biblioteca");
 
-        return "/Biblioteca/inicioBiblioteca.html";
+        return "Biblioteca/inicioBiblioteca.html";
     }
 
     @Autowired
@@ -104,7 +104,7 @@ public class BibliotecaController {
         model.addAttribute("nuevoLibro", new InventarioLibro());
         model.addAttribute("page", pageLibros);
 
-        return "/Biblioteca/inventarioLibros.html";
+        return "Biblioteca/inventarioLibros.html";
     }
 
     @PostMapping("/InventarioLibros")
@@ -223,7 +223,7 @@ public class BibliotecaController {
         model.addAttribute("nuevoPrestamo", new PrestamoLibro());
         model.addAttribute("page", pagePrestamos);
     
-        return "/Biblioteca/prestamos.html";
+        return "Biblioteca/prestamos.html";
     }
 
     @PostMapping("/Prestamos/registrar")
@@ -346,7 +346,7 @@ public class BibliotecaController {
         model.addAttribute("page", pagePrestamos);
         model.addAttribute("nombreAlumno", nombreAlumno); // Para mantener el valor del término de búsqueda
     
-        return "/Biblioteca/prestamosDevueltos.html";
+        return "Biblioteca/prestamosDevueltos.html";
     }
 
     @GetMapping(value = "/verPrestamos", produces = "application/pdf")
