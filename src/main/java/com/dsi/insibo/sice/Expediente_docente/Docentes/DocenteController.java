@@ -439,7 +439,7 @@ public class DocenteController {
         model.addAttribute("titulo", "Documentos");
 
         // return "Expediente_docente/docenteDocumentos";
-        return "Expediente_docente/docentes/docenteDocumentos";
+        return "Expediente_docente/Docentes/docenteDocumentos";
     }
 
 }
