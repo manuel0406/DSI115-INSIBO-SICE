@@ -324,17 +324,9 @@ public class HorarioSeccionPdf extends AbstractPdfView {
     private String hora(List<HorarioDTO> hour, String id) {
         for (HorarioDTO horario : hour) {
             if (horario.getIdHorarioBase().equals(id)) {
-                return horario.getNomMateria() + "\n"  + horario.getNombreDocente()
-                       + " " + horario.getApellidoDocente();
+                return horario.getNomMateria() + "\n"  + horario.getNombreDocente();
             }
         }
         return " \n ";
     }
-
-    // Método auxiliar para crear una celda vacía
-/*     private PdfPCell createEmptyCell() {
-        PdfPCell emptyCell = new PdfPCell();
-        emptyCell.setBorder(PdfPCell.NO_BORDER);
-        return emptyCell;
-    } */
 }

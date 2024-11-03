@@ -330,11 +330,4 @@ public class HorarioDocentePdf extends AbstractPdfView {
         }
         return " \n ";
     }
-
-    // Método auxiliar para crear una celda vacía
-/*     private PdfPCell createEmptyCell() {
-        PdfPCell emptyCell = new PdfPCell();
-        emptyCell.setBorder(PdfPCell.NO_BORDER);
-        return emptyCell;
-    } */
 }
