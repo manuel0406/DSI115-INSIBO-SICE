@@ -84,6 +84,7 @@ public class EntregasController {
         Bachillerato bachillerato = bachilleratoService.bachilleratoPorId(id);
 
         // Añadir atributos al modelo
+        model.addAttribute("titulo", "Paquetes Escolares");
         model.addAttribute("bachillerato", bachillerato);
         model.addAttribute("id", id); // Pasar el ID del bachillerato
         model.addAttribute("tipoPaquete", tipoPaquete); // Paquete seleccionado
@@ -113,6 +114,7 @@ public class EntregasController {
         listaAlumnos.sort(Comparator.comparing(Alumno::getApellidoAlumno));
 
         // Agregar atributos al modelo para la vista
+        model.addAttribute("titulo", "Paquetes Escolares");
         model.addAttribute("bachillerato", bachillerato);
         model.addAttribute("alumnos", listaAlumnos); // Lista de alumnos
         model.addAttribute("tipoPaquete", tipoPaquete); // Tipo de paquete seleccionado
@@ -461,6 +463,7 @@ public class EntregasController {
         model.addAttribute("tipo", tipoPaquete);
         model.addAttribute("fecha", fechaPaquete);
         model.addAttribute("estado", estadoEntrega);
+        model.addAttribute("titulo", "Paquetes Escolares");
 
         return "Paquetes_escolares/reporteEntrega";
     }
