@@ -97,7 +97,7 @@ public class PapeleriaController {
         model.addAttribute("page", pageProductos);
         model.addAttribute("searchTerm", searchTerm);
 
-        return "/Biblioteca/inventarioPapeleria.html";
+        return "Biblioteca/inventarioPapeleria.html";
     }
 
     @PostMapping("/InventarioPapeleria")
@@ -201,7 +201,7 @@ public class PapeleriaController {
         model.addAttribute("nuevaEntrega", new EntregaPapeleria());
         model.addAttribute("page", pageEntregas);
     
-        return "/Biblioteca/controlPapeleria.html";
+        return "Biblioteca/controlPapeleria.html";
     }
 
     @PostMapping("/Control/entrega")
