@@ -22,19 +22,44 @@
                 <h3 class="text-center custom-h2">
                     IDENTIFICACION DEL CENTRO EDUCATIVO
                 </h3>
-                <div class="col-12 col-md-8 mx-auto">
-                    <label for="exampleInputPassword1" class="form-label fs-6">Especialidad del bachillerato:</label>
-
-                    <select th:field="*{bachillerato}" class="form-select" aria-label="Default select example" required>
-                        <option value="" selected>Seleccione</option>
-                        <option th:each="bachillerato : ${bachilleratos}" th:value="${bachillerato.codigoBachillerato}"
-                            th:text="${bachillerato.grado +'° '+ bachillerato.nombreCarrera  + ' - Sección ' + bachillerato.seccion}">
+                <div class="col-12 col-md-4">
+                    <input type="hidden" id="matricula" name="matricula" th:value="${matricula}">
+                    <label for="carrera" class="form-label fs-6">Carrera:</label>
+                    <select id="carrera" name="carrera" class="form-select" th:value="${carrera}" aria-label="Default select example" required>
+                        <option value="" th:if="${carrera == null}" selected>Seleccione</option>
+                        <option th:each="bachillerato : ${bachilleratos}"
+                                th:value="${bachillerato.nombreCarrera}"
+                                th:text="${bachillerato.nombreCarrera}"
+                                th:selected="${bachillerato.nombreCarrera == carrera}">
                         </option>
                     </select>
                     <div class="invalid-feedback">
-                        Es necesario seleccionar una especialidad
+                        Es necesario agregar la especialidad
                     </div>
                 </div>
+                <div class="col-12 col-md-4">
+                    <label for="grado" class="form-label fs-6">Año:</label>
+                    <select id="grado" name="grado" th:value="${grado}" class="form-select" required>
+                        <option value="" th:if="${grado == null}" selected>Seleccione</option>
+                        <option value="1" th:selected="${grado == '1'}">1</option>
+                        <option value="2" th:selected="${grado == '2'}">2</option>
+                        <option value="3" th:selected="${grado == '3'}">3</option>
+                    </select>
+                    <div class="invalid-feedback">
+                        Es necesario agregar el año
+                    </div>
+                </div>
+                <div class="col-12 col-md-4">
+                    <label for="seccion" class="form-label fs-6">Sección:</label>
+                    <select id="seccion" name="seccion" class="form-select"  th:value="${seccion}" required>
+                        <option value="" th:if="${seccion == null}" selected>Seleccione</option>
+                        <option th:value="${seccion}" th:text="${seccion}" th:selected="true"></option>
+                    </select>
+                    <div class="invalid-feedback">
+                        Es necesario agregar la seccion
+                    </div>
+                </div>
+                
             </div>
 
             <div class="row">
@@ -335,7 +360,6 @@
 
     <!-- Incluye Bootstrap JS y sus dependencias -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.js"></script>
     <script>
         $('#telefono').mask('0000-0000');
@@ -344,9 +368,6 @@
         $('#duiEncargado').mask('00000000-0');
         $('#nie').mask('0000000');
     </script>
-
-
-
     <script type="text/javascript" th:src="@{/js/validacionAlumno.js}"></script>
     <script type="text/javascript" src="/js/direccion.js"></script>
 </body>

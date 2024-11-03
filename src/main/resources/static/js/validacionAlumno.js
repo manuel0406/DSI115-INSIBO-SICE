@@ -92,3 +92,35 @@ function showErrorModal(message) {
     var errorModal = new bootstrap.Modal(document.getElementById('errorModal'));
     errorModal.show();
 }
+
+document.addEventListener('DOMContentLoaded', function () {
+    const carreraSelect = document.getElementById('carrera');
+    const gradoSelect = document.getElementById('grado');
+    const seccionSelect = document.getElementById('seccion');
+    const matricula = document.getElementById('matricula')
+  console.log(matricula.value)
+    function updateSecciones() {
+        const carrera = carreraSelect.value;
+        const grado = gradoSelect.value;
+
+        if (carrera && grado) {
+            fetch(`/ExpedienteAlumno/secciones?carrera=${encodeURIComponent(carrera)}&grado=${encodeURIComponent(grado)}&matricula=${encodeURIComponent(matricula.value)}`)
+                .then(response => response.json())
+                .then(data => {
+                    seccionSelect.innerHTML = '<option value="" selected>Seleccione</option>';
+                    data.forEach(seccion => {
+                        const option = document.createElement('option');
+                        option.value = seccion;
+                        option.text = seccion;
+                        seccionSelect.add(option);
+                    });
+                })
+                .catch(error => console.error('Error:', error));
+        } else {
+            seccionSelect.innerHTML = '<option value="" selected>Seleccione</option>';
+        }
+    }
+
+    carreraSelect.addEventListener('change', updateSecciones);
+    gradoSelect.addEventListener('change', updateSecciones);
+});

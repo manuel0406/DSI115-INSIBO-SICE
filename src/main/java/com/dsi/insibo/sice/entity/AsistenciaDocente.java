@@ -5,6 +5,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 
 @Entity
@@ -14,44 +15,33 @@ public class AsistenciaDocente {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idAsistencia;
 
-
     @ManyToOne
-    private Justificacion justificacion;
+    @JoinColumn(name = "id_docente_aparato")
+    private DocenteAparato aparatoDocente;
 
-    private String duiDocente;
-
+    private String DeparDocente;
     private String turno;
-
     private LocalDateTime horaEntrada;
-
     private LocalDateTime horaSalida;
 
     public int getIdAsistencia() {
-        return idAsistencia;
+        return this.idAsistencia;
     }
 
     public void setIdAsistencia(int idAsistencia) {
         this.idAsistencia = idAsistencia;
     }
-
-    public Justificacion getJustificacion() {
-        return justificacion;
+    
+    public String getDeparDocente() {
+        return this.DeparDocente;
     }
 
-    public void setJustificacion(Justificacion justificacion) {
-        this.justificacion = justificacion;
+    public void setDeparDocente(String DeparDocente) {
+        this.DeparDocente = DeparDocente;
     }
-
-    public String getDuiDocente() {
-        return duiDocente;
-    }
-
-    public void setDuiDocente(String duiDocente) {
-        this.duiDocente = duiDocente;
-    }
-
+    
     public String getTurno() {
-        return turno;
+        return this.turno;
     }
 
     public void setTurno(String turno) {
@@ -59,7 +49,7 @@ public class AsistenciaDocente {
     }
 
     public LocalDateTime getHoraEntrada() {
-        return horaEntrada;
+        return this.horaEntrada;
     }
 
     public void setHoraEntrada(LocalDateTime horaEntrada) {
@@ -67,12 +57,18 @@ public class AsistenciaDocente {
     }
 
     public LocalDateTime getHoraSalida() {
-        return horaSalida;
+        return this.horaSalida;
     }
 
     public void setHoraSalida(LocalDateTime horaSalida) {
         this.horaSalida = horaSalida;
     }
+    public DocenteAparato getAparatoDocente() {
+        return this.aparatoDocente;
+    }
 
-    
+    public void setAparatoDocente(DocenteAparato aparatoDocente) {
+        this.aparatoDocente = aparatoDocente;
+    }
+
 }

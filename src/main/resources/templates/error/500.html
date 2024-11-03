@@ -1,32 +1,32 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
 
-<head th:fragment="head">
+<head >
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title th:text="${titulo}"></title>
+    <title >Error 500 - Error Interno del Servidor</title>
+    <link rel="shortcut icon" type="image/x-icon" th:href="@{/Imagenes/INSIBO2.ico}">
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
     <link rel="stylesheet" th:href="@{/css/style.css}" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.7.2/font/bootstrap-icons.css" rel="stylesheet">
 </head>
 
 <body>
-    <!--Esto es una barra de navegación-->
+    <!-- Barra de navegación -->
     <header th:replace="~{home :: header}"></header>
-    
-    <div class="container text-center py-3">
-        <div class="panel">
-            <div class="panel-heading">
-                <h3>
-                    <span th:text="${error}"></span> - <span th:text="${status}"></span>
-                </h3>
-            </div>
-            <div class="panel-body">
-                <br>
-                <h4>Existe un error interno</h4>
-                <p>Lo sentimos, algo salió mal. Por favor, intente nuevamente más tarde.</p>
-                <br>
-                <button class="btn btn-success" onclick="goBack()">&laquo; Regresar</button>
+    <div class="py-5"></div>
+    <div class="container text-center">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <h1 class="display-5 text-danger"><i class="bi bi-exclamation-octagon-fill"></i> Error 500: Error Interno del Servidor</h1>
+                <p class="lead">Lo sentimos, algo salió mal en nuestro servidor.</p>
+                <img th:src="@{/Imagenes/500.jpg}" class="img-fluid rounded " alt="Error Interno del Servidor" style="max-width: 50%;">
+                <p>No te preocupes, este no es un error tuyo. Estamos trabajando para solucionar este problema.</p>
+                <div class="mt-1">                   
+                    <button class="btn btn-success btn-lg" onclick="goBack()">
+                        <i class="bi bi-arrow-left-circle"></i> Regresar
+                    </button>
+                </div>
             </div>
         </div>
     </div>
@@ -43,5 +43,4 @@
         }
     </script>
 </body>
-
 </html>

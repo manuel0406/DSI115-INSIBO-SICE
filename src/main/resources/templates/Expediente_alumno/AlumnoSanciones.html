@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{home :: head}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.1.0/css/bootstrap.min.css">
+</head>
+
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12 col-md-2 d-none d-md-block"
+                th:replace="~{Expediente_alumno\AlumnoInformacion :: barraLateral}"></div>
+            <div class="col-12 col-md-10 offset-md-2">
+                <header th:replace="~{home :: header}"></header>
+
+                <div class="container-fluid py-5 my-2">
+                    <!--Mensajes-->
+                    <div th:replace="~{alertas::alertas}"></div>
+                    <div class="d-flex justify-content-between align-items-center mb-3 my-3 flex-wrap">
+                        <h3 class="text-start col-lg-9" th:text="${'Listado de sanciones de: '+ alumno.nombreAlumno}">
+                        </h3>
+                        <div class="d-flex gap-2">
+                            <a class="btn btn-secondary"
+                                th:href="@{/ExpedienteAlumno/Sanciones/{nie}(nie=${alumno.idAlumno}, format='pdf')}"
+                                data-bs-t="tooltip" data-bs-placement="top" title="Imprimir listado actual"
+                                target="_blank" onclick="openInPopup(this.href); return false;">
+                                <i class="bi bi-printer"></i> Imprimir listado
+                            </a>
+                            <a class="btn btn-primary Agregar-btn" data-bs-t="tooltip" data-bs-placement="top"
+                                title="Agregar Sancion" th:text="'Agregar Sancion'"></a>
+                        </div>
+                    </div>
+                    <div class="col-12 table-responsive">
+                        <table class="table table-hover">
+                            <thead class="thead table-dark text-start">
+                                <tr>
+                                    <th scope="col">N°</th>
+                                    <th scope="col">Tipo falta</th>
+                                    <th scope="col">Fecha</th>
+                                    <th scope="col">Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody class="fs-6">
+                                <!-- Iterar sobre la lista de sanciones -->
+                                <tr th:each="sanciones, stat : ${listaSanciones}">
+                                    <th scope="row" th:text="${stat.index + 1}"></th>
+                                    <td class="text-center fs-6" th:text="${sanciones.tipoSancion}"></td>
+                                    <td class="text-center fs-6"
+                                        th:text="${#dates.format(sanciones.fechaSancion,'dd/MM/yyyy')}"></td>
+                                    <td class="text-center">
+                                        <a class="btn btn-success editar-btn" data-bs-t="tooltip" data-bs-toggle="modal"
+                                            data-bs-target="#consultarSancionModal" data-bs-placement="top"
+                                            title="Consultar" th:data-id="${sanciones.idSancion}"
+                                            th:data-des="${sanciones.descripcionSancion}"
+                                            th:data-tip="${sanciones.tipoSancion}"
+                                            th:data-aco="${sanciones.accionCorrectiva}"
+                                            th:data-fec="${#dates.format(sanciones.fechaSancion,'dd/MM/yyyy')}">
+                                            <i class="bi bi-file-earmark-text"></i>
+                                        </a>
+                                        <a class="btn btn-primary editar-btn" data-bs-t="tooltip" data-bs-toggle="modal"
+                                            data-bs-target="#actualizarSancionModal" data-bs-placement="top"
+                                            title="Editar" th:data-id="${sanciones.idSancion}"
+                                            th:data-des="${sanciones.descripcionSancion}"
+                                            th:data-tip="${sanciones.tipoSancion}"
+                                            th:data-aco="${sanciones.accionCorrectiva}">
+                                            <i class="bi bi-pencil-square"></i>
+                                        </a>
+                                        <a class="btn btn-danger delete-btn"
+                                            th:href="@{/ExpedienteAlumno/eliminarSancion/}+${alumno.idAlumno+'/'}+ ${sanciones.idSancion}"
+                                            data-bs-t="tooltip" data-bs-placement="top" title="Eliminar">
+                                            <i class="bi bi-trash"></i>
+                                        </a>
+                                        <a th:href="@{/} " class="btn btn-secondary " data-bs-t="tooltip"
+                                            data-bs-placement="top" title="Imprimir" target="_blank"
+                                            onclick="openInPopup(this.href); return false;">
+                                            <i class="bi bi-printer"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="alert alert-success alert-dismissible fade show mt-1 ms-2 mr-2"
+                            th:if="${#lists.isEmpty(listaSanciones)}">
+                            <i class="bi bi-info-circle"></i>
+                            <label th:text="${'¡No existen sanciones registradas!'}"></label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de agregar sancion -->
+    <div class="modal fade" id="agregarModal" tabindex="-1" aria-labelledby="confirmAgregarModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="confirAgregarModalLabel">Agregar sanción</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <!-- Formulario de agregar nueva materia -->
+                <form th:object="${sancion}" class="needs-validation" id="formSancion" novalidate
+                    th:action="@{/ExpedienteAlumno/GuardarSancion/} + ${alumno.idAlumno}" method="post">
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="tipoFalta" class="form-label fw-bold">Tipo de falta</label>
+                            <select th:field="*{tipoSancion}" class="form-select border-secondary border-opacity-75"
+                                id="tipoFalta" required>
+                                <option value="" selected>Selecciona el tipo de falta</option>
+                                <option value="Leve">Leve</option>
+                                <option value="Grave">Grave</option>
+                                <option value="Muy grave">Muy grave</option>
+                            </select>
+                            <div class="invalid-feedback">Es necesario seleccionar el tipo de falta</div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="descripcionFalta" class="form-label fw-bold">Descripción</label>
+                            <textarea th:field="*{descripcionSancion}"
+                                class="form-control no-resize border-secondary border-opacity-75" id="descripcionFalta"
+                                rows="3" required></textarea>
+                            <div class="invalid-feedback">Es necesario que describa lo que sucedió</div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="accionCorrectiva" class="form-label fw-bold">Acción correctiva</label>
+                            <textarea th:field="*{accionCorrectiva}"
+                                class="form-control no-resize border-secondary border-opacity-75" id="accionCorrectiva"
+                                rows="2" required></textarea>
+                            <div class="invalid-feedback">Es necesario que complete este campo</div>
+                        </div>
+                    </div>
+                    <div class="modal-footer text-center">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                            id="cancelarSancion">Cancelar</button>
+                        <button type="submit" class="btn btn-primary" id="agregarModalButton">Guardar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de editar sancion -->
+    <div class="modal fade" id="actualizarSancionModal" tabindex="-1" aria-labelledby="actualizarSancionModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="confirAgregarModalLabel">Editar sanción</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <!-- Formulario para editar sancion -->
+                <form th:object="${sancion}" class="needs-validation" id="formSancion" novalidate
+                    th:action="@{/ExpedienteAlumno/GuardarSancion/} + ${alumno.idAlumno}" method="post">
+                    <div class="modal-body">
+                        <input type="hidden" id="idSancion" name="idSancion">
+                        <div class="mb-3">
+                            <label for="tipoFalta" class="form-label fw-bold">Tipo de falta</label>
+                            <select th:field="*{tipoSancion}" class="form-select border-secondary border-opacity-75"
+                                id="editTipo" name="editTipo" required>
+                                <option value="" selected>Selecciona el tipo de falta</option>
+                                <option value="Leve">Leve</option>
+                                <option value="Grave">Grave</option>
+                                <option value="Muy grave">Muy grave</option>
+                            </select>
+                            <div class="invalid-feedback">Es necesario seleccionar el tipo de falta</div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="descripcionFalta" class="form-label fw-bold">Descripción</label>
+                            <textarea th:field="*{descripcionSancion}"
+                                class="form-control no-resize border-secondary border-opacity-75" id="editDescripcion"
+                                name="editDescripcion" rows="3" required></textarea>
+                            <div class="invalid-feedback">Es necesario que describa lo que sucedió</div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="accionCorrectiva" class="form-label fw-bold">Acción correctiva</label>
+                            <textarea th:field="*{accionCorrectiva}"
+                                class="form-control no-resize border-secondary border-opacity-75"
+                                id="editAccionCorrectiva" name="editAccionCorrectiva" rows="2" required></textarea>
+                            <div class="invalid-feedback">Es necesario que complete este campo</div>
+                        </div>
+                    </div>
+                    <div class="modal-footer text-center">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                            id="cancelarSancion">Cancelar</button>
+                        <button type="submit" class="btn btn-primary" id="agregarModalButton">Guardar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de consultar sanción -->
+    <div class="modal fade" id="consultarSancionModal" tabindex="-1" aria-labelledby="consultarSancionModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header text-center">
+                    <h5 class="modal-title" id="consultarSancionModalLabel">Detalle de la Sanción</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="consultaFechaCreacion" class="form-label fw-bold">Fecha de creación:</label>
+                        <div id="consultaFechaCreacion" class="card-text"></div>
+                    </div>
+                    <hr>
+                    <div class="mb-3">
+                        <label for="consultaTipo" class="form-label fw-bold">Tipo de falta:</label>
+                        <div id="consultaTipo" class="card-text"></div>
+                    </div>
+                    <hr>
+                    <div class="mb-3">
+                        <label for="consultaDescripcion" class="form-label fw-bold">Descripción:</label>
+                        <div id="consultaDescripcion" class="card-text"></div>
+                    </div>
+                    <hr>
+                    <div class="mb-3">
+                        <label for="consultaAccionCorrectiva" class="form-label fw-bold">Acción correctiva:</label>
+                        <div id="consultaAccionCorrectiva" class="card-text text-break"></div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Confirmación -->
+    <div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-labelledby="confirmDeleteModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="confirmDeleteModalLabel">Confirmar Eliminación</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    ¿Estás seguro de eliminar el registro? Esta acción no puede deshacerse.
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-danger" id="confirmDeleteButton">Eliminar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Incluye Bootstrap JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.1.0/js/bootstrap.min.js"></script>
+    <footer th:replace="~{home :: footer}"></footer>
+    <script type="text/javascript" th:src="@{/js/GestionSanciones.js}"></script>
+    <script type="text/javascript" th:src="@{/js/modalEliminacion.js}"></script>
+</body>
+
+</html>

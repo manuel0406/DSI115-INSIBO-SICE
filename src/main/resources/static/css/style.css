@@ -1,28 +1,45 @@
 .custom-navbar {
-    background-color: #005187; /* Reemplaza ##005187 con el color que desees */
-  }
+  background-color: #005187;
+  /* Reemplaza ##005187 con el color que desees */
+}
 
-.custom-h2{
+.custom-h2 {
   background-color: #84b6f4;
 }
+.custom-navbar-b {
+  background-color: #005187;
+  /* height: 100vh; */
+  /* Reemplaza ##005187 con el color que desees */
+}
 
-.thead{
+.thead {
   background-color: #005187;
   color: white
-  
 }
+
 /* Alumnos*/
-.nav-pills li a:hover{
+.nav-pills li a:hover {
   background-color: rgb(83, 161, 250);
- 
+
 }
 
+/*Reescribo color de encabezado de tablas*/
+.table thead th {
+  background-color: #005187;
+  color: white;
+  /* Color del texto del encabezado */
 
-th, td{
+}
+
+th,
+td {
   text-align: center;
   vertical-align: center;
 }
 
+.no-resize {
+  resize: none;
+}
 
 
 /* docente */
@@ -83,7 +100,8 @@ th, td{
 .imagenLogout {
   max-width: 100%;
   height: auto;
-  max-height: 400px; /* Limitar la altura máxima de la imagen */
+  max-height: 400px;
+  /* Limitar la altura máxima de la imagen */
 }
 
 /* ----------------------------------------------------------------------------------------- */
@@ -95,31 +113,39 @@ th, td{
   align-items: center;
   height: 100vh;
   margin: 0;
-  left: -75px; /* Ajusta según necesites */
+  left: -75px;
+  /* Ajusta según necesites */
   font-family: Arial, sans-serif;
-  background-image: 
-      linear-gradient(45deg, #005187 25%, #f0f8ff 25%, #f0f8ff 50%, #005187 50%, #005187 75%, #f0f8ff 75%, #f0f8ff 100%);
+  background-image:
+    linear-gradient(45deg, #005187 25%, #f0f8ff 25%, #f0f8ff 50%, #005187 50%, #005187 75%, #f0f8ff 75%, #f0f8ff 100%);
 }
 
 .con403 {
   text-align: center;
-  max-width: 600px; /* Limitar el ancho máximo del contenedor */
+  max-width: 600px;
+  /* Limitar el ancho máximo del contenedor */
   padding: 20px;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1); /* Sombra ligera */
-  background-color: #ffffff; /* Fondo blanco */
-  border-radius: 10px; /* Bordes redondeados */
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  /* Sombra ligera */
+  background-color: #ffffff;
+  /* Fondo blanco */
+  border-radius: 10px;
+  /* Bordes redondeados */
 }
 
 .imgStop img {
-  max-width: 200px; /* Ajustar tamaño máximo de la imagen */
+  max-width: 200px;
+  /* Ajustar tamaño máximo de la imagen */
   max-height: 200px;
 }
 
 .btnVolver {
   padding: 15px 30px;
   color: #ffffff;
-  background-color: #005187; /* Fondo azul oscuro */
-  border: 1px solid #005187; /* Borde azul oscuro de 1 píxel */
+  background-color: #005187;
+  /* Fondo azul oscuro */
+  border: 1px solid #005187;
+  /* Borde azul oscuro de 1 píxel */
   border-radius: 5px;
   font-size: 1em;
   cursor: pointer;
@@ -127,9 +153,12 @@ th, td{
 }
 
 .btnVolver:hover {
-  background-color: #0985d8; /* Fondo azul claro al pasar el mouse */
-  border-color: #0985d8; /* Borde azul claro al pasar el mouse */
-  color: #f8f9fa; /* Color del texto blanco al pasar el mouse */
+  background-color: #0985d8;
+  /* Fondo azul claro al pasar el mouse */
+  border-color: #0985d8;
+  /* Borde azul claro al pasar el mouse */
+  color: #f8f9fa;
+  /* Color del texto blanco al pasar el mouse */
 }
 
 
@@ -137,8 +166,9 @@ th, td{
 /*                               ESTILO DE INICIAR SESION                                    */
 /* ----------------------------------------------------------------------------------------- */
 .cuerpoIniciarSesion {
-  background-color: #005187; 
-  height: 100vh; /* Hace que el fondo cubra toda la pantalla */
+  background-color: #005187;
+  height: 100vh;
+  /* Hace que el fondo cubra toda la pantalla */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -146,29 +176,37 @@ th, td{
 
 .tituloIniciarSesion {
   text-align: center;
-  font-size: 22px; /* Tamaño del texto reducido */
-  font-weight: bold; /* Negrita */
+  font-size: 22px;
+  /* Tamaño del texto reducido */
+  font-weight: bold;
+  /* Negrita */
 }
 
-.entradaIniciarSesion{
-  font-weight: bold; /* Negrita */
- 
-}
+.entradaIniciarSesion {
+  font-weight: bold;
+  /* Negrita */
 
-#correoIniciarSesion {
-  margin-bottom: 15px; /* Margen inferior para separar los campos */
 }
 
 .btnIniciarSesion {
-  background-color: #005187; /* Cambio de color de fondo */
-  color: white; /* Color del texto */
-  font-weight: bold; /* Texto en negrita */
-  text-align: center; /* Centrar el texto */
-  width: 100%; /* Ancho del botón */
-  margin: 20px auto; /* Margen superior e inferior y centrado horizontal */
-  border: 2px solid white; /* Borde blanco alrededor del botón */
-  border-radius: 20px; /* Esquinas redondeadas */
-  padding: 10px 20px; /* Espaciado interno del botón */
+  background-color: #005187;
+  /* Cambio de color de fondo */
+  color: white;
+  /* Color del texto */
+  font-weight: bold;
+  /* Texto en negrita */
+  text-align: center;
+  /* Centrar el texto */
+  width: 100%;
+  /* Ancho del botón */
+  margin: 20px auto;
+  /* Margen superior e inferior y centrado horizontal */
+  border: 2px solid white;
+  /* Borde blanco alrededor del botón */
+  border-radius: 20px;
+  /* Esquinas redondeadas */
+  padding: 10px 20px;
+  /* Espaciado interno del botón */
 }
 
 .btnIniciarSesion:hover {
@@ -177,25 +215,31 @@ th, td{
   border-color: black;
 }
 
-#correoInvalido{
+#correoInvalido {
   color: red;
   display: none;
   font-weight: bold;
 }
 
 .preguntaRecuperar {
-  text-align: center; /* Centrar el texto dentro del párrafo */
+  text-align: center;
+  /* Centrar el texto dentro del párrafo */
 }
 
 .enlaceRecuperar {
-  color: #014470;  /* Cambiar el color del enlace a rojo */
-  font-weight: bold; /* Texto en negrita */
-  text-decoration: none; /* Eliminar la línea subrayada del enlace */
-  cursor: pointer; /* Activar el cursor en modo de clic */
+  color: #014470;
+  /* Cambiar el color del enlace a rojo */
+  font-weight: bold;
+  /* Texto en negrita */
+  text-decoration: none;
+  /* Eliminar la línea subrayada del enlace */
+  cursor: pointer;
+  /* Activar el cursor en modo de clic */
 }
 
 .enlaceRecuperar:hover {
-  color: #84b6f4; /* Cambiar el color del enlace al pasar el cursor sobre él */
+  color: #84b6f4;
+  /* Cambiar el color del enlace al pasar el cursor sobre él */
 }
 
 /* --------------------------- FIN DE ESTILO DE INICIAR SESION ------------------------------ */
@@ -203,39 +247,40 @@ th, td{
 /* ----------------------------------------------------------------------------------------- */
 /*                               ESTILO DE RECUPERAR CONTRASEÑA                              */
 /* ----------------------------------------------------------------------------------------- */
-.btnRecuperar{
-  background-color: #005187; /* Cambio de color de fondo */
-  color: white; /* Color del texto */
-  font-weight: bold; /* Texto en negrita */
-  text-align: center; /* Centrar el texto */
-  width: 100%; /* Ancho del botón */
-  border: 2px solid white; /* Borde blanco alrededor del botón */
-  border-radius: 20px; /* Esquinas redondeadas */
-  padding: 10px 20px; /* Espaciado interno del botón */
-}
 
-.btnCancelar{
-  background-color: #000000; /* Cambio de color de fondo */
-  color: white; /* Color del texto */
-  font-weight: bold; /* Texto en negrita */
-  text-align: center; /* Centrar el texto */
-  width: 100%; /* Ancho del botón */
-  border: 2px solid white; /* Borde blanco alrededor del botón */
-  border-radius: 20px; /* Esquinas redondeadas */
-  padding: 10px 20px; /* Espaciado interno del botón */
+.btnCancelar {
+  background-color: #000000;
+  /* Cambio de color de fondo */
+  color: white;
+  /* Color del texto */
+  font-weight: bold;
+  /* Texto en negrita */
+  text-align: center;
+  /* Centrar el texto */
+  width: 100%;
+  /* Ancho del botón */
+  border: 2px solid white;
+  /* Borde blanco alrededor del botón */
+  border-radius: 20px;
+  /* Esquinas redondeadas */
+  padding: 10px 20px;
+  /* Espaciado interno del botón */
 }
 
 .cuerpoRecuperar {
-  background-color: #005187; 
-  height: 100vh; /* Hace que el fondo cubra toda la pantalla */
+  background-color: #005187;
+  height: 100vh;
+  /* Hace que el fondo cubra toda la pantalla */
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: auto; /* Centra el contenido horizontalmente */
-  text-align: justify; /* Justifica el texto */
+  margin: auto;
+  /* Centra el contenido horizontalmente */
+  text-align: justify;
+  /* Justifica el texto */
 }
 
-.btnCancelar:hover, .btnRecuperar:hover {
+.btnCancelar:hover {
   background-color: white;
   color: black;
   border-color: black;
@@ -250,71 +295,90 @@ th, td{
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: auto; /* Centra el contenido horizontalmente */
-  text-align: justify; /* Justifica el texto */
+  margin: auto;
+  /* Centra el contenido horizontalmente */
+  text-align: justify;
+  /* Justifica el texto */
 }
 
 
-.btnBuscar:hover{
+.btnBuscar:hover {
   background-color: rgb(0, 0, 0);
   color: rgb(250, 250, 250);
   border-color: rgb(255, 255, 255);
   text-decoration: none;
 }
 
-.btnBuscar{
-  background-color: #ffffff; /* Cambio de color de fondo */
-  color: rgb(0, 0, 0); /* Color del texto */
-  font-weight: bold; /* Texto en negrita */
-  text-align: center; /* Centrar el texto */
-  border: 1px solid rgb(0, 0, 0); /* Borde blanco alrededor del botón */
-  border-radius: 10px; /* Esquinas redondeadas */
-  padding: 10px 20px; /* Espaciado interno del botón */
+.btnBuscar {
+  background-color: #ffffff;
+  /* Cambio de color de fondo */
+  color: rgb(0, 0, 0);
+  /* Color del texto */
+  font-weight: bold;
+  /* Texto en negrita */
+  text-align: center;
+  /* Centrar el texto */
+  border: 1px solid rgb(0, 0, 0);
+  /* Borde blanco alrededor del botón */
+  border-radius: 10px;
+  /* Esquinas redondeadas */
+  padding: 10px 20px;
+  /* Espaciado interno del botón */
   text-decoration: none;
 }
 
 .barraLateral {
   height: 100vh;
-  width: 240px; /* Ancho reducido de la barra lateral */
+  width: 240px;
+  /* Ancho reducido de la barra lateral */
   position: fixed;
   top: 0;
   left: 0;
   background-color: #ffffff;
   color: black;
   z-index: 1000;
-  padding-top: 10px; /* Para dejar espacio al sidebar */
-  margin-right: 20px; /* Margen derecho */
-  border-right: 0.5px solid rgb(163, 163, 163); /* Línea negra en el margen derecho */
+  padding-top: 10px;
+  /* Para dejar espacio al sidebar */
+  margin-right: 20px;
+  /* Margen derecho */
+  border-right: 0.5px solid rgb(163, 163, 163);
+  /* Línea negra en el margen derecho */
 }
 
-#btnBuscar{
+#btnBuscar {
   min-width: 150px;
 }
 
 .barraArriba {
-  background-color: #005187; /* Reemplaza ##005187 con el color que desees */
+  background-color: #005187;
+  /* Reemplaza ##005187 con el color que desees */
   color: white;
-  margin-left: 240px; /* Ancho del sidebar */
+  margin-left: 240px;
+  /* Ancho del sidebar */
 }
 
-.item{
+.item {
   color: #000000;
 }
 
-.barraLateral p, .barraLateral a {
+.barraLateral p,
+.barraLateral a {
   padding: 10px 15px;
-  margin: 0; /* Agrega este estilo para eliminar cualquier margen adicional */
+  margin: 0;
+  /* Agrega este estilo para eliminar cualquier margen adicional */
   font-size: 18px;
   display: block;
 }
 
-.barraLateral a{
+.barraLateral a {
   text-decoration: none;
 }
 
 .EncabezadoLateral {
-  font-weight: bold; /* Aplica negrita */
-  text-align: center; /* Centra el texto */
+  font-weight: bold;
+  /* Aplica negrita */
+  text-align: center;
+  /* Centra el texto */
 }
 
 .barraLateral a:not(.active):hover {
@@ -323,19 +387,22 @@ th, td{
   cursor: pointer;
 }
 
-#LogoINSIBOCredenciales{
+#LogoINSIBOCredenciales {
   max-width: 150px;
   display: block;
   margin: 0 auto;
 }
 
 .item.active {
-  background-color: #03376eaf; /* Color de fondo para indicar activación */
-  color: white; /* Color de texto para indicar activación */
+  background-color: #03376eaf;
+  /* Color de fondo para indicar activación */
+  color: white;
+  /* Color de texto para indicar activación */
 }
 
 #Usuarios th {
-  color: rgb(138, 138, 138); /* Cambia el color a rojo */
+  color: rgb(138, 138, 138);
+  /* Cambia el color a rojo */
 }
 
 .tituloTabla {
@@ -343,31 +410,42 @@ th, td{
 }
 
 .contenedorTabla {
-  padding: 20px; /* Ajusta el espaciado según sea necesario */
-  border-radius: 10px; /* Opcional: añade bordes redondeados al contenedor */
-  border: 1px solid #ccc; /* Borde de 1 píxel sólido de color gris (#ccc) */
+  padding: 20px;
+  /* Ajusta el espaciado según sea necesario */
+  border-radius: 10px;
+  /* Opcional: añade bordes redondeados al contenedor */
+  border: 1px solid #ccc;
+  /* Borde de 1 píxel sólido de color gris (#ccc) */
 }
 
 #Usuarios {
-  border-collapse: separate; /* Indica que los bordes de las celdas no se colapsen */
-  border-spacing: 10px; /* Establece el espaciado entre las celdas */
+  border-collapse: separate;
+  /* Indica que los bordes de las celdas no se colapsen */
+  border-spacing: 10px;
+  /* Establece el espaciado entre las celdas */
 }
 
-#encabezadoAcciones{
-  text-align: center; /* Centra el contenido de las celdas en el cuerpo de la tabla */
+#encabezadoAcciones {
+  text-align: center;
+  /* Centra el contenido de las celdas en el cuerpo de la tabla */
 }
 
 .centro {
-  margin-left: 50px; /* Ancho de la barra lateral */
-  margin-right: 10px; /* Ancho de la barra lateral */
+  margin-left: 50px;
+  /* Ancho de la barra lateral */
+  margin-right: 10px;
+  /* Ancho de la barra lateral */
   width: fit-content;
-  margin-top: 80px; /* Adjust margin value as needed */
-  
+  margin-top: 80px;
+  /* Adjust margin value as needed */
+
 }
 
-.btnPaginado{
-  background-color: #005187; /* Reemplaza ##005187 con el color que desees */
-  border: 1px solid rgb(250, 250, 250); /* Borde blanco alrededor del botón */
+.btnPaginado {
+  background-color: #005187;
+  /* Reemplaza ##005187 con el color que desees */
+  border: 1px solid rgb(250, 250, 250);
+  /* Borde blanco alrededor del botón */
 }
 
 /* --------------------------- FIN DE ESTILO DE GESTIONAR CREDENCIALES --------------------- */
@@ -380,39 +458,41 @@ th, td{
 
 /* --- Barra Lateral --- */
 
-.barra-lateral{
+.barra-lateral {
   background: #262a34;
   color: #fff;
   min-width: 300px;
   min-height: 100vh;
 }
 
-.barra-lateral a{
+.barra-lateral a {
   color: #fff;
 }
 
-.barra-lateral .logo{
+.barra-lateral .logo {
   background: #0275db;
 }
 
-.barra-lateral .logo h2{
+.barra-lateral .logo h2 {
   font-size: 30px;
   font-family: 'Roboto', sans-serif;
   text-align: center;
   font-weight: 300;
 }
 
-.barra-lateral .menu a{
+.barra-lateral .menu a {
   display: block;
   padding: 20px;
-  font-family: 'Roboto',sans-serif;
+  font-family: 'Roboto', sans-serif;
   font-weight: 500;
   border-bottom: 1px solid rgba(255, 255, 255, .1);
 }
-.barra-lateral .menu a:hover{
+
+.barra-lateral .menu a:hover {
   background: #35ae6b;
 }
-.barra-lateral .menu a svg{
+
+.barra-lateral .menu a svg {
   margin-right: 10px;
 }
 
@@ -435,6 +515,7 @@ th, td{
   justify-content: center;
   align-items: center;
 }
+
 .upload-files-container {
   background-color: #4d82bc;
   width: 420px;
@@ -447,6 +528,7 @@ th, td{
   box-shadow: rgba(0, 0, 0, 0.24) 0px 10px 20px,
     rgba(0, 0, 0, 0.28) 0px 6px 6px;
 }
+
 .drag-file-area {
   border: 2px solid #4d82bc;
   background-color: #fff;
@@ -456,28 +538,35 @@ th, td{
   width: 350px;
   text-align: center;
 }
+
 .drag-file-area .upload-icon {
   font-size: 3rem;
 }
+
 .drag-file-area h3 {
   font-size: 1.5rem;
   margin: 15px 0;
 }
+
 .drag-file-area label {
   font-size: 1rem;
 }
+
 .drag-file-area label .browse-files-text {
   color: #4d82bc;
   font-weight: bolder;
   cursor: pointer;
 }
+
 .browse-files span {
   position: relative;
   top: -25px;
 }
+
 .default-file-input {
   opacity: 0;
 }
+
 .cannot-upload-message {
   background-color: #ffc6c4;
   font-size: 17px;
@@ -489,22 +578,27 @@ th, td{
   color: #bb0000;
   display: none;
 }
+
 @keyframes fadeIn {
   0% {
     opacity: 0;
   }
+
   100% {
     opacity: 1;
   }
 }
+
 .cannot-upload-message span,
 .upload-button-icon {
   padding-right: 10px;
 }
+
 .cannot-upload-message span:last-child {
   padding-left: 20px;
   cursor: pointer;
 }
+
 .file-block {
   color: #4d82bc;
   background-color: #fff;
@@ -520,21 +614,26 @@ th, td{
   border-radius: 10px;
   cursor: pointer;
 }
+
 .file-info {
   display: flex;
   align-items: center;
   font-size: 15px;
 }
+
 .file-icon {
   margin-right: 10px;
 }
+
 .file-name,
 .file-size {
   padding: 0 3px;
 }
+
 .remove-file-icon {
   cursor: pointer;
 }
+
 .progress-bar {
   display: flex;
   position: absolute;
@@ -545,6 +644,7 @@ th, td{
   border-radius: 25px;
   background-color: #4bb543;
 }
+
 .upload-button {
   font-family: "Montserrat";
   background-color: #f5f5f5;
@@ -558,11 +658,13 @@ th, td{
   padding: 0.5rem 5rem;
   cursor: pointer;
 }
+
 /*input modal*/
-.container-modal{
+.container-modal {
   width: 100%;
 }
-.container-modal .wrapper-modal{
+
+.container-modal .wrapper-modal {
   position: relative;
   height: 95px;
   width: 100%;
@@ -574,10 +676,12 @@ th, td{
   justify-content: center;
   overflow: hidden;
 }
-.wrapper-modal.active{
+
+.wrapper-modal.active {
   border: none;
 }
-.wrapper-modal .image{
+
+.wrapper-modal .image {
   position: absolute;
   height: 100%;
   width: 100%;
@@ -586,16 +690,18 @@ th, td{
   justify-content: center;
 }
 
-.wrapper-modal .icon{
+.wrapper-modal .icon {
   font-size: 2rem;
   color: #4d82bc;
 }
-.wrapper-modal .text{
+
+.wrapper-modal .text {
   font-size: 20px;
   font-weight: 500;
   color: #5B5B7B;
 }
-.wrapper-modal #cancel-btn-m i{
+
+.wrapper-modal #cancel-btn-m i {
   position: absolute;
   font-size: 20px;
   right: 15px;
@@ -604,13 +710,16 @@ th, td{
   cursor: pointer;
   display: none;
 }
-.wrapper-modal.active:hover #cancel-btn-m i{
+
+.wrapper-modal.active:hover #cancel-btn-m i {
   display: block;
 }
-.wrapper-modal #cancel-btn-m i:hover{
+
+.wrapper-modal #cancel-btn-m i:hover {
   color: #e74c3c;
 }
-.wrapper-modal .file-name{
+
+.wrapper-modal .file-name {
   position: absolute;
   bottom: 0px;
   width: 100%;
@@ -620,11 +729,13 @@ th, td{
   display: none;
   background: #84b6f4;
 }
+
 /* .wrapper.active:hover .file-name{ */
-.wrapper-modal.active .file-name{
+.wrapper-modal.active .file-name {
   display: block;
 }
-.container-modal #custom-btn-m{
+
+.container-modal #custom-btn-m {
   margin-top: 1rem;
   display: block;
   width: 100%;
@@ -635,6 +746,7 @@ th, td{
   letter-spacing: 1px;
   cursor: pointer;
 }
+
 /* ----------------------------------------------------------------------------------------- */
 /*                               INPUT                           */
 /* ----------------------------------------------------------------------------------------- */
@@ -645,11 +757,142 @@ th, td{
 /*                               LISTAR RESPONSIVO - Bryan                           */
 /* ----------------------------------------------------------------------------------------- */
 .table-responsive {
-    overflow-x: auto;
+  overflow-x: auto;
 }
-.navbar .navbar-brand, .navbar .navbar-toggler, .navbar .nav-link, .navbar .btn {
-    color: white;
+
+.navbar .navbar-brand,
+.navbar .navbar-toggler,
+.navbar .nav-link,
+.navbar .btn {
+  color: white;
 }
+
 .navbar .navbar-toggler {
-    border: none;
+  border: none;
 }
+
+
+/* ----------------------------------------------------------------------------------------- */
+/*                               CREACIÓN DE ASIGNACIÓN - Ivan                                 */
+/* ----------------------------------------------------------------------------------------- */
+
+#seccionSpan {
+  color: grey;
+}
+
+#saveButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* ----------------------------------------------------------------------------------------- */
+/*                               ENTRADA DE ARCHIVOS (HORARIO) - Iván                        */
+/* ----------------------------------------------------------------------------------------- */
+.inputExcel{
+  background-color: #0261a0;
+}
+/* Agregar borde más notorio cuando se arrastra el archivo */
+.dragover {
+  border: 2px dashed #fff;
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.border-trazado {
+  border: 2px dashed #ccc;
+  padding: 20px;
+  transition: background-color 0.3s ease-in-out;
+}
+
+
+
+/* ----------------------------------------------------------------------------------------- */
+/*                                      HORARIO - Bryan                                      */
+/* ----------------------------------------------------------------------------------------- */
+
+.custom-navbar2 {
+  background-color: #005187;
+}
+
+.custom-navbar2 .nav-link {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sticky-top {
+  position: sticky;
+  top: 0;
+}
+
+/* Estilo básico del checkbox */
+.custom-checkbox-section .form-check-input {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+  border: 1px solid #005187;
+  border-radius: 4px;
+  position: relative;
+  outline: none;
+  transition: all 0.3s ease-in-out;
+}
+
+/* Fondo suave cuando no está seleccionado */
+.custom-checkbox-section .form-check-input::before {
+  content: '';
+  display: block;
+  width: 100%;
+  height: 100%;
+  background-color: #F0F4F8;
+  border-radius: 4px;
+  transition: background-color 0.3s ease-in-out;
+}
+
+/* Hace que las celdas de la tabla sean uniformes */
+.table-uniform td, .table-uniform th {
+  width: 14.28%; 
+  min-height: 50px; 
+  text-align: center;
+  vertical-align: middle;
+  white-space: nowrap;
+}
+
+
+/* ----------------------------------------------------------------------------------------- */
+/*                                      BIBLIOTECA/PAPELERÍA - Arce                          */
+/* ----------------------------------------------------------------------------------------- */
+
+/* El contenedor del input necesita tener position: relative para que las sugerencias se posicionen correctamente */
+.position-relative {
+  position: relative;
+}
+
+/* Estilo para las sugerencias que aparecen flotando */
+.suggestions-dropdown {
+  position: absolute;
+  top: 100%; /* Aparecer justo debajo del input */
+  left: 0;
+  right: 0;
+  z-index: 1000; /* Para asegurar que aparezca sobre otros elementos */
+  background-color: white;
+  max-height: 200px;
+  overflow-y: auto;
+  box-shadow: 0 4px 8px rgba(212, 6, 6, 0);
+}
+
+/* Estilo para cada sugerencia individual */
+.suggestions-dropdown li {
+  padding: 8px;
+  cursor: pointer;
+}
+
+.suggestions-dropdown li:hover {
+  background-color: #f0f0f0;
+}
+
+/* Si no hay sugerencias, el dropdown no debería aparecer */
+.suggestions-dropdown.hidden {
+  display: none;
+}
+
+
+

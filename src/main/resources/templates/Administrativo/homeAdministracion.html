@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head th:replace="~{home :: head}"></head>
+
+<body>
+    <header th:replace="~{home :: header}"></header>
+
+    <div class="container mt-3 my-5 py-5">
+        <!-- Jumbotron -->
+        <div class="jumbotron mb-3 bg-light rounded-3">
+            <div class="container py-4 text-center">
+                <h1 class="display-5 fw-bold">Gestión administrativa</h1>
+                <p class="col-md-12 fs-5">Accede a las herramientas necesarias para una gestión eficiente y efectiva.
+                </p>
+            </div>
+        </div>
+
+        <!-- Cards -->
+        <div class="row mb-3 justify-content-center g-3">
+            <div sec:authorize="hasAnyRole('ADMINISTRADOR','DIRECTOR','SUBDIRECTORA')"
+                class="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-2 d-flex">
+                <div class="card h-100">
+                    <img th:src="@{/Imagenes/orientadores.jpg}"
+                        class="card-img-top" alt="Orientadores">
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">Orientadores</h5>
+                        <p class="card-text">Asignar orientadores a cada de una las especialidades de la institución.
+                        </p>
+                        <a th:href="@{/AsignacionOrientador/Asignar}" class="btn btn-primary mt-auto">Ir a Sección</a>
+                    </div>
+                </div>
+            </div>
+            <div sec:authorize="hasAnyRole('ADMINISTRADOR','DIRECTOR','SUBDIRECTORA','SECRETARIA')"
+                class="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-2 d-flex">
+                <div class="card h-100">
+                    <img th:src="@{/Imagenes/materias.jpg}"
+                        class="card-img-top" alt="Administrativos">
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">Materias</h5>
+                        <p class="card-text">Administre las materias actuales.</p>
+                        <a th:href="@{/GestionMaterias}" class="btn btn-primary mt-auto">Ir a Sección</a>
+                    </div>
+                </div>
+            </div>
+            <div sec:authorize="hasAnyRole('ADMINISTRADOR','DIRECTOR','SUBDIRECTORA','SECRETARIA')"
+                class="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-2 d-flex">
+                <div class="card h-100">
+                    <img th:src="@{/Imagenes/asignacion_materias.jpg}"
+                        class="card-img-top" alt="Asignación de Materias">
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">Asignación Materias</h5>
+                        <p class="card-text">Asigne las materias a los docentes.</p>
+                        <a th:href="@{/AsignacionMateria}" class="btn btn-primary mt-auto">Ir a Sección</a>
+                    </div>
+                </div>
+            </div>
+            <div sec:authorize="hasAnyRole('ADMINISTRADOR','DOCENTE','DIRECTOR','SUBDIRECTORA','SECRETARIA')"
+                class="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-2 d-flex">
+                <div class="card h-100">
+                    <img th:src="@{/Imagenes/horario.jpg}"
+                        class="card-img-top" alt="Horarios">
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">Horarios</h5>
+                        <p class="card-text">Cree los horarios del año lectivo.</p>
+                        <a th:href="@{/horarios/asignarHoras}" class="btn btn-primary mt-auto">Ir a Sección</a>
+                    </div>
+                </div>
+            </div>
+            <div sec:authorize="hasAnyRole('ADMINISTRADOR','DIRECTOR','SUBDIRECTORA')"
+                class="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-2 d-flex">
+                <div class="card h-100">
+                    <img th:src="@{/Imagenes/bachilleratos.jpg}"
+                        class="card-img-top" alt="Bachilleratos">
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">Bachilleratos</h5>
+                        <p class="card-text">Administra las ofertas académicas.</p>
+                        <a th:href="@{/Bachillerato/anio}" class="btn btn-primary mt-auto">Ir a Sección</a>
+                    </div>
+                </div>
+            </div>
+            <div sec:authorize="hasAnyRole('ADMINISTRADOR','DIRECTOR','SUBDIRECTORA','SECRETARIA')"
+                th:classappend="${activo != null} ? '' : 'd-none'"
+                class="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-2 d-flex">
+                <div class="card h-100">
+                    <img th:src="@{/Imagenes/matricula.jpg}"
+                        class="card-img-top" alt="Notas">
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">Matricula</h5>
+                        <p class="card-text">Empieza las inscripciones</p>
+                        <a class="btn btn-primary mt-auto abrir-btn">Ir a Sección</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="abrirModal" tabindex="-1" aria-labelledby="confirmAgregarModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="confirAgregarModalLabel">Seleccione el tipo de matrícula</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+    
+                <div class="modal-body">
+                    <div class="row justify-content-center">
+                        <!-- Nuevo Ingreso -->
+                        <div class="col-12 col-md-6 text-center py-2">
+                            <a class="btn btn-outline-dark d-flex flex-column align-items-center py-4"
+                                th:href="@{ExpedienteAlumno/Crear}">
+                                <span class="fs-5 mb-2">Nuevo Ingreso</span>
+                                <i class="bi bi-person-plus fs-1"></i>
+                            </a>
+                        </div>
+    
+                        <!-- Antiguo Ingreso -->
+                        <div class="col-12 col-md-6 text-center py-2">
+                            <a class="btn btn-outline-dark d-flex flex-column align-items-center py-4"
+                                th:href="@{/AntiguoIngreso}">
+                                <span class="fs-5 mb-2">Antiguo Ingreso</span>
+                                <i class="bi bi-person-check fs-1"></i>
+                            </a>
+                        </div>
+                    </div>
+    
+                    <hr>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer th:replace="~{home :: footer}"></footer>
+    <script type="text/javascript" th:src="@{/js/home.js}"></script>
+</body>
+
+
+
+</html>

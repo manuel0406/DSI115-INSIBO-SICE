@@ -64,11 +64,12 @@
           <input  class="form-control form-control-sm me-2" type="search" placeholder="Buscar correo..." aria-label="Buscar" id="buscar">
           <button class="btn btn-outline-dark btn-sm" type="submit" id="btnBuscar">Buscar persona <i class="bi bi-search"></i></button>
         </form>
-      
-        <div class="container-fluid">
+
+        <div class="container-fluid col-9 mx-auto">
           <h2 class="tituloTabla"><b>Empleados rechazado</b></h2>
-          <table class="table ">
-            <thead class="table-dark">
+
+          <table class="table table-responsive table-hover">
+            <thead>
               <tr>
                 <th scope="col">Nombre completo</th>
                 <th scope="col">Correo</th>
@@ -87,7 +88,22 @@
                   </span>
                 </td>
                 <td>
-                  <a th:href = "@{aceptarUsuarioRechazado/} + ${user.usuario.idUsuario}" type="button" class="btn btn-outline-dark btn-accept"><i class="bi bi-check2"></i></a>
+                  <div th:if="${user.usuario.docente != null}">
+                    <div th:if="${user.usuario.docente.activoDocente == true }">
+                      <a th:href = "@{aceptarUsuarioRechazado/} + ${user.usuario.idUsuario}" type="button" class="btn btn-outline-dark btn-accept"><i class="bi bi-check2"></i></a>
+                    </div>
+                    <div th:if="${user.usuario.docente.activoDocente != true}">
+                      <a type="button" class="btn btn-outline-dark btn-rechazado-inactivo"><i class="bi bi-check2"></i></a>
+                    </div>
+                  </div>
+                  <div th:if="${user.usuario.personalAdministrativo != null}">
+                    <div th:if="${user.usuario.personalAdministrativo.activoPersonalAdministrativo == true }">
+                      <a th:href = "@{aceptarUsuarioRechazado/} + ${user.usuario.idUsuario}" type="button" class="btn btn-outline-dark btn-accept"><i class="bi bi-check2"></i></a>
+                    </div>
+                    <div th:if="${user.usuario.personalAdministrativo.activoPersonalAdministrativo != true}">
+                      <a type="button" class="btn btn-outline-dark btn-rechazado-inactivo"><i class="bi bi-check2"></i></a>
+                    </div>
+                  </div>
                 </td>
               </tr>
             </tbody>
@@ -123,7 +139,8 @@
     </div>
   </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js">
+  </script>  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script type="text/javascript" th:src="@{/js/rechazado.js}"></script>
 </body>
 

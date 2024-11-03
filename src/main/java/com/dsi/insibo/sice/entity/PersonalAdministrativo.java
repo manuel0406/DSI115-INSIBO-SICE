@@ -29,9 +29,9 @@ public class PersonalAdministrativo {
     private boolean atestadosPersonal;
     private Date fechaEntregaPersonal;
     private Date fechaIngresoPersonal;
+    private boolean activoPersonalAdministrativo;
     
-
-    
+   
     public String getNupPersonal() {
         return nupPersonal;
     }
@@ -158,6 +158,12 @@ public class PersonalAdministrativo {
     }
     public void setFechaIngresoPersonal(Date fechaIngresoPersonal) {
         this.fechaIngresoPersonal = fechaIngresoPersonal;
+    }
+    public boolean isActivoPersonalAdministrativo() {
+        return activoPersonalAdministrativo;
+    }
+    public void setActivoPersonalAdministrativo(boolean activoPersonalAdministrativo) {
+        this.activoPersonalAdministrativo = activoPersonalAdministrativo;
     }
 
     

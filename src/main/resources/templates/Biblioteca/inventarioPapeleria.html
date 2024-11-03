@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html xmlns:th="http://wwww.thymelead.org">
+<head th:replace="~{home :: head}">
+</head>
+<body>
+    <header th:replace="~{home :: header}"></header>
+
+    <!--Indicación de la ubicación de la página actual-->
+    <div class="container mt-5 py-4 ">
+        <nav style="--bs-breadcrumb-divider: '/';" aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a th:href="@{/Biblioteca/}" class="text-secondary text-decoration-none">Biblioteca</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Inventario Papelería</li>
+            </ol>
+        </nav>
+    </div>
+
+    <!--Indicación del título de la página actual-->
+    <div class="container">
+        <div class="jumbotron  mb-3 bg-light rounded-3">
+            <div class="container py-5 text-center">
+                <h1 class="display-5 fw-bold "> Inventario Papelería</h1>
+            </div>
+        </div>
+    </div>
+
+    <!--Botones y Barra de busqueda de alumnos-->
+    <div class="navbar">
+        <div class="container">
+            <div class="d-grid gap-2 d-md-block">
+                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalAgregarArticulo">Agregar Nuevo Producto</button>
+                <a th:href="@{/Biblioteca/Papeleria/verPapeleriaPdf}" class="btn btn-secondary" target="_blank">
+                    <i class="bi bi-printer"></i> <!-- Ícono de impresión -->
+                </a>
+            </div>
+
+            <!-- Barra de busqueda -->
+            <form class="d-flex" role="search" method="get" action="/Biblioteca/Papeleria/InventarioPapeleria">
+                <input class="form-control me-2" type="search" name="searchTerm"  placeholder="Buscar Producto" aria-label="Buscar">
+                <button class="btn btn-primary" type="submit">Buscar</button>
+            </form>
+        </div>
+    </div>
+
+    <!--Mensajes de acción -->
+    <div class="container">
+        <div th:replace="~{alertas :: alertas}"></div>
+    </div>
+                
+    <!-- Tabla de datos -->
+    <div class="container">
+        <table class="table">
+            <thead class="table-dark">
+                <tr>
+                    <th scope="col">Nombre</th>
+                    <th scope="col">Descripción</th>
+                    <th scope="col">Existencia</th>
+                    <th scope="col">Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="inventario : ${productos}">
+                    <td th:text="${inventario.nombreArticulo}"></td>
+                    <td th:text="${inventario.descripcionArticulo}"></td>
+                    <td th:text="${inventario.existenciaArticulo}"></td>
+                    <td>
+                        <!-- Botón editar -->
+                        <button class="btn btn-primary" th:attr="onclick='showEditModal(' + ${inventario.idArticulo} + ')'" >
+                            <i class="bi bi-pencil"></i>
+                        </button>
+
+                        <!-- Botón eliminar -->
+                        <a href="#" class="btn btn-danger" th:attr="onclick='showDeleteModal(' + ${inventario.idArticulo} + ')'">
+                            <i class="bi bi-trash"></i>
+                        </a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Mensaje cuando no hay datos -->
+        <div th:if="${page.totalElements == 0}" class="alert alert-info alert-dismissible fade show mt-1 mr-2">
+            <i class="bi bi-info-circle"></i>
+            <label>No se encuentran articulos de papelería disponibles</label>
+        </div>
+
+        <!-- Maneja la paginación -->
+        <nav th:if="${page.totalPages > 1}" aria-label="Page navigation">
+            <ul class="pagination justify-content-center">
+                
+                <!-- Botón Anterior -->
+                <li class="page-item" th:classappend="${page.number == 0} ? 'disabled'">
+                    <a class="page-link" th:href="@{'/Biblioteca/Papeleria/InventarioPapeleria?page=' + (${page.number - 1}) + '&query=' + ${query}}">Anterior</a>
+                </li>
+        
+                <!-- Primera página -->
+                <li class="page-item" th:classappend="${page.number == 0} ? 'active'">
+                    <a class="page-link" th:href="@{'/Biblioteca/Papeleria/InventarioPapeleria?page=0&query=' + ${query}}">1</a>
+                </li>
+        
+                <!-- Tres puntos al principio -->
+                <li class="page-item disabled" th:if="${page.number > 2}">
+                    <span class="page-link">...</span>
+                </li>
+        
+                <!-- Páginas alrededor de la página actual -->
+                <li class="page-item" 
+                    th:each="i : ${#numbers.sequence(page.number - 1, page.number + 4)}" 
+                    th:if="${i > 0 and i < page.totalPages - 1}" 
+                    th:classappend="${page.number == i} ? 'active'">
+                    <a class="page-link" th:href="@{'/Biblioteca/Papeleria/InventarioPapeleria?page=' + ${i} + '&query=' + ${query}}" th:text="${i + 1}">1</a>
+                </li>
+        
+                <!-- Tres puntos al final -->
+                <li class="page-item disabled" th:if="${page.number + 4 < page.totalPages - 2}">
+                    <span class="page-link">...</span>
+                </li>
+        
+                <!-- Última página -->
+                <li class="page-item" th:classappend="${page.number == page.totalPages - 1} ? 'active'">
+                    <a class="page-link" th:href="@{'/Biblioteca/Papeleria/InventarioPapeleria?page=' + ${page.totalPages - 1} + '&query=' + ${query}}" 
+                       th:text="${page.totalPages}">1</a>
+                </li>
+        
+                <!-- Botón Siguiente -->
+                <li class="page-item" th:classappend="${page.number + 1 >= page.totalPages} ? 'disabled'">
+                    <a class="page-link" th:href="@{'/Biblioteca/Papeleria/InventarioPapeleria?page=' + (${page.number + 1}) + '&query=' + ${query}}">Siguiente</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
+    
+    <!-- Modal para Agregar Producto -->
+    <div class="modal fade" id="modalAgregarArticulo" tabindex="-1" aria-labelledby="modalAgregarArticulo" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Agregar Nuevo Artículo | Papelería</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Formulario para agregar un nuevo artículo -->
+                    <form th:action="@{/Biblioteca/Papeleria/InventarioPapeleria}" th:object="${nuevoProducto}" method="post" id="formNuevoProducto" novalidate>
+                        <input type="hidden" th:field="*{idArticulo}" />
+                
+                        <!-- Campo nombreArticulo -->
+                        <div class="mb-3">
+                            <label for="nombreArticulo" class="form-label">Nombre de Producto:</label>
+                            <input type="text" th:field="*{nombreArticulo}" class="form-control" id="nombreArticulo" required />
+                            <div class="invalid-feedback">
+                                Por favor, ingrese el nombre del producto.
+                            </div>
+                        </div>
+                
+                        <!-- Campo descripcionArticulo -->
+                        <div class="mb-3">
+                            <label for="descripcionArticulo" class="form-label">Detalle:</label>
+                            <input type="text" th:field="*{descripcionArticulo}" class="form-control" id="descripcionArticulo" required />
+                            <div class="invalid-feedback">
+                                Por favor, ingrese el detalle del producto.
+                            </div>
+                        </div>
+                
+                        <!-- Campo existenciaArticulo -->
+                        <div class="mb-3">
+                            <label for="existenciaArticulo" class="form-label">Cantidad:</label>
+                            <input type="number" th:field="*{existenciaArticulo}" class="form-control" id="existenciaArticulo" min="1" required />
+                            <div class="invalid-feedback">
+                                La cantidad debe ser mayor a 0.
+                            </div>
+                        </div>
+                
+                        <!-- Botones del modal -->
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                            <button type="submit" class="btn btn-primary">Guardar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de edición -->
+    <div class="modal fade" id="editarArticuloModal" tabindex="-1" aria-labelledby="editarArticuloModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form id="formEditarArticulo" th:action="@{/Biblioteca/Papeleria/InventarioPapeleria/update}" method="post" novalidate>
+                    <input type="hidden" name="_csrf" th:value="${_csrf.token}" />
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="editModalLabel">Editar Artículo</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <input type="hidden" id="idArticuloEdit" name="idArticulo">
+                
+                        <div class="mb-3">
+                            <label for="nombreArticuloEdit" class="form-label">Nombre del Artículo</label>
+                            <input type="text" class="form-control" id="nombreArticuloEdit" name="nombreArticulo" required />
+                            <div class="invalid-feedback">
+                                Por favor, ingrese el nombre del artículo.
+                            </div>
+                        </div>
+                
+                        <div class="mb-3">
+                            <label for="descripcionArticuloEdit" class="form-label">Descripción del Artículo</label>
+                            <input type="text" class="form-control" id="descripcionArticuloEdit" name="descripcionArticulo" required />
+                            <div class="invalid-feedback">
+                                Por favor, ingrese la descripción del artículo.
+                            </div>
+                        </div>
+                
+                        <div class="mb-3">
+                            <label for="existenciaArticuloEdit" class="form-label">Existencia del Artículo</label>
+                            <input type="number" class="form-control" id="existenciaArticuloEdit" name="existenciaArticulo" min="1" required />
+                            <div class="invalid-feedback">
+                                La cantidad debe ser mayor a 0.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                        <button type="submit" class="btn btn-primary">Guardar cambios</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Confirmación -->
+    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteModalLabel">Confirmar Eliminación</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    ¿Estás seguro de que quieres eliminar este artículo?
+                </div>
+                <div class="modal-footer">
+                    <form id="deleteForm" method="get" action="#">
+                        <input type="hidden" id="itemId" name="itemId" value=""/>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-danger">Eliminar</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer th:replace="~{home :: footer}"></footer>
+    <script type="text/javascript" th:src="@{/js/InventarioPapeleria.js}"></script>
+</body>
+</html>

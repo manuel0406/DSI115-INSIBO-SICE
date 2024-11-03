@@ -21,7 +21,7 @@ public class EnvioCorreo {
     @Autowired
     private TemplateEngine templateEngine; // Thymeleaf template engine
 
-    public void sendEmail(String subject, String usuarioCorreo, String nuevaContrasena) {
+    public void sendEmail(String subject, String descripcion, String usuarioCorreo, String nuevaContrasena) {
 
         MimeMessage message = mailSender.createMimeMessage();
         MimeMessageHelper helper;
@@ -33,6 +33,7 @@ public class EnvioCorreo {
             context.setVariable("titulo", subject);
             context.setVariable("usuarioCorreo", usuarioCorreo);
             context.setVariable("nuevaContrasena", nuevaContrasena);
+            context.setVariable("descripcion", descripcion);
             String htmlContent = templateEngine.process("Seguridad/email-template-r.html", context);
 
             // Configurar el correo

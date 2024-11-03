@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head th:replace="~{home :: head}">
     <meta charset="UTF-8">
@@ -11,23 +11,21 @@
 
 <body>
     <header th:replace="~{home :: header}"></header>
-    
-    <div class="container my-4 py-5 flex-wrap">
-<!--Mensajes-->
-<div class="alert alert-success alert-dismissible fade show mt-1 ms-2 mr-2" th:if="${success != null}">
-    <label th:text="${success}"></label>
-    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-</div>
 
-<div class="alert alert-danger alert-dismissible fade show mt-1 ms-2 mr-2" th:if="${error != null}">
-    <label th:text="${error}"></label>
-    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-</div>
-
-<div class="alert alert-warning alert-dismissible fade show mt-1 ms-2 mr-2" th:if="${warning != null}">
-    <label th:text="${warning}"></label>
-    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-</div>
+    <div class="container-fluid my-4 px-4 py-5 flex-wrap">
+        <nav th:if="${navMatriculados != false}" aria-label="breadcrumb">
+            <ol class="breadcrumb mb-3">
+                <li class="breadcrumb-item">
+                    <a th:href="@{administracion}" class="text-decoration-none text-secondary">Administración</a>
+                </li>
+                <li class="breadcrumb-item">
+                    <a th:href="@{/AntiguoIngreso}" class="text-decoration-none text-secondary">Antiguo ingreso</a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page" th:text="Matriculados"></li>
+            </ol>
+        </nav>
+        <!--Mensajes-->
+        <div th:replace="~{alertas::alertas}"></div>
 
         <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap">
             <h3 class="text-start col-lg-9" th:text="${carrera != null || grado != null || seccion != null ?
@@ -36,66 +34,97 @@
                 (carrera != null ? carrera : '') +
                 (carrera != null && seccion != null ? ', ' : '') +
                 (seccion != null ? 'sección: ' + seccion : '') : 
-                'Listado de alumnos'}"><!-- Si todas las variables son null, establece el texto como 'Listado de alumnos' -->
+                'Listado de alumnos'}">
+                <!-- Si todas las variables son null, establece el texto como 'Listado de alumnos' -->
             </h3>
-
-
             <div class="d-flex gap-2">
-                <a class="btn btn-secondary"
-                    th:href="@{/ExpedienteAlumno/ver(format='pdf', carrera=${carrera}, grado=${grado}, seccion=${seccion})}"
+                <a th:if="${matricula ==false}"
+                    sec:authorize="hasAnyRole('ADMINISTRADOR','DIRECTOR','SUBDIRECTORA','SECRETARIA')"
+                    class="btn btn-secondary"
+                    th:href="@{/ExpedienteAlumno/ver(format='pdf', carrera=${carrera}, grado=${grado}, seccion=${seccion}, genero=${genero})}"
+                    data-bs-toggle="tooltip" data-bs-placement="top" title="Imprimir listado actual" target="_blank"
+                    onclick="openInPopup(this.href); return false;">
+                    <i class="bi bi-printer"></i> Imprimir listado
+                </a>
+                <!-- Boton imprimir del docente -->
+                <a sec:authorize="hasAnyRole('DOCENTE')" class="btn btn-secondary"
+                    th:href="@{/AsignacionOrientador/seccionAsigada/{id}(id=${id},format='pdf', genero=${genero})}"
+                    data-bs-toggle="tooltip" data-bs-placement="top" title="Imprimir listado actual" target="_blank"
+                    onclick="openInPopup(this.href); return false;">
+                    <i class="bi bi-printer"></i> Imprimir listado
+                </a>
+                <!-- boton imprimir de matricula -->
+                <a th:if="${matricula !=false}"
+                    sec:authorize="hasAnyRole('ADMINISTRADOR','DIRECTOR','SUBDIRECTORA','SECRETARIA')"
+                    class="btn btn-secondary"
+                    th:href="@{/matriculados(format='pdf', carrera=${carrera}, grado=${grado}, seccion=${seccion}, genero=${genero})}"
                     data-bs-toggle="tooltip" data-bs-placement="top" title="Imprimir listado actual" target="_blank"
                     onclick="openInPopup(this.href); return false;">
                     <i class="bi bi-printer"></i> Imprimir listado
                 </a>
 
-                <a th:href="@{/ExpedienteAlumno/Crear}" class="btn btn-success"
-                data-bs-toggle="tooltip" data-bs-placement="top" title="Agregar alumno" th:text="'Agregar alumno'"></a>
+                <a sec:authorize="hasAnyRole('ADMINISTRADOR','DIRECTOR','SUBDIRECTORA','SECRETARIA')"
+                    th:if="${matricula !=false}" th:href="@{/ExpedienteAlumno/Crear}" class="btn btn-primary"
+                    data-bs-toggle="tooltip" data-bs-placement="top" title="Agregar alumno"
+                    th:text="'Agregar alumno'"></a>
             </div>
         </div>
         <div class="row my-2">
             <div class="col-md-4 col-lg-3 mb-3">
                 <div class="card">
-                    <div class="container my-2">
+                    <div class="container-fluid my-2">
                         <h1 class="fs-6">Filtrar Alumnos</h1>
-                        <form th:action="@{/ExpedienteAlumno/ver}" method="get">
-                            <div class="mb-3">
+                        <form th:action="${url}" method="get">
+                            <div class="mb-3"
+                                sec:authorize="hasAnyRole('ADMINISTRADOR','DIRECTOR','SUBDIRECTORA','SECRETARIA')">
                                 <label for="carrera" class="form-label fs-6">Carrera:</label>
                                 <select id="carrera" name="carrera" th:value="${carrera}" class="form-select"
                                     aria-label="Default select example">
                                     <option value="" selected>Seleccione</option>
                                     <option th:each="bachillerato : ${bachilleratos}"
-                                        th:value="${bachillerato.nombreCarrera}"
-                                        th:text="${bachillerato.nombreCarrera}">
+                                        th:value="${bachillerato.nombreCarrera}" th:text="${bachillerato.nombreCarrera}"
+                                        th:selected="${bachillerato.nombreCarrera == carrera}">
                                     </option>
                                 </select>
                             </div>
-                            <div class="mb-3">
+                            <div class="mb-3"
+                                sec:authorize="hasAnyRole('ADMINISTRADOR','DIRECTOR','SUBDIRECTORA','SECRETARIA')">
                                 <label for="grado" class="form-label fs-6">Año:</label>
                                 <select id="grado" name="grado" th:value="${grado}" class="form-select">
                                     <option value="" selected>Seleccione</option>
-                                    <option value="1">1</option>
-                                    <option value="2">2</option>
-                                    <option value="3">3</option>
+                                    <option value="1" th:selected="${grado == '1'}">1</option>
+                                    <option value="2" th:selected="${grado == '2'}">2</option>
+                                    <option value="3" th:selected="${grado == '3'}">3</option>
                                 </select>
                             </div>
-                            <div class="mb-3">
+                            <div class="mb-3"
+                                sec:authorize="hasAnyRole('ADMINISTRADOR','DIRECTOR','SUBDIRECTORA','SECRETARIA')">
                                 <label for="seccion" class="form-label fs-6">Sección:</label>
                                 <select id="seccion" name="seccion" th:value="${seccion}" class="form-select">
                                     <option value="" selected>Seleccione</option>
-                                    <option value="A">A</option>
-                                    <option value="B">B</option>
-                                    <option value="C">C</option>
-                                    <option value="D">D</option>
+                                    <option value="A" th:selected="${seccion == 'A'}">A</option>
+                                    <option value="B" th:selected="${seccion == 'B'}">B</option>
+                                    <option value="C" th:selected="${seccion == 'C'}">C</option>
+                                    <option value="D" th:selected="${seccion == 'D'}">D</option>
                                 </select>
                             </div>
+                            <div class="mb-3">
+                                <label for="genero" class="form-label fs-6">Género:</label>
+                                <select id="genero" name="genero" th:value="${genero}" class="form-select">
+                                    <option value="" selected>Seleccione</option>
+                                    <option value="M" th:selected="${genero == 'M'}">M</option>
+                                    <option value="F" th:selected="${genero == 'F'}">F</option>
+                                </select>
+                            </div>
+
                             <input type="submit" class="btn btn-primary" value="Filtrar">
                         </form>
                     </div>
                 </div>
             </div>
             <div class="col-md-8 col-lg-9 table-responsive">
-                <table class="table ">
-                    <thead class="thead table-dark text-start">
+                <table class="table table-sm table-hover align-middle">
+                    <thead class="text-start">
                         <tr>
                             <th scope="col">#</th>
                             <th scope="col">Nie</th>
@@ -104,74 +133,95 @@
                             <th scope="col">Carrera</th>
                             <th scope="col">Sección</th>
                             <th scope="col">Año</th>
+                            <th scope="col">Genero</th>
                             <th scope="col">Acciones</th>
                         </tr>
                     </thead>
-                    <tbody class="table-group-divider fs-6">
+                    <tbody class="">
                         <!-- Iterar sobre la lista de alumnos -->
                         <tr th:each="alumno, stat : ${alumnos}">
-                            <th scope="row" th:text="${stat.index + 1}"></th>
-                            <td class="text-start fs-6" th:text="${alumno.nie}"></td>
-                            <td class="text-start fs-6" th:text="${alumno.apellidoAlumno}"></td>
-                            <td class="text-start fs-6" th:text="${alumno.nombreAlumno}"></td>
-                            <td class="text-start fs-6" th:text="${alumno.bachillerato.nombreCarrera}"></td>
-                            <td class="text-center fs-6" th:text="${alumno.bachillerato.seccion}"></td>
-                            <td class="text-center fs-6" th:text="${alumno.bachillerato.grado}"></td>
+                            <th scope="row" th:text="${baseIndex + stat.index + 1}">
+
+                            </th>
+                            <td class="text-start " th:text="${alumno.nie}"></td>
+                            <td class="text-start " th:text="${alumno.apellidoAlumno}"></td>
+                            <td class="text-start " th:text="${alumno.nombreAlumno}"></td>
+                            <td class="text-start " th:text="${alumno.bachillerato.nombreCarrera}"></td>
+                            <td class="text-center " th:text="${alumno.bachillerato.seccion}"></td>
+                            <td class="text-center" th:text="${alumno.bachillerato.grado}"></td>
+                            <td class="text-center" th:text="${alumno.sexoAlumno}"></td>
                             <td class="text-center">
-                                <a class="btn btn-success" th:href="@{/ExpedienteAlumno/Alumno/} + ${alumno.nie}"
-                                data-bs-toggle="tooltip" data-bs-placement="top" title="Consultar">
+                                <a class="btn btn-success " th:href="${urlBtnVer+alumno.idAlumno}"
+                                    data-bs-toggle="tooltip" data-bs-placement="top" title="Consultar">
                                     <i class="bi bi-file-earmark-text"></i>
                                 </a>
-                                <a class="btn btn-primary" th:href="@{/ExpedienteAlumno/editar/} + ${alumno.nie}"
-                                data-bs-toggle="tooltip" data-bs-placement="top" title="Editar">
+                                <a class="btn btn-primary"
+                                    sec:authorize="hasAnyRole('ADMINISTRADOR','DIRECTOR','SUBDIRECTORA','SECRETARIA')"
+                                    th:href="${urlBtnEditar+alumno.idAlumno}" data-bs-toggle="tooltip"
+                                    data-bs-placement="top" title="Editar">
+                                    <i class="bi bi-pencil-square"></i>
+                                </a>
+                                <!-- editar docente -->
+                                <a class="btn btn-primary" sec:authorize="hasAnyRole('DOCENTE')"
+                                    th:href="@{/AsignacionOrientador/editar/}+${id} + ${'/'+ alumno.idAlumno}"
+                                    data-bs-toggle="tooltip" data-bs-placement="top" title="Editar">
                                     <i class="bi bi-pencil-square"></i>
                                 </a>
                                 <a class="btn btn-danger delete-btn"
-                                    th:href="@{/ExpedienteAlumno/delete/} + ${alumno.nie}" data-bs-toggle="tooltip"
+                                    sec:authorize="hasAnyRole('ADMINISTRADOR','DIRECTOR','SUBDIRECTORA','SECRETARIA')"
+                                    th:href="${urlBtnEli+alumno.idAlumno}" data-bs-toggle="tooltip"
                                     data-bs-placement="top" title="Eliminar">
                                     <i class="bi bi-trash"></i>
                                 </a>
-
-                                <a th:href="@{/ExpedienteAlumno/editar/{id}(id=${alumno.nie}, format='pdf')} "
+                                <a th:href="@{/ExpedienteAlumno/editar/{id}(id=${alumno.idAlumno}, format='pdf')} "
                                     class="btn btn-secondary " data-bs-toggle="tooltip" data-bs-placement="top"
                                     title="Imprimir" target="_blank" onclick="openInPopup(this.href); return false;">
                                     <i class="bi bi-printer"></i>
                                 </a>
+
                             </td>
+
                         </tr>
                     </tbody>
                 </table>
+                <!-- Alerta que se muestra solo cuando se le manda una lista vacia de alumnos -->
+                <div class="alert alert-info alert-dismissible fade show mt-1 ms-2 mr-2" th:if="${totalElements == 0}">
+                    <i class="bi bi-info-circle"></i>
+                    <label th:text="${'¡No hay alumnos registrados!'}"></label>
+                </div>
                 <!-- Contenedor de navegación para la paginación -->
-                <nav aria-label="...">
-                    <!-- Lista de elementos de paginación centrada -->
-                    <ul class="pagination justify-content-center">
-                        <!-- Elemento de la lista para el enlace "Anterior" -->
-                        <!-- Si la página actual es la primera, se desactiva el enlace -->
-                        <li class="page-item" th:classappend="${page == 1} ? 'disabled' : ''">
-                            <!-- Enlace que lleva a la página anterior -->
-                            <a class="page-link"
-                                th:href="@{/ExpedienteAlumno/ver(page=${page - 1}, carrera=${carrera}, grado=${grado}, seccion=${seccion})}">Anterior</a>
-                        </li>
-                        <!-- Bucle que genera los enlaces para cada página -->
-                        <!-- Se usa th:each para iterar desde 1 hasta el total de páginas -->
-                        <!-- Se resalta el enlace de la página actual con la clase "active" -->
-                        <li class="page-item" th:each="i : ${#numbers.sequence(1, totalPages)}"
-                            th:classappend="${i == page} ? 'active' : ''">
-                            <!-- Enlace que lleva a la página correspondiente -->
-                            <a class="page-link"
-                                th:href="@{/ExpedienteAlumno/ver(page=${i}, carrera=${carrera}, grado=${grado}, seccion=${seccion})}"
-                                th:text="${i}"></a>
-                        </li>
-                        <!-- Elemento de la lista para el enlace "Siguiente" -->
-                        <!-- Si la página actual es la última, se desactiva el enlace -->
-                        <li class="page-item" th:classappend="${page == totalPages} ? 'disabled' : ''">
-                            <!-- Enlace que lleva a la página siguiente -->
-                            <a class="page-link"
-                                th:href="@{/ExpedienteAlumno/ver(page=${page + 1}, carrera=${carrera}, grado=${grado}, seccion=${seccion})}">Siguiente</a>
-                        </li>
-                    </ul>
-                </nav>
-
+                <!-- Solo se mostrara cuando existan paginas y el total de las lista de alumnos supero los 50 estudiantes -->
+                <div th:if="${totalPages != 0 && totalElements > 50}">
+                    <nav aria-label="...">
+                        <!-- Lista de elementos de paginación centrada -->
+                        <ul class="pagination justify-content-center">
+                            <!-- Elemento de la lista para el enlace "Anterior" -->
+                            <!-- Si la página actual es la primera, se desactiva el enlace -->
+                            <li class="page-item" th:classappend="${page == 1} ? 'disabled' : ''">
+                                <!-- Enlace que lleva a la página anterior -->
+                                <a class="page-link"
+                                    th:href="@{/ExpedienteAlumno/ver(page=${page - 1}, carrera=${carrera}, grado=${grado}, seccion=${seccion})}">Anterior</a>
+                            </li>
+                            <!-- Bucle que genera los enlaces para cada página -->
+                            <!-- Se usa th:each para iterar desde 1 hasta el total de páginas -->
+                            <!-- Se resalta el enlace de la página actual con la clase "active" -->
+                            <li class="page-item" th:each="i : ${#numbers.sequence(1, totalPages)}"
+                                th:classappend="${i == page} ? 'active' : ''">
+                                <!-- Enlace que lleva a la página correspondiente -->
+                                <a class="page-link"
+                                    th:href="@{/ExpedienteAlumno/ver(page=${i}, carrera=${carrera}, grado=${grado}, seccion=${seccion})}"
+                                    th:text="${i}"></a>
+                            </li>
+                            <!-- Elemento de la lista para el enlace "Siguiente" -->
+                            <!-- Si la página actual es la última, se desactiva el enlace -->
+                            <li class="page-item" th:classappend="${page == totalPages} ? 'disabled' : ''">
+                                <!-- Enlace que lleva a la página siguiente -->
+                                <a class="page-link"
+                                    th:href="@{/ExpedienteAlumno/ver(page=${page + 1}, carrera=${carrera}, grado=${grado}, seccion=${seccion})}">Siguiente</a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
 
             </div>
         </div>

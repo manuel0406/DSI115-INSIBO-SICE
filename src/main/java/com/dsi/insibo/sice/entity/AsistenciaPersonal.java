@@ -6,6 +6,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 
 @Entity
@@ -13,35 +14,43 @@ public class AsistenciaPersonal {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int idAsistenciaP;
+    private int idAsistenciaPersonal;
 
     @ManyToOne
-    private PersonalAdministrativo personal;
+    @JoinColumn(name = "id_personal_aparato")
+    private PersonalAparato personalAparato;
 
-    @ManyToOne
-    private Justificacion justificacion;
+    private String DepartPersonal;
 
     private String turnoP;
+    
     private LocalDateTime horaEntradaP;
+
     private LocalDateTime horaSalidaP;
-    public int getIdAsistenciaP() {
-        return idAsistenciaP;
+
+    public int getIdAsistenciaPersonal() {
+        return this.idAsistenciaPersonal;
     }
-    public void setIdAsistenciaP(int idAsistenciaP) {
-        this.idAsistenciaP = idAsistenciaP;
+
+    public void setIdAsistenciaPersonal(int idAsistenciaPersonal) {
+        this.idAsistenciaPersonal = idAsistenciaPersonal;
     }
-    public PersonalAdministrativo getPersonal() {
-        return personal;
+    public PersonalAparato getPersonalAparato() {
+        return personalAparato;
     }
-    public void setPersonal(PersonalAdministrativo personal) {
-        this.personal = personal;
+
+    public void setPersonalAparato(PersonalAparato personalAparato) {
+        this.personalAparato = personalAparato;
     }
-    public Justificacion getJustificacion() {
-        return justificacion;
+    
+    public String getDepartPersonal() {
+        return this.DepartPersonal;
     }
-    public void setJustificacion(Justificacion justificacion) {
-        this.justificacion = justificacion;
+
+    public void setDepartPersonal(String DepartPersonal) {
+        this.DepartPersonal = DepartPersonal;
     }
+
     public String getTurnoP() {
         return turnoP;
     }

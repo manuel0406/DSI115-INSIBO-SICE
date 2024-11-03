@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html xmlns:th="http://wwww.thymelead.org">
+<head th:replace="~{home :: head}">
+</head>
+<body>
+    <header th:replace="~{home :: header}"></header>
+
+    <!--Indicación de la ubicación de la página actual-->
+    <div class="container mt-5 py-4 ">
+        <nav style="--bs-breadcrumb-divider: '/';" aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a th:href="@{/Biblioteca/}" class="text-secondary text-decoration-none">Biblioteca</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Control de Papelería</li>
+            </ol>
+        </nav>
+    </div>
+
+    <!--Título de la página actual-->
+    <div class="container">
+        <div class="jumbotron  mb-3 bg-light rounded-3">
+            <div class="container py-5 text-center">
+                <h1 class="display-5 fw-bold "> Control de entrega de papelería</h1>
+            </div>
+        </div>
+    </div>
+
+    <!--Botones y Barra de busqueda de alumnos-->
+    <div class="navbar">
+        <div class="container ">
+            <div class="d-grid gap-2 d-md-block">
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#NuevaEntregaModal">Nueva entrega</button>
+                <a th:href="@{/Biblioteca/Papeleria/InventarioPapeleria}" class="btn btn-secondary field" >Gestionar Inventario</a>
+                <a th:href="@{/Biblioteca/Papeleria/verEntregasPdf(query=${param.query})}" class="btn btn-secondary" target="_blank">
+                    <i class="bi bi-printer"></i> 
+                </a>
+            </div>
+           
+            <!--Barra de busqueda-->
+            <form class="d-flex" role="search" method="get" th:action="@{/Biblioteca/Papeleria/Control}">
+                <input class="form-control me-2" type="search" name="query" placeholder="Buscar Persona" aria-label="Buscar">
+                <button class="btn btn-primary" type="submit">Buscar</button>
+            </form>
+        </div>
+    </div>
+
+    <!--Mensajes de acción-->
+    <div class="container">
+        <div th:replace="~{alertas :: alertas}"></div>
+    </div>
+
+    <!--Tabla de datos-->
+    <div class="container">
+        <table class="table">
+            <!--Encabezados de tabla-->
+            <thead class="table-dark">
+                <tr>
+                    <th scope="col">Fecha Entrega</th>
+                    <th scope="col">Persona que recibe</th>
+                    <th scope="col">Producto</th>
+                    <th scope="col">Cantidad</th>
+                    <th scope="col">Acciones</th>
+                </tr>
+            </thead>
+            
+            <!--Cuerpo de tabla-->    
+            <tbody>
+                <tr th:each="entrega : ${entregas}">
+                    <td th:text="${entrega.entregaFecha}"></td>
+                    <td th:text="${entrega.entregaPersona}"></td>
+                    <td th:text="${entrega.inventarioPapeleria.nombreArticulo}"></td>
+                    <td th:text="${entrega.entregaCantidad}"></td>
+                    <td>
+                        <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" 
+                            data-bs-target="#editModal" 
+                            th:data-id="${entrega.idEntregaPapeleria}" 
+                            th:data-fecha="${#dates.format(entrega.entregaFecha, 'yyyy-MM-dd')}" 
+                            th:data-cantidad="${entrega.entregaCantidad}" 
+                            th:data-persona="${entrega.entregaPersona}">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-fill" viewBox="0 0 16 16">
+                                <path d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11z"/>
+                            </svg>
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Alerta en dado caso no se encuentren datos -->
+        <div th:if="${page.totalElements == 0}" class="alert alert-info alert-dismissible fade show mt-1 mr-2">
+            <i class="bi bi-info-circle"></i>
+            <label>No se encuentran registros de entregas realizadas</label>
+        </div>
+
+        <!-- Maneja de paginación -->
+        <div th:if="${page.totalElements > 0 and page.totalPages > 0}" class="text-center">
+        <nav aria-label="Page navigation">
+            <ul class="pagination justify-content-center">
+                <li class="page-item" th:class="${page.first ? 'disabled' : ''}">
+                    <a class="page-link" th:href="@{/Biblioteca/Papeleria/Control(page=${page.number - 1}, size=${page.size}, nombreAlumno=${param.nombreAlumno})}" tabindex="-1">Anterior</a>
+                </li>
+                <li class="page-item" th:each="i : ${#numbers.sequence(0, page.totalPages - 1)}"
+                    th:class="${i == page.number ? 'active' : ''}">
+                    <a class="page-link" th:href="@{/Biblioteca/Papeleria/Control(page=${i}, size=${page.size}, nombreAlumno=${param.nombreAlumno})}" th:text="${i + 1}"></a>
+                </li>
+                <li class="page-item" th:class="${page.last ? 'disabled' : ''}">
+                    <a class="page-link" th:href="@{/Biblioteca/Papeleria/Control(page=${page.number + 1}, size=${page.size}, nombreAlumno=${param.nombreAlumno})}">Siguiente</a>
+                </li>
+            </ul>
+        </nav>
+      </div>
+    </div>
+
+    <!-- Modal para Registrar Nueva Entrega -->
+    <div class="modal fade" id="NuevaEntregaModal" tabindex="-1" aria-labelledby="NuevaEntregaModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="NuevaEntregaModalLabel">Registrar Nueva Entrega</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form th:action="@{/Biblioteca/Papeleria/Control/entrega}" method="post" th:object="${nuevaEntrega}" id="formNuevaEntrega" novalidate>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="entregaFecha" class="form-label">Fecha de Entrega</label>
+                                <input type="date" class="form-control" id="entregaFecha" th:field="*{entregaFecha}" required />
+                                <div class="invalid-feedback">
+                                    La fecha de entrega debe ser seleccionada.
+                                </div>
+                            </div>
+                            <div class="col-md-6 position-relative">
+                                <label for="entregaPersona" class="form-label">Persona que Recibe</label>
+                                <input type="text" class="form-control" id="entregaPersona" th:field="*{entregaPersona}" required />
+                                <div id="suggestions" class="suggestions-dropdown"></div> <!-- Sección para cargar lista de sugerencias -->
+                                <div class="invalid-feedback">
+                                    Por favor, ingrese el nombre de la persona que recibe.
+                                </div>
+                            </div>
+                        </div>
+                
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="producto" class="form-label">Producto</label>
+                                <select class="form-control" th:field="*{inventarioPapeleria}" required>
+                                    <option value="">Seleccione un producto</option>
+                                    <option th:each="producto : ${productos}" th:value="${producto.idArticulo}" th:text="${producto.nombreArticulo}"></option>
+                                </select>
+                                <div class="invalid-feedback">
+                                    Por favor, seleccione un producto.
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="entregaCantidad" class="form-label">Cantidad</label>
+                                <input type="number" class="form-control" th:field="*{entregaCantidad}" min="1" required />
+                                <div class="invalid-feedback">
+                                    La cantidad debe ser mayor a 0.
+                                </div>
+                            </div>
+                        </div>
+                
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="cancelarBtn">Cancelar</button>
+                            <button type="submit" class="btn btn-primary">Registrar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Edición de Entrega -->
+    <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="editModalLabel">Editar cantidad entregada</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="editForm" th:action="@{/Biblioteca/Papeleria/Control/editar}" method="post">
+                        <input type="hidden" id="editId" name="idEntregaPapeleria" />
+                        <input type="hidden" class="form-control" id="editFecha" name="entregaFecha" disabled />
+                        <input type="hidden" class="form-control" id="editPersona" name="entregaPersona" disabled />
+                    
+                        <div class="row mb-3">
+                            <div class="col-md-4 d-flex align-items-center">
+                                <label for="editCantidad" class="form-label mb-0">Cantidad</label>
+                            </div>
+                            <div class="col-md-8">
+                                <input type="number" class="form-control" id="editCantidad" name="entregaCantidad" required />
+                            </div>
+                        </div>
+                        
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                            <button type="submit" class="btn btn-primary">Actualizar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+
+    <footer th:replace="~{home :: footer}""home :: footer"></footer>
+    <script type="text/javascript" th:src="@{/js/ControlPapeleria.js}"></script>
+</body>
+</html>

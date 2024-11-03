@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{home :: head}">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <title>Inicio Paquetes Escolares</title>
+  <link rel="stylesheet" th:href="@{/css/style.css}" />
+</head>
+
+<body>
+  <header th:replace="~{home :: header}"></header>
+  <div class="py-5"></div>
+  <div class="container">
+
+
+    <div class="py-4 bg-light">
+      <h1 class="text-center">Paquetes escolares</h1>
+    </div>    
+    <div class="py-2"></div>
+    <div class="row mb-3 justify-content-center g-3">
+      <div sec:authorize="hasAnyRole('ADMINISTRADOR','DIRECTOR','SUBDIRECTORA')"
+        class="col-6 col-sm-4 col-md-3 col-lg-3 col-xl-3 d-flex">
+        <div class="card h-100">
+          <img
+            src="https://img.freepik.com/vector-gratis/ilustracion-concepto-mensajeria_114360-1512.jpg?t=st=1729738363~exp=1729741963~hmac=b2dd1476407b8e2c1714f65449937979d68c1e372e2986d8314e3b1cdf07cae2&w=740"
+            class="card-img-top" alt="Administrativos">
+          <div class="card-body d-flex flex-column">
+            <h5 class="card-title">Donaciones</h5>
+            <p class="card-text">Ingresa o consulta las donaciones de uniformes.</p>
+            <a th:href="@{/paquetes/listaDonaciones}" class="btn btn-primary mt-auto">Ir a
+              Sección</a>
+          </div>
+        </div>
+      </div>
+      <div sec:authorize="hasAnyRole('DOCENTE')" class="col-6 col-sm-4 col-md-3 col-lg-3 col-xl-3 d-flex">
+        <div class="card h-100">
+          <img
+            src="https://img.freepik.com/vector-gratis/ilustracion-concepto-entrega_114360-2094.jpg?t=st=1729738140~exp=1729741740~hmac=98c5c43a5bf1c0670f82392f4a9529c72ac2295452f4532b67e7bed5cd7a230d&w=740"
+            class="card-img-top" alt="Administrativos">
+          <div class="card-body d-flex flex-column">
+            <h5 class="card-title">Entrega paquetes</h5>
+            <a th:href="@{/paquetes/listaPaquete}" class="btn btn-primary mt-auto">Ir a
+              Sección</a>
+          </div>
+        </div>
+      </div>
+      <div sec:authorize="hasAnyRole('ADMINISTRADOR','DIRECTOR','SUBDIRECTORA')"
+        class="col-6 col-sm-4 col-md-3 col-lg-3 col-xl-3 d-flex">
+        <div class="card h-100">
+          <img
+            src="https://img.freepik.com/vector-gratis/ningun-momento-ilustracion-concepto_114360-4105.jpg?t=st=1729738677~exp=1729742277~hmac=e93e8e2b413c17877e84402a91d3ff4873a68d3fc4c5a1dbffe8c22e3193b17d&w=740"
+            class="card-img-top" alt="Administrativos">
+          <div class="card-body d-flex flex-column">
+            <h5 class="card-title">Generar lista de paquetes entregados</h5>
+            <p class="card-text">Consulta los paquetes entregados.</p>
+            <a th:href="@{/paquetes/entregaLista}" class="btn btn-primary mt-auto">Ir a
+              Sección</a>
+          </div>
+        </div>
+      </div>
+      <!-- <div sec:authorize="hasAnyRole('ADMINISTRADOR','DIRECTOR','SUBDIRECTORA')"
+          class="col d-flex justify-content-center">
+          <div class="card h-100" style="width: 18rem;">
+            <img src="https://img.freepik.com/free-vector/new-entries-concept-illustration_114360-28019.jpg"
+              class="card-img-top" alt="Administrativos">
+            <div class="card-body d-flex flex-column">
+              <h5 class="card-title">Generar listados de impresion</h5>
+              <p class="card-text">Consulta la información de los empleados administrativos.</p> -->
+      <!-- <a th:href="@{/paquetes/entregaListaim}" class="btn btn-primary mt-auto">Ir a
+                Sección</a>
+            </div>
+          </div>
+        </div> -->
+    </div>
+  </div>
+
+  <footer th:replace="~{home :: footer}"></footer>
+</body>
+
+</html>

@@ -1,5 +1,7 @@
 package com.dsi.insibo.sice.entity;
 
+import java.util.Date;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -19,7 +21,19 @@ public class Nota {
     @ManyToOne
     private Actividad actividad;
     private float notaObtenida;
+    private Date fechaModificacion;    
     
+    public Nota() {
+    }
+    
+    public Nota(int idNota, Alumno alumno, Actividad actividad, float notaObtenida, Date fechaModificacion) {
+        this.idNota = idNota;
+        this.alumno = alumno;
+        this.actividad = actividad;
+        this.notaObtenida = notaObtenida;
+        this.fechaModificacion = fechaModificacion;
+    }
+
     public int getIdNota() {
         return idNota;
     }
@@ -43,6 +57,12 @@ public class Nota {
     }
     public void setNotaObtenida(float notaObtenida) {
         this.notaObtenida = notaObtenida;
+    }
+    public Date getFechaModificacion() {
+        return fechaModificacion;
+    }
+    public void setFechaModificacion(Date fechaModificacion) {
+        this.fechaModificacion = fechaModificacion;
     }
 
 

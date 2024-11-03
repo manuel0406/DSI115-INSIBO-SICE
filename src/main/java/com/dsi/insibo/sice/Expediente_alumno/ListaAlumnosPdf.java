@@ -2,6 +2,8 @@ package com.dsi.insibo.sice.Expediente_alumno;
 
 import java.util.Map;
 import java.awt.Color;
+
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.view.document.AbstractPdfView;
 import com.dsi.insibo.sice.entity.Alumno;
@@ -28,13 +30,14 @@ public class ListaAlumnosPdf extends AbstractPdfView {
 
    
     @Override
-    protected void buildPdfDocument(Map<String, Object> model, Document document, PdfWriter writer,
-            HttpServletRequest request, HttpServletResponse response) throws Exception {
+    protected void buildPdfDocument(@NonNull Map<String, Object> model,@NonNull Document document,@NonNull PdfWriter writer,
+    @NonNull HttpServletRequest request, @NonNull HttpServletResponse response) throws Exception {
         @SuppressWarnings("unchecked")
         List<Alumno> listaAlumnos = (List<Alumno>) model.get("alumnos");
         String carrera = (String) model.get("carrera");
         String grado = (String) model.get("grado");
         String seccion = (String) model.get("seccion");
+        
 
         document.setPageSize(PageSize.LETTER.rotate());
         document.setMargins(40, 40, 36, 72); // Margen de 3 cm a los lados y 2.5 cm abajo

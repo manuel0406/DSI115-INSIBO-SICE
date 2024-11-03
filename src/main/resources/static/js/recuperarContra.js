@@ -1,47 +1,57 @@
-function validarCorreo(inputId, spanId) {
-  // Obtener el valor del campo de entrada
-  var correo = document.getElementById(inputId).value;
-  // Obtener el elemento span para mostrar el mensaje de error
-  var mensajeError = document.getElementById(spanId);
-  // Expresión regular para validar el formato del correo electrónico
+function validarCorreo(inputId) { 
+  // Obtener el campo de entrada y el elemento de error
+  var input = document.getElementById(inputId);
   var regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  // Verificar si el correo electrónico cumple con el formato esperado
-  if (regex.test(correo)) {
-      mensajeError.style.display = 'none'; // Ocultar el mensaje de error
+
+  // Verificar si el correo es válido
+  if (regex.test(input.value)) {
+    input.classList.remove('is-invalid');
+    input.classList.add('is-valid');
   } else {
-      mensajeError.style.display = 'inline'; // Mostrar el mensaje de error
+    input.classList.remove('is-valid');
+    input.classList.add('is-invalid');
   }
+
+  validateForm(); // Llamar a validateForm para controlar el botón de envío
 }
 
-// Llamar a la función validarCorreo al quitar el foco del campo de entrada
-document.getElementById('correoIniciarSesion').addEventListener('blur', function() {
-  validarCorreo('correoIniciarSesion', 'correoInvalido');
-});
+// Llamar a la función validarCorreo cuando se pierde el foco
+document
+  .getElementById("correoIniciarSesion")
+  .addEventListener("blur", function () {
+    validarCorreo("correoIniciarSesion");
+  });
 
-// También llamar a la función validarCorreo al presionar la tecla Enter
-document.getElementById('correoIniciarSesion').addEventListener('keypress', function(event) {
-  if (event.key === 'Enter') {
-      event.preventDefault(); // Evitar que el formulario se envíe
-      validarCorreo('correoIniciarSesion', 'correoInvalido');
+// Validar al presionar la tecla Enter
+document
+  .getElementById("correoIniciarSesion")
+  .addEventListener("keypress", function (event) {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      validarCorreo("correoIniciarSesion");
       moveToNextInput(event);
-  }
-});
-
-function moveToNextInput(event) {
-  var form = event.target.form;
-  var index = Array.prototype.indexOf.call(form, event.target);
-  if (index + 1 < form.elements.length) {
-      form.elements[index + 1].focus();
-  }
-}
+    }
+  });
 
 function validateForm() {
-  const correo = document.getElementById('correoIniciarSesion').value;
-  const botonIniciar = document.getElementById('botonRecuperar');
+  const correo = document.getElementById("correoIniciarSesion").value;
+  const botonIniciar = document.getElementById("botonRecuperar");
 
-  if (correo) {
-      botonIniciar.disabled = false;
+  if (correo && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(correo)) {
+    botonIniciar.disabled = false;
   } else {
-      botonIniciar.disabled = true;
+    botonIniciar.disabled = true;
   }
 }
+
+//Muestra una barra de carga.
+document.getElementById("botonRecuperar").addEventListener("click", function () {
+  Swal.fire({
+    title: "¡Procesado restauración de credenciales!",
+    html: "Se está procesando la petición de restauración de usuario",
+    allowOutsideClick: false, // Evita que se cierre al hacer clic fuera de la alerta
+    didOpen: () => {
+      Swal.showLoading(); // Muestra el indicador de carga
+    }
+  });
+});

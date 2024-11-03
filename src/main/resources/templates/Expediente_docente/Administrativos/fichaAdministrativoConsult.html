@@ -1,165 +1,198 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head th:replace="~{home :: head}">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Ficha Administrativa</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
-    integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-
+  <title>Ficha Personal Docente</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" th:href="@{/css/style.css}" />
+  <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css">
 </head>
 
 <body>
   <header th:replace="~{home :: header}"></header>
-  <header th:replace="~{Expediente_docente/barra :: barraExpediente}"></header>
 
-  <div class="container mt-4">
-    <div class="card">
-      <div class="card-header text-center">
-        <h5>INSTITUTO NACIONAL SIMON BOLIVAR</h5>
-        <h5>CÓDIGO 11694 SANTO TOMAS</h5>
-        <h3>FICHA PERSONAL ADMINISTRATIVA: DATOS PERSONALES</h3>
+  <div class="container my-4 py-5">
+    <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap">
+      <h2 class="text-start col-lg-6"
+        th:text="${'Expediente de ' + administrativo.nombrePersonal + ' ' + administrativo.apellidoPersonal}"></h2>
+      <div class="d-flex gap-2">
+
+        <a class="btn btn-secondary"
+          th:href="@{/expedienteadministrativo/consultarexpediente/{id}(id=${administrativo.duiPersonal}, format='pdf')}"
+          data-bs-toggle="tooltip" data-bs-placement="top" title="Imprimir ficha expediente" target="_blank"
+          onclick="openInPopup(this.href); return false;">
+          <i class="bi bi-printer"></i> Imprimir
+        </a>
+        <a class="btn btn-secondary" 
+        th:href="@{/expedienteadministrativo/Documentos/} + ${administrativo.duiPersonal}"
+
+          data-bs-toggle="tooltip" data-bs-placement="top" title="Gestionar documentos"><i
+            class="bi bi-file-earmark-text"></i> Documentos
+        </a>
       </div>
-      <div class="card-body">
-
-        <table class="table table-bordered">
-          <thead class="thead-light">
-            <tr class="table-light">
-              <th colspan="2" class="text-center">Datos Personales</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <th scope="row">Nombres</th>
-              <td th:text="${administrativo.nombrePersonal}"></td>
-            </tr>
-            <tr>
-              <th scope="row">Apellidos</th>
-              <td th:text="${administrativo.apellidoPersonal}"></td>
-            </tr>
-            <tr>
-              <th scope="row">Profesión</th>
-              <td th:text="${administrativo.profesionPersonal}"></td>
-            </tr>
-            <tr>
-              <th scope="row">Fecha de nacimiento</th>
-              <td th:text="${administrativo.fechaNacimientoP}"></td>
-            </tr>
-            <tr>
-              <th scope="row">Grado academico</th>
-              <td th:text="${administrativo.gradoAcademicoP}"></td>
-            </tr>
-            <tr class="table-light">
-              <th colspan="2" class="text-center">Ubicación</th>
-            </tr>
-            <tr>
-              <th scope="row">Dirección</th>
-              <td th:text="${administrativo.direccionPersonal}"></td>
-            </tr>
-            <tr>
-              <th scope="row">Departamento</th>
-              <td th:text="${administrativo.departamentoPersonal}"></td>
-            </tr>
-            <tr>
-              <th scope="row">Municipio</th>
-              <td th:text="${administrativo.municipioPersonal}"></td>
-            </tr>
-            <tr>
-              <th scope="row">Distrito</th>
-              <td th:text="${administrativo.distritoPersonal}"></td>
-            </tr>
-            <tr>
-              <th scope="row">Zona</th>
-              <td th:text="${administrativo.zonaPersonal}"></td>
-            </tr>
-
-            <tr class="table-light">
-              <th colspan="2" class="text-center">Documentos de Identificación</th>
-            </tr>
-
-            <tr>
-              <th scope="row">DUI</th>
-              <td th:text="${administrativo.duiPersonal}"></td>
-            </tr>
-            <tr>
-              <th scope="row">NUP</th>
-              <td th:text="${administrativo.nupPersonal}"></td>
-            </tr>
-            <tr>
-              <th scope="row">NIT</th>
-              <td th:text="${administrativo.nitPersonal}"></td>
-            </tr>
+    </div>
+    <header th:replace="~{alertas :: alertas}"></header>
 
 
-            <tr class="table-light">
-              <th colspan="2" class="text-center">Información de Contacto</th>
-            </tr>
+    <div class="card mb-1 shadow-sm">
+      <div class="card-header custom-navbar text-white d-flex justify-content-between align-items-center" type="button"
+        data-bs-toggle="collapse" data-bs-target="#collapseGeneral" aria-expanded="false"
+        aria-controls="collapseGeneral">
+        <h5 class="mb-0 text-center"><i class="bi bi-person-lines-fill me-2"></i>Datos Generales</h5>
 
-            <tr>
-              <th scope="row">Correo Electrónico</th>
-              <td th:text="${administrativo.correoPersonal}"></td>
-            </tr>
-            <tr>
-              <th scope="row">Celular</th>
-              <td th:text="${administrativo.telefonoPersonal}"></td>
-            </tr>
-            <tr>
-              <th scope="row">Telefono Fijo</th>
-              <td th:text="${administrativo.telefonoFijoPersonal}"></td>
-            </tr>
-
-
-
-            <tr class="table-light">
-              <th colspan="2" class="text-center">Información Adicional</th>
-            </tr>
-
-            <tr>
-              <th scope="row">Especialidad en estudio</th>
-              <td th:text="${administrativo.especialidadEnEstudioP}"></td>
-            </tr>
-
-
-
-            <tr class="table-light">
-              <th colspan="2" class="text-center">Atestados</th>
-            </tr>
-
-            <tr>
-              <th scope="row">Curriculum VITAE actualizado</th>
-              <td th:text="${administrativo.curriculumPersonal ? 'Sí' : 'No'}"></td>
-            </tr>
-            <tr>
-              <th scope="row">Atestados</th>
-              <td th:text="${administrativo.atestadosPersonal ? 'Sí' : 'No'}"></td>
-            </tr>
-            <tr>
-              <th scope="row">Fecha de entrega</th>
-              <td th:text="${administrativo.fechaEntregaPersonal}"></td>
-            </tr>
-            <tr>
-              <th scope="row">Fecha de ingreso</th>
-              <td th:text="${administrativo.fechaIngresoPersonal}"></td>
-            </tr>
-          </tbody>
-        </table>
-
-        <div class="row justify-content-center text-center mt-4">
-          <div class="col-auto">
-            <a class="btn btn-primary" th:href="@{/expedienteadministrativo/plantaadministrativa}" th:text="Regresar"></a>
-          </div>
+        <i class="bi bi-chevron-down"></i>
+      </div>
+      <div id="collapseGeneral" class="collapse show">
+        <div class="card-body">
+          <table class="table table-striped">
+            <tbody>
+              <tr>
+                <th class="text-start w-50" scope="row">Nombres</th>
+                <td class="text-start w-50" th:text="${administrativo.nombrePersonal}"></td>
+              </tr>
+              <tr>
+                <th class="text-start w-50" scope="row">Apellidos</th>
+                <td class="text-start w-50" th:text="${administrativo.apellidoPersonal}"></td>
+              </tr>
+              <tr>
+                <th class="text-start w-50" scope="row">Profesión</th>
+                <td class="text-start w-50" th:text="${administrativo.profesionPersonal}"></td>
+              </tr>
+              <tr>
+                <th class="text-start w-50" scope="row">Fecha de nacimiento</th>
+                <td class="text-start w-50" th:text="${administrativo.fechaNacimientoP}"></td>
+              </tr>
+              <tr>
+                <th class="text-start w-50" scope="row">Grado academico</th>
+                <td class="text-start w-50" th:text="${administrativo.gradoAcademicoP}"></td>
+              </tr>
+              <tr>
+                <th class="text-start w-50" scope="row">Dirección</th>
+                <td class="text-start w-50" th:text="${administrativo.direccionPersonal}"></td>
+              </tr>
+              <tr>
+                <th class="text-start w-50" scope="row">Departamento</th>
+                <td class="text-start w-50" th:text="${administrativo.departamentoPersonal}"></td>
+              </tr>
+              <tr>
+                <th class="text-start w-50" scope="row">Municipio</th>
+                <td class="text-start w-50" th:text="${administrativo.municipioPersonal}"></td>
+              </tr>
+              <tr>
+                <th class="text-start w-50" scope="row">Distrito</th>
+                <td class="text-start w-50" th:text="${administrativo.distritoPersonal}"></td>
+              </tr>
+              <tr>
+                <th class="text-start w-50" scope="row">Zona</th>
+                <td class="text-start w-50" th:text="${administrativo.zonaPersonal}"></td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
     </div>
+
+    <div class="card mb-1 shadow-sm">
+      <div class="card-header custom-navbar text-white  d-flex justify-content-between align-items-center" type="button"
+        data-bs-toggle="collapse" data-bs-target="#collapseContacto" aria-expanded="false"
+        aria-controls="collapseContacto">
+        <h5 class="mb-0 text-start"><i class="bi bi-folder-fill me-2"></i>Documentos e Información de Contacto
+        </h5>
+
+        <i class="bi bi-chevron-down"></i>
+      </div>
+      <div id="collapseContacto" class="collapse">
+        <div class="card-body">
+          <table class="table table-striped">
+            <tbody>
+              <tr>
+                <th class="text-start w-50" scope="row">DUI</th>
+                <td class="text-start w-50" th:text="${administrativo.duiPersonal}"></td>
+              </tr>
+              <tr>
+                <th class="text-start w-50" scope="row">NUP</th>
+                <td class="text-start w-50" th:text="${administrativo.nupPersonal}"></td>
+              </tr>
+              <tr>
+                <th class="text-start w-50" scope="row">NIT</th>
+                <td class="text-start w-50" th:text="${administrativo.nitPersonal}"></td>
+              </tr>
+              <tr>
+                <th class="text-start w-50" scope="row">Correo Electrónico</th>
+                <td class="text-start w-50" th:text="${administrativo.correoPersonal}"></td>
+              </tr>
+              <tr>
+                <th class="text-start w-50" scope="row">Celular</th>
+                <td class="text-start w-50" th:text="${administrativo.telefonoPersonal}"></td>
+              </tr>
+              <tr>
+                <th class="text-start w-50" scope="row">Telefono Fijo</th>
+                <td class="text-start w-50" th:text="${administrativo.telefonoFijoPersonal}"></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="card mb-1 shadow-sm">
+      <div class="card-header custom-navbar text-white d-flex justify-content-between align-items-center" type="button"
+        data-bs-toggle="collapse" data-bs-target="#collapseInfoAdicional" aria-expanded="false"
+        aria-controls="collapseInfoAdicional">
+        <h5 class="mb-0 text-start">
+          <i class="bi bi-info-circle-fill me-2"></i>Información Adicional
+        </h5>
+        <i class="bi bi-chevron-down"></i>
+      </div>
+      <div id="collapseInfoAdicional" class="collapse">
+        <div class="card-body">
+          <table class="table table-striped">
+            <tbody>
+              <tr>
+                <th class="text-start w-50" scope="row">Especialidad en estudio</th>
+                <td class="text-start w-50" th:text="${administrativo.especialidadEnEstudioP}"></td>
+              </tr>
+              <tr>
+                <th class="text-start w-50" scope="row">Curriculum VITAE actualizado</th>
+                <td class="text-start w-50" th:text="${administrativo.curriculumPersonal ? 'Sí' : 'No'}"></td>
+              </tr>
+              <tr>
+                <th class="text-start w-50" scope="row">Atestados</th>
+                <td class="text-start w-50" th:text="${administrativo.atestadosPersonal ? 'Sí' : 'No'}"></td>
+              </tr>
+              <tr>
+                <th class="text-start w-50" scope="row">Fecha de entrega</th>
+                <td class="text-start w-50" th:text="${administrativo.fechaEntregaPersonal}"></td>
+              </tr>
+              <tr>
+                <th class="text-start w-50" scope="row">Fecha de ingreso</th>
+                <td class="text-start w-50" th:text="${administrativo.fechaIngresoPersonal}"></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="text-start">
+      <a sec:authorize="hasAnyRole('ADMINISTRADOR','SECRETARIA', 'SUBDIRECTORA', 'DIRECTOR')"
+        th:href="@{/expedienteadministrativo/plantaadministrativa}" class="btn btn-primary " th:text="'Regresar'"
+        data-bs-toggle="tooltip" data-bs-placement="top" title="Regresar a la sección anterior"> </a>
+    </div>
+
   </div>
 
   <footer th:replace="~{home :: footer}"></footer>
-  <script type="text/javascript" src="/js/direccion.js"></script>
-  <script type="text/javascript" src="/js/validacionRequired.js"></script>
-  <script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.js"></script>
-
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+  <script type="text/javascript" src="/js/tooltip.js"></script>
+  <script>
+    function openInPopup(url) {
+      window.open(url, 'popup', 'width=800,height=600');
+    }
+  </script>
 </body>
 
 </html>

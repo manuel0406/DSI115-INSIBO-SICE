@@ -21,7 +21,7 @@ import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.NoOpPasswordEncoder;
+//import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
@@ -29,6 +29,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.session.HttpSessionEventPublisher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -57,12 +58,11 @@ public class ConfiguracionSeguridad {
                 // STATELESS =  No crea una sesión, pero utilizará una sesión existente si ya está presente.
                 // NEVER = La sesión solo se crea si es requerida.
                 // IF_REQUIERED = No crea ni utiliza sesiones HTTP en absoluto.
+                .csrf(csrf -> csrf.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()))
                 .sessionManagement(session -> {
-                    session.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED); // Politicas de sesiones 
-                    session.maximumSessions(1).sessionRegistry(sessionRegistry()); // Número maximo de sesiones
+                    session.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED); // Políticas de sesiones
+                    session.maximumSessions(1).sessionRegistry(sessionRegistry()); // Número máximo de sesiones
                     session.sessionFixation().migrateSession(); // Previene la fijación de sesión migrando a una nueva sesión
-                    // session.invalidSessionUrl("null")
-                    // session.expiredUrl("/login") Tiempo de expiración
                 })
                 .authorizeHttpRequests(http -> {
                     http.requestMatchers("/css/**", "/js/**", "/Imagenes/**").permitAll();
@@ -71,6 +71,7 @@ public class ConfiguracionSeguridad {
                     http.requestMatchers(HttpMethod.GET, "/logout-success").permitAll();
                     http.requestMatchers(HttpMethod.GET, "/login").permitAll();
                     http.requestMatchers(HttpMethod.POST, "/login").permitAll();
+
                     //http.anyRequest().permitAll();
                     http.anyRequest().authenticated(); // AUTENTIFICACIÓN A TODOS
                })
@@ -109,6 +110,10 @@ public class ConfiguracionSeguridad {
                 for (GrantedAuthority authority : authorities) {
                     if (authority.getAuthority().equals("ROLE_ADMINISTRADOR")) {
                         return "/gestionarCredenciales"; // URL para usuarios con rol ADMIN
+                    }
+                    if (authority.getAuthority().equals("ROLE_BIBLIOTECARIO")) {
+                        return "/Biblioteca/"; // URL para usuarios con rol BIBLIOTECARIO
+
                     }
                 }
                 return "/"; // Por defecto, si no se encuentra ningún rol específico

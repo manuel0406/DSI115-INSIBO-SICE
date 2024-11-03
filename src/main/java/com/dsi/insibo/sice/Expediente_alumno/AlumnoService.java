@@ -3,6 +3,8 @@ package com.dsi.insibo.sice.Expediente_alumno;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+//import com.dsi.insibo.sice.Seguridad.gestionarCredencialesController;
 import com.dsi.insibo.sice.entity.Alumno;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -16,7 +18,6 @@ public class AlumnoService {
 
     @Autowired
     private AlumnoRepository alumnoRepository;
-   
 
     /**
      * Devuelve una lista de alumnos según los parámetros proporcionados.
@@ -30,28 +31,51 @@ public class AlumnoService {
      * seccion Sección del bachillerato.
      * return Lista de alumnos que cumplen con los criterios de búsqueda.
      */
-    public List<Alumno> listarAlumnos(String carrera, String grado, String seccion) {
+    public List<Alumno> listarAlumnos(String carrera, String grado, String seccion, String genero) {
 
-        if (carrera != null && grado != null && seccion != null) {
-            return (List<Alumno>) alumnoRepository.findAll(carrera, grado, seccion);
+        if (carrera != null && grado != null && seccion != null && genero != null) {// 8
+            return (List<Alumno>) alumnoRepository.findAll(carrera, grado, seccion, genero);
 
-        } else if (carrera != null && grado == null && seccion == null) {
+        } else if (carrera != null && grado != null && seccion != null && genero == null) {
+            return (List<Alumno>) alumnoRepository.findAllCarreraGradoSeccion(carrera, grado, seccion);
+
+        } else if (carrera != null && grado == null && seccion == null && genero == null) {
             return (List<Alumno>) alumnoRepository.findAllPorCarrera(carrera);
 
-        } else if (carrera == null && grado != null && seccion == null) {
+        } else if (carrera != null && grado == null && seccion == null && genero != null) {// 1
+            return (List<Alumno>) alumnoRepository.findAllCarreraGenero(carrera, genero);
+
+        } else if (carrera == null && grado != null && seccion == null && genero == null) {
             return (List<Alumno>) alumnoRepository.findAllPorGrado(grado);
 
-        } else if (carrera == null && grado == null && seccion != null) {
+        } else if (carrera == null && grado != null && seccion == null && genero != null) {// 2
+            return (List<Alumno>) alumnoRepository.findAllGradoGenero(grado, genero);
+
+        } else if (carrera == null && grado == null && seccion != null && genero == null) {
             return (List<Alumno>) alumnoRepository.findAllPorSeccion(seccion);
 
-        } else if (carrera != null && grado != null && seccion == null) {
+        } else if (carrera == null && grado == null && seccion != null && genero != null) {// 3
+            return (List<Alumno>) alumnoRepository.findAllSeccionGenero(seccion, genero);
+
+        } else if (carrera != null && grado != null && seccion == null && genero == null) {
             return (List<Alumno>) alumnoRepository.findAllCarreraGrado(carrera, grado);
 
-        } else if (carrera != null && grado == null && seccion != null) {
+        } else if (carrera != null && grado != null && seccion == null && genero != null) {// 4
+            return (List<Alumno>) alumnoRepository.findAllCarreraGradoGenero(carrera, grado, genero);
+
+        } else if (carrera != null && grado == null && seccion != null && genero == null) {
             return (List<Alumno>) alumnoRepository.findAllCarreraSeccion(carrera, seccion);
 
-        } else if (carrera == null && grado != null && seccion != null) {
+        } else if (carrera != null && grado == null && seccion != null && genero != null) {// 5
+            return (List<Alumno>) alumnoRepository.findAllCarreraSeccionGenero(carrera, seccion, genero);
+
+        } else if (carrera == null && grado != null && seccion != null && genero == null) {
             return (List<Alumno>) alumnoRepository.findAllGradoSeccion(grado, seccion);
+        } else if (carrera == null && grado != null && seccion != null && genero != null) {// 6
+            return (List<Alumno>) alumnoRepository.findAllGradoSeccionGenero(grado, seccion, genero);
+
+        } else if (carrera == null && grado == null && seccion == null && genero != null) {// 7
+            return (List<Alumno>) alumnoRepository.findAllGenero(genero);
         }
         // Si todos son nulos, devuelve todos los alumnos
         return alumnoRepository.findAll();
@@ -135,10 +159,19 @@ public class AlumnoService {
      * @param codigoBachillerato Código del bachillerato.
      * @return Lista de alumnos que pertenecen al bachillerato especificado.
      */
-    public List<Alumno> findAlumnosByBachilleratoCodigoBachillerato(String codigoBachillerato) {
+    public List<Alumno> alumnosPorBachilerato(int codigoBachillerato) {
         return alumnoRepository.findByBachilleratoCodigoBachillerato(codigoBachillerato);
     }
 
-   
+    public List<Alumno> matricula(String nie, String nombre, String apellido, int anio){
+        return alumnoRepository.listadoMatricula(nie, nombre, apellido, anio);
+    }
 
+    public List<Alumno> yaMatriculado(){
+        return alumnoRepository.yaMatriculado();
+    }
+
+    public List<Alumno> buscarPorNombre(String nombre) {
+        return alumnoRepository.findByNombreAlumnoContainingIgnoreCase(nombre);
+    }
 }

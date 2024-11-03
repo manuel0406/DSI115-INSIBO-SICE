@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head th:replace="~{home :: head}"></head>
+
+<body>
+    <header th:replace="~{home :: header}"></header>
+
+    <div class="py-5"></div>
+    <div class="container">
+        <h1 class="text-center py-4 bg-light" th:text="${'Crear oferta para el año ' + anioAcademico.anio}"></h1>
+
+        <div class="row py-2">
+            <form th:action="@{/Bachillerato/Oferta/guardar/{idAnio}(idAnio=${anioAcademico.idAnioAcademico})}"
+                th:object="${bachillerato}" method="post">
+                <div class="row">
+                    <div th:each="carrera : ${carreras}" class="col-md-6 col-lg-4 py-2">
+                        <div class="card h-100">
+                            <h5 class="card-header text-center" th:text="${carrera}"></h5>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-hover table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">Grado</th>
+                                                <th scope="col">Secciones</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr th:each="grado : ${#numbers.sequence(1, 3)}">
+                                                <th scope="row" th:text="${grado}"></th>
+                                                <td>
+                                                    <div th:each="seccion : ${secciones}"
+                                                        class="form-check form-check-inline">
+                                                        <input class="form-check-input" type="checkbox"
+                                                            th:name="secciones"
+                                                            th:value="${carrera} + '|' + ${grado} + '|' + ${seccion}"
+                                                            th:id="'seccion' + ${carrera} + ${grado} + ${seccion}" />
+
+                                                        <label class="form-check-label"
+                                                            th:for="'seccion-' + ${carrera} + '-' + ${grado} + '-' + ${seccion}"
+                                                            th:text="${seccion}"></label>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="py-2 text-center">
+                    <button type="submit" class="btn btn-primary">Guardar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <footer th:replace="~{home :: footer}"></footer>
+</body>
+
+</html>

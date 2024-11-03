@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head th:replace="~{home :: head}">
+    <!-- Asegúrate de incluir el meta viewport -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+
+<body>
+
+    <header th:replace="~{home :: header}"></header>
+
+    <div class="py-4 my-3"></div>
+    <nav class="px-4" th:if="${navMatriculados != false}" aria-label="breadcrumb">
+        <ol class="breadcrumb mb-3">
+            <li class="breadcrumb-item">
+                <a th:href="@{administracion}" class="text-decoration-none text-secondary">Administración</a>
+            </li>
+
+            <li class="breadcrumb-item active" aria-current="page" th:text="Matriculados"></li>
+        </ol>
+    </nav>
+    <!--Mensajes-->
+    <div th:replace="~{alertas::alertas}"></div>
+    <div class="container">
+
+        <!-- Formulario Responsivo -->
+        <div class="row">
+            <div class="col-12">
+                <form class="row g-3" th:action="@{/AntiguoIngreso}" method="get">
+                    <div class="col-12 text-center">
+                        <h4 class="mb-4">Buscar Alumno</h4>
+                        <p class="text-muted">Ingrese los datos para realizar la búsqueda</p>
+                    </div>
+                    <div class="col-12 col-md-3">
+                        <input type="text" class="form-control" id="nie" name="nie" th:value="${nie}" placeholder="NIE">
+                    </div>
+                    <div class="col-12 col-md-3">
+                        <input type="text" class="form-control" id="nombre" name="nombre" th:value="${nombre}"
+                            placeholder="Nombres">
+                    </div>
+                    <div class="col-12 col-md-3">
+                        <input type="text" class="form-control" id="apellido" name="apellido" th:value="${apellido}"
+                            placeholder="Apellidos">
+                    </div>
+                    <div class="col-12 col-md-3 d-grid gap-2 d-md-flex justify-content-md-end">
+                        <button type="submit" class="btn btn-primary w-100 mb-2 mb-md-0">Buscar</button>
+                        <a class="btn btn-success w-100" th:href="@{/matriculados}">Ver matriculados</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Tabla Responsiva -->
+        <div class="table-responsive mt-3 ">
+            <table class="table table-sm table-hover align-middle">
+                <thead class="text-start">
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Nie</th>
+                        <th scope="col">Apellidos</th>
+                        <th scope="col">Nombre</th>
+                        <th scope="col">Carrera</th>
+                        <th scope="col">Sección</th>
+                        <th scope="col">Año</th>
+                        <th scope="col">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Iterar sobre la lista de alumnos -->
+                    <tr th:each="alumno, stat : ${alumnos}">
+                        <th scope="row" th:text="${stat.index + 1}"></th>
+                        <td th:text="${alumno.nie}"></td>
+                        <td th:text="${alumno.apellidoAlumno}"></td>
+                        <td th:text="${alumno.nombreAlumno}"></td>
+                        <td th:text="${alumno.bachillerato.nombreCarrera}"></td>
+                        <td class="text-center" th:text="${alumno.bachillerato.seccion}"></td>
+                        <td class="text-center" th:text="${alumno.bachillerato.grado}"></td>
+                        <td class="text-center">
+                            <!-- <a th:href="@{/saveMatricula/}+${alumno.idAlumno}" class="btn btn-success">Matricular</a> -->
+                            <a class="btn btn-success matricular-btn btn-sm" data-bs-t="tooltip" data-bs-toggle="modal"
+                                data-bs-target="#MatricularModal" data-bs-placement="top" title="Editar"
+                                th:data-id="${alumno.idAlumno}" th:data-non="${alumno.nombreAlumno}"
+                                th:data-ape="${alumno.apellidoAlumno}" th:data-nie="${alumno.nie}"
+                                th:data-ca="${alumno.bachillerato.nombreCarrera}"
+                                th:data-sec="${alumno.bachillerato.seccion}" th:data-gra="${alumno.bachillerato.grado}"
+                                th:data-cod="${alumno.bachillerato.codigoBachillerato}"
+                                th:data-est="${alumno.estadoAlumno}">Matricular
+                            </a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <!-- Modal  -->
+    <div class="modal fade" id="MatricularModal" tabindex="-1" aria-labelledby="MatricularModal" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="EditarActividadLabel">Matriculación</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Mensaje dinámico -->
+                    <p id="alumnoMensaje" class="mb-3 text-center fw-bold"></p>
+                    
+                    <!-- Formulario dentro del modal -->
+                    <form th:object="${alumno}" method="post" id="formMatricula" class="needs-validation" th:action="@{/saveMatricula/}" novalidate>
+                        <input type="hidden" id="idAlumno" name="idAlumno">
+                        <input type="hidden" id="matricula" name="matricula" th:value="${matricula}">
+    
+                        <!-- Año (Grado) -->
+                        <div class="mb-3">
+                            <label for="grado" class="form-label fs-6">Año:</label>
+                            <select id="grado" name="grado" class="form-select border border-dark-subtle" required>
+                                <option value="" selected>Seleccione</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                            </select>
+                            <div class="invalid-feedback">Por favor, seleccione un año.</div>
+                        </div>
+    
+                        <!-- Carrera -->
+                        <div class="mb-3">
+                            <label for="carrera" class="form-label fs-6">Carrera:</label>
+                            <select id="carrera" name="carrera" class="form-select border border-dark-subtle" required>
+                                <option value="" selected>Seleccione</option>
+                                <option th:each="bachillerato : ${bachilleratos}" th:value="${bachillerato.nombreCarrera}" th:text="${bachillerato.nombreCarrera}"></option>
+                            </select>
+                            <div class="invalid-feedback">Por favor, seleccione una carrera.</div>
+                        </div>
+    
+                        <!-- Sección -->
+                        <div class="mb-3">
+                            <label for="seccion" class="form-label fs-6">Sección:</label>
+                            <select id="seccion" name="seccion" class="form-select border border-dark-subtle" required>
+                                <option value="" selected>Seleccione</option>
+                                <option value="A">A</option>
+                                <option value="B">B</option>
+                                <option value="C">C</option>
+                                <option value="D">D</option>
+                            </select>
+                            <div class="invalid-feedback">Por favor, seleccione una sección.</div>
+                        </div>
+                    </form>
+                </div>
+    
+                <!-- Botones del modal -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal" id="cancelarMatricula">Cancelar</button>
+                    <button type="submit" class="btn btn-primary" form="formMatricula" id="agregarModalButton">Guardar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+
+
+
+    <footer th:replace="~{home :: footer}"></footer>
+    <script type="text/javascript" th:src="@{/js/GestionMatricula.js}"></script>
+    <script type="text/javascript" th:src="@{/js/validacionRequired.js}"></script>
+</body>
+
+</html>

@@ -18,7 +18,7 @@ public class SessionService {
     private UsuarioService usuarioService;
 
     public String duiSession() {
-        String sessionId = "";
+        String sessionId = "No encontrado";
         String dui = "No encontrado";
         String correoUsuario = "No encontrado";
         List<Object> sessions = sessionRegistry.getAllPrincipals();
@@ -49,31 +49,3 @@ public class SessionService {
         return dui;
     }
 }
-
-
-
-// Para obtener los datos completos
-/*
- *     public Map<String, Object> getSessionDetails() {
-        String sessionId = "";
-        User userObject = null;
-        List<Object> sessions = sessionRegistry.getAllPrincipals();
-
-        for (Object session : sessions) {
-            if (session instanceof User) {
-                userObject = (User) session;
-            }
-            // Usuario a recuperar y no incluimos las sesiones expiradas
-            List<SessionInformation> sessionInformations = sessionRegistry.getAllSessions(session, false);
-            for (SessionInformation sessionInformation : sessionInformations) {
-                sessionId = sessionInformation.getSessionId();
-            }
-        }
-
-        Map<String, Object> response = new HashMap<>();
-        response.put("Session ID", sessionId);
-        response.put("sessionUser", userObject);
-
-        return response;
-    }
- */

@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{home :: head}">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <title>Paquetes Escolares</title>
+  <link rel="stylesheet" th:href="@{/css/style.css}" />
+</head>
+
+<body>
+  <header th:replace="~{home :: header}"></header>
+  <div class="p-4 mt-5">
+    <h2 class="text-center">Generar Listados impresión</h2>
+    <div class="d-flex justify-content-end py-3">
+      <a th:href="@{/paquetes/inicio}" class="btn btn-outline-primary">Regresar</a>
+    </div>
+    <div class="row row-cols-lg-2 row-cols-1 gy-3">
+      <div class="col-lg-3 col card pt-2">
+        <form id="formulario" method="get" th:action="@{/paquetes/reporteEntregas}">
+
+          <div class="row row-cols-1 g-3">
+            <div class="col">
+              <label for="carrera">Seleccione bachillerato</label>
+              <select id="carrera" name="carrera" class="form-select" aria-label="Default select example"
+                style="font-size: 15px;">
+                <option value="" selected>Seleccione bachillerato</option>
+                <option th:each="bachillerato : ${bachilleratos}" th:value="${bachillerato[0]}"
+                  th:text="${bachillerato[2]} + ' Año: '+ ${bachillerato[1]} +' Sección: '+${bachillerato[3]}">
+                </option>
+              </select>
+              <input type="hidden" name="idBachillerato" id="idBachilleratoInput" value="">
+            </div>
+            <div class="col">
+              <label for="paquetes">Tipo paquete</label>
+              <select id="paquetes" name="tipoPaquete" class="form-select" disabled>
+                <option value="" selected>Tipo paquete</option>
+                <option value="paqueteUtiles">Paquete útiles</option>
+                <option value="paqueteZapatos">Paquete zapatos</option>
+                <option value="paqueteUniforme">Paquete Uniforme</option>
+              </select>
+            </div>
+          </div>
+          <div class="d-flex justify-content-center py-4">
+            <button type="submit" class="btn btn-success" id="btn-sub" disabled>Generar</button>
+          </div>
+        </form>
+      </div>
+      <div class="col-lg-9 col">
+        <!-- Mensajes -->
+        <div class="alert alert-success alert-dismissible fade show mt-1 mx-2" th:if="${success != null}">
+          <i class="bi bi-check-circle"></i>
+          <label th:text="${success}"></label>
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        <div class="alert alert-danger alert-dismissible fade show mt-1 mx-2" th:if="${error != null}">
+          <i class="bi bi-exclamation-triangle"></i>
+          <label th:text="${error}"></label>
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        <div class="alert alert-warning alert-dismissible fade show mt-1 mx-2" th:if="${warning != null}">
+          <i class="bi bi-info-circle"></i>
+          <label th:text="${warning}"></label>
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        <!-- Mensajes -->
+        <div class="table-responsive w-100" th:if="${resultados != null}">
+          <table class="table table-bordered">
+            <tbody>
+              <tr class="align-middle">
+                <td class="fs-4 fw-bolder" colspan="7" th:if="${tipoPaquete == 'paqueteZapatos'}">
+                  Paquete de Zapatos
+                </td>
+                <td class="fs-4 fw-bolder" colspan="7" th:if="${tipoPaquete == 'paqueteUtiles'}">
+                  Paquete de Útiles Escolares
+                </td>
+                <td class="fs-4 fw-bolder" colspan="7" th:if="${tipoPaquete == 'paqueteUniforme'}">
+                  Paquete de Uniforme Escolar
+                </td>
+              </tr>
+              <tr class="align-middle">
+                <td colspan="3" th:text="'Fecha de entrega: '+ ${resultados[0][4]}">Fecha Entrega</td>
+              </tr>
+              <tr class="align-middle">
+                <td th:text="${bachillerato.nombreCarrera}">Especialidad</td>
+                <td th:text="'Año: ' + ${bachillerato.grado} + '° Sección: ' + ${bachillerato.seccion}">Año Sección</td>
+              </tr>
+            </tbody>
+          </table>
+          <table class="table">
+            <thead class="table-dark">
+              <tr class="back-titulo">
+                <th>NIE</th>
+                <th>Apellido</th>
+                <th>Nombre</th>
+                <th th:if="${tipoPaquete != 'paqueteUtiles'}">Talla</th>
+                <th class="text-center">Estado</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr th:each="resultado : ${resultados}">
+                <td th:text="${resultado[2]}">NIE</td>
+                <td th:text="${resultado[3]}">Apellido</td>
+                <td th:text="${resultado[1]}">Nombre</td>
+                <td th:if="${tipoPaquete != 'paqueteUtiles'}" th:text="${resultado[6]}">Talla</td>
+                <td th:text="${resultado[5] != null && resultado[5] == true ? 'Entregado' : 'No entregado'}">
+                  Estado</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+
+      document.addEventListener("DOMContentLoaded", function () {
+
+        const estadoEntregaSelect = document.getElementById("estadoEntrega");
+        const fechaPaqueteSelect = document.getElementById("fechaPaquete");
+        const paquetesSelect = document.getElementById("paquetes");
+        const carreraSelect = document.getElementById("carrera");
+        const generarButton = document.getElementById("btn-sub");
+        const idBachilleratoInput = document.getElementById("idBachilleratoInput");
+
+        // Mantener el botón deshabilitado al inicio
+        generarButton.disabled = true;
+
+        // Función para habilitar el botón de generación
+        function checkButtonState() {
+          const isCarreraSelected = carreraSelect.value !== "";
+          const isPaqueteSelected = paquetesSelect.value !== "";
+          const isFechaSelected = fechaPaqueteSelect.value !== "0";
+          const isEstadoSelected = estadoEntregaSelect.value !== "0";
+
+          // Habilitar el botón solo si todos los selectores están seleccionados
+          generarButton.disabled = !(isCarreraSelected && isPaqueteSelected && isFechaSelected && isEstadoSelected);
+        }
+
+        carreraSelect.addEventListener("change", function () {
+          idBachilleratoInput.value = this.value; // Guardar el ID en el input oculto
+
+          // Habilitar el select de paquetes solo si hay una carrera seleccionada
+          paquetesSelect.disabled = this.value === "";
+          if (!paquetesSelect.disabled) {
+            cargarFechas(); // Cargar fechas cuando se selecciona una carrera
+          }
+
+          // Reiniciar el select de estado de entrega
+          estadoEntregaSelect.disabled = true;
+          estadoEntregaSelect.value = "0"; // Reiniciar valor
+          fechaPaqueteSelect.disabled = true; // Deshabilitar fechas
+          fechaPaqueteSelect.value = "0"; // Reiniciar valor
+
+          checkButtonState(); // Verificar el estado del botón
+        });
+
+        paquetesSelect.addEventListener("change", function () {
+          const fechaPaqueteSelect = document.getElementById("fechaPaquete");
+          fechaPaqueteSelect.disabled = false; // Habilitar select de fechas
+          cargarFechas();
+
+          // Habilitar el select de estado de entrega solo si hay un paquete seleccionado
+          estadoEntregaSelect.disabled = false;
+
+          checkButtonState(); // Verificar el estado del botón
+        });
+
+        fechaPaqueteSelect.addEventListener("change", function () {
+          estadoEntregaSelect.disabled = this.value === "0"; // Habilitar solo si hay una fecha seleccionada
+          checkButtonState(); // Verificar el estado del botón
+        });
+
+        estadoEntregaSelect.addEventListener("change", function () {
+          checkButtonState(); // Verificar el estado del botón
+        });
+
+        function cargarFechas() {
+          let tipoPaquete = paquetesSelect.value;
+          let idBachillerato = carreraSelect.value;
+
+          // Vaciar el select de fechas y deshabilitarlo temporalmente
+          fechaPaqueteSelect.innerHTML = '<option value="0">Seleccionar fecha</option>';
+          fechaPaqueteSelect.disabled = true;
+
+          // Solo ejecutar la solicitud si ambos campos están seleccionados
+          if (tipoPaquete && idBachillerato) {
+            fetch(`/paquetes/fechasPaquete?tipoPaquete=${tipoPaquete}&idBachillerato=${idBachillerato}`)
+              .then(response => response.json())
+              .then(fechas => {
+                // Si hay fechas disponibles, habilitar el select y cargar las opciones
+                if (fechas.length > 0) {
+                  fechaPaqueteSelect.disabled = false; // Activar el select de fecha
+                  fechas.forEach(fecha => {
+                    let option = document.createElement("option");
+                    option.value = fecha;
+                    option.text = fecha;
+                    fechaPaqueteSelect.appendChild(option);
+                  });
+                } else {
+                  fechaPaqueteSelect.disabled = false; // Activar el select de fecha
+                  // Si no hay fechas, mostrar mensaje de "No hay fechas disponibles"
+                  let option = document.createElement("option");
+                  option.value = "0";
+                  option.text = "No hay fechas disponibles";
+                  fechaPaqueteSelect.appendChild(option);
+                }
+              })
+              .catch(error => {
+                console.error('Error al cargar las fechas:', error);
+                let option = document.createElement("option");
+                option.value = "0";
+                option.text = "No hay fechas disponibles";
+                fechaPaqueteSelect.appendChild(option);
+              });
+          }
+        }
+      });
+
+
+    </script>
+  </div>
+  <footer th:replace="~{home :: footer}"></footer>
+</body>
+
+</html>

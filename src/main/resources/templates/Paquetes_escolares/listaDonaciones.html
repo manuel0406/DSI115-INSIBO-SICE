@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<html xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head th:replace="~{home :: head}">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <title>Paquetes Escolares</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
+</head>
+
+<body>
+    <header th:replace="~{home :: header}"></header>
+    <div class="p-4 mt-5">
+        <div>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a th:href="@{/paquetes/inicio}" class="text-decoration-none text-secondary">Inicio paquetes</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Donaciones</li>
+                </ol>
+            </nav>
+        </div>
+
+        <div class="container" id="prendas">
+            <h2 class="text-center mb-4">Donaciones</h2>
+
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <button class="btn btn-primary" data-bs-target="#exampleModalToggle" data-bs-toggle="modal">
+                    Ingresar Donación
+                </button>
+                <div class="input-group" style="max-width: 300px;">
+                    <label for="search" class="input-group-text">Buscar:</label>
+                    <input type="search" id="search" class="form-control search" placeholder="Buscar donación...">
+                </div>
+            </div>
+
+            <!-- Mensajes -->
+            <div th:replace="~{alertas::alertas}"></div>
+
+            <!-- Tabla de donaciones -->
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Tipo</th>
+                            <th>Talla</th>
+                            <th>Cantidad</th>
+                            <th class="text-center">Opciones</th>
+                        </tr>
+                    </thead>
+                    <tbody class="list">
+                        <tr th:each="don:${donaciones}">
+                            <td class="tipo" th:text="${don.tipoPrenda}"></td>
+                            <td th:text="${don.tallaPrenda}"></td>
+                            <td th:text="${don.cantidadPrenda}"></td>
+                            <td class="text-center">
+                                <a th:if="${don.cantidadPrenda >= 0}" class="btn btn-primary btn-sm mx-1"
+                                    data-bs-toggle="modal"
+                                    th:data-bs-target="'#exampleCantidad'+${don.idInventarioDonacion}"
+                                    data-bs-t="tooltip" data-bs-placement="top" data-bs-title="Agregar">
+
+                                    <i class="bi bi-plus-lg"></i>
+                                </a>
+                                <a th:if="${don.cantidadPrenda > 0}" class="btn btn-danger btn-sm mx-1"
+                                    data-bs-toggle="modal"
+                                    th:data-bs-target="'#exampleMenos'+${don.idInventarioDonacion}" data-bs-t="tooltip"
+                                    data-bs-placement="top" data-bs-title="Descontar">
+                                    <i class="bi bi-dash-lg"></i>
+                                </a>
+                                <a th:if="${don.cantidadPrenda == 0}" class="btn btn-danger btn-sm mx-1"
+                                    data-bs-toggle="modal"
+                                    th:data-bs-target="'#eliminarModal'+${don.idInventarioDonacion}" data-bs-t="tooltip"
+                                    data-bs-placement="top" data-bs-title="Eliminar">
+                                    <i class="bi bi-trash"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Modal para modificar cantidad -->
+        <div th:each="don : ${donaciones}">
+            <div class="modal fade" th:id="'exampleCantidad' + ${don.idInventarioDonacion}" aria-hidden="true"
+                tabindex="-1">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <form th:action="@{/paquetes/modificarCantidad}" method="post" class="needs-validation"
+                            novalidate>
+                            <div class="modal-header">
+                                <h5 class="modal-title">Agregar Cantidad</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="mb-3">
+                                    <p><strong>Tipo:</strong> <span th:text="${don.tipoPrenda}"></span></p>
+                                    <p><strong>Talla:</strong> <span th:text="${don.tallaPrenda}"></span></p>
+                                    <p><strong>Cantidad actual:</strong> <span th:text="${don.cantidadPrenda}"></span>
+                                    </p>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="cantidad" class="form-label">Cantidad a ingresar:</label>
+                                    <input type="number" class="form-control" id="cantidad" name="nuevaCantidad" min="1"
+                                        required>
+                                    <div class="invalid-feedback">Es necesario ingresar la cantidad.</div>
+                                </div>
+                                <input type="hidden" name="donacionId" th:value="${don.idInventarioDonacion}">
+                            </div>
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-primary">Actualizar</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!--modificar cantidad quitar -->
+    <div th:each="don : ${donaciones}">
+        <div class="modal fade" th:id="'exampleMenos' + ${don.idInventarioDonacion}" aria-hidden="true" tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <form th:action="@{/paquetes/modificarMenosCantidad}" method="post" class="needs-validation"
+                        novalidate>
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="exampleModalCantidad">Eliminar Cantidad</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="mb-3">
+                                <div class="row row-cols-1 gy-2">
+                                    <div class="col">
+                                        <strong>Tipo: </strong> <span th:text="${don.tipoPrenda}"></span>
+                                    </div>
+                                    <div class="col">
+                                        <strong>Talla: </strong> <span th:text="${don.tallaPrenda}"></span>
+                                    </div>
+                                    <div class="col align-middle my-auto">
+                                        <label for="cantidad" class="form-label pe-1 my-auto">Cantidad actual:
+                                            <span class="fw-bold" th:text="${don.cantidadPrenda}"></span>
+                                        </label>
+                                    </div>
+                                    <div class="col">
+                                        <div class="row row-cols-1 gy-2">
+                                            <label for="nuevaCantidad" class="col form-label">Cantidad a
+                                                disminuir:</label>
+                                            <div class="col">
+                                                <input type="number" class="form-control w-100" id="cantidad"
+                                                    name="nuevaCantidad" min="1" style="color: red;" required>
+                                                <div class="invalid-feedback">
+                                                    Es necesario la cantidad
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Campo oculto para enviar el ID de la donación -->
+                            <input type="hidden" name="donacionId" th:value="${don.idInventarioDonacion}">
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary">Actualizar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--ingreso donacion-->
+    <div class="modal fade" id="exampleModalToggle" aria-hidden="true" aria-labelledby="exampleModalToggleLabel"
+        tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <form th:action="@{/paquetes/guardar}" method="post" class="needs-validation" novalidate>
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalToggleLabel">Ingreso de Donación</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="tipoPrenda" class="form-label">Tipo</label>
+                            <select class="form-select" id="tipoPrenda" name="tipoPrenda" required>
+                                <option value="0">Seleccionar tipo</option>
+                                <option value="Camisa(Mujer)">Camisa(Mujer)</option>
+                                <option value="Camisa(Hombre)">Camisa(Hombre)</option>
+                                <option value="Pantalón">Pantalón</option>
+                                <option value="Zapatos(Mujer)">Zapatos(Mujer)</option>
+                                <option value="Zapatos(Hombre)">Zapatos(Hombre)</option>
+                                <option value="Falda">Falda</option>
+                            </select>
+                            <div class="invalid-feedback">
+                                Es necesario seleccionar
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="tallaPrenda" class="form-label">Talla</label>
+                            <input type="text" class="form-control" id="tallaPrenda" name="tallaPrenda" required>
+                            <div class="invalid-feedback">
+                                Es necesario la talla
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="cantidadPrenda" class="form-label">Cantidad</label>
+                            <input type="number" class="form-control" id="cantidadPrenda" name="cantidadPrenda" min="1"
+                                required>
+                            <div class="invalid-feedback">
+                                Es necesario la cantidad
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Ingresar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!--modal eliminar -->
+    <div th:each="don : ${donaciones}">
+        <div class="modal fade" th:id="'eliminarModal' + ${don.idInventarioDonacion}" tabindex="-1"
+            aria-labelledby="eliminarModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5">Confirmar Eliminación</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        ¿Estás seguro de eliminar este registro? Esta acción no puede deshacerse.
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <form th:action="@{/paquetes/eliminar/{id}(id=${don.idInventarioDonacion})}" method="post">
+                            <input type="hidden" th:value="${don.idInventarioDonacion}" name="id">
+                            <button type="submit" class="btn btn-danger">Eliminar</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer th:replace="~{home :: footer}"></footer>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/list.js/1.5.0/list.min.js"></script>
+    <script type="text/javascript" th:src="@{/js/validacionRequired.js}"></script>
+    <script type="text/javascript" th:src="@{/js/donaciones.js}"></script>
+
+</body>
+
+</html>

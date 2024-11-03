@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head th:replace="~{home :: head}"></head>
+
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <div th:replace="~{Calificaciones/vistaActividades :: barraCalificaciones}"></div>
+            <div class="col ms-auto py-3 my-3">
+                <header th:replace="~{home :: header}"></header>
+
+                <div class="container py-5">
+                    <h1 class="text-center mb-4" style="font-size: 1.3rem;">
+                        Calificaciones de [[${alumno.nombreAlumno}]] [[${alumno.apellidoAlumno}]]
+                    </h1>
+
+                    <!-- Contenedor de tarjetas en cuadrícula -->
+                    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+                        <div th:each="materiaEntry : ${notasAgrupadas}" class="col">
+                            <div class="card border-secondary h-100 shadow-sm">
+                                <div class="card-header bg-secondary text-white py-2">
+                                    <h2 class="mb-0" th:text="${materiaEntry.key.nomMateria}" style="font-size: 1.1rem;">
+                                        Materia
+                                    </h2>
+                                </div>
+                                <div class="card-body p-2">
+                                    <div th:each="periodoEntry : ${materiaEntry.value}">
+                                        <h4 class="text-muted mb-1" style="font-size: 1rem;">
+                                            Periodo: <span th:text="${periodoEntry.key}">1</span>
+                                        </h4>
+                                        <div th:each="tipoActividadEntry : ${periodoEntry.value}" class="mb-1">
+                                            <table class="table table-sm table-bordered">
+                                                <thead class="table-light">
+                                                    <tr>
+                                                        <th style="width: 30%;">Ponderación</th>
+                                                        <th style="width: 50%;" th:text="${tipoActividadEntry.key}">Actividad</th>
+                                                        <th style="width: 20%;">Nota</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr th:each="nota : ${tipoActividadEntry.value}">
+                                                        <td th:text="${nota.actividad.ponderacionActividad + '%'}"></td>
+                                                        <td th:text="${nota.actividad.nombreActividad}"></td>
+                                                        <td th:text="${nota.notaObtenida}"></td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+
+                                        <!-- Nota global por periodo -->
+                                        <div class="alert alert-info py-1 px-2 mt-2">
+                                            <h5 class="mb-0" style="font-size: 0.95rem;">
+                                                Nota Global del Período:
+                                                <span th:text="${notasGlobalesPorPeriodo[materiaEntry.key][periodoEntry.key]}"></span>
+                                            </h5>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div> <!-- Fin tarjeta de materia -->
+                    </div> <!-- Fin contenedor de cuadrícula -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer th:replace="~{home :: footer}"></footer>
+</body>
+
+</html>

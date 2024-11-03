@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{home :: head}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
+
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css">
+</head>
+
+<body>
+    <header th:replace="~{Horario/nav :: navHorario}"></header>
+
+
+    <div class="container-fluid">
+        <div class="row">
+
+            <!-- Area de trabajo -->
+            <div class="p-3 min-vh-100">
+                <header th:replace="~{home :: header}"></header>
+
+                <div class="container-fluid">
+                    <nav class="px-4"  aria-label="breadcrumb">
+                        <ol class="breadcrumb mb-3">
+                            <li class="breadcrumb-item">
+                                <a th:href="@{/administracion}" class="text-decoration-none text-secondary">Administración</a>
+                            </li>
+                            <li class="breadcrumb-item active" aria-current="page">Horario</li>
+                        </ol>
+                    </nav>
+                    <div class="card border-0">
+                        <div class="card-header bg-light text-dark">
+                            <div class="d-flex justify-content-between align-items-center mb-2 flex-wrap">
+                                <h2 class="mb-0 ms-2"><i class="fas fa-chalkboard-teacher"></i> Generar Horario -
+                                    Docente
+                                </h2>
+                                <button class="btn btn-dark bi bi-layout-sidebar" type="button" id="botonNav"
+                                    data-bs-toggle="collapse" data-bs-target="#collapseWidthExample"
+                                    aria-expanded="true" aria-controls="collapseWidthExample"
+                                    title="Ocultar Opciones - Barra de navegación">
+                                </button>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <form th:action="@{/horarios/generarHorarioDocente}" method="get">
+                                <div class="row">
+                                    <!-- Docentes -->
+                                    <div class="col-md-9">
+                                        <div class="form-group mb-3">
+                                            <label for="duiDocente" class="form-label">
+                                                <i class="fas fa-user-tie"></i> Seleccione el Docente
+                                            </label>
+                                            <select id="duiDocente" name="duiDocente" th:value="${duiDocente}"
+                                                class="form-select" aria-label="Default select example">
+                                                <option value="" selected>Seleccione</option>
+                                                <option th:each="docente : ${docentes}" th:value="${docente.duiDocente}"
+                                                    th:text="${docente.nombreDocente + ' ' + docente.apellidoDocente}"
+                                                    th:selected="${duiDocente == docente.duiDocente}">
+                                                </option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <!-- Botones -->
+                                    <div class="col-md-3 d-flex align-items-end mb-3">
+                                        <div class="w-100 d-flex justify-content-between gap-2">
+                                            <!-- Filtrar -->
+                                            <input type="submit" class="btn btn-primary w-100" value="Buscar">
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+
+                            <!-- Mensajes de alerta -->
+                            <div class="alert-container">
+                                <header th:replace="~{alertas :: alertas}"></header>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="container">
+                        <!-- Horario de clases -->
+                        <div class="row" th:if="${docenteSeleccionado != null and horasDeClaseJson != null}">
+                            <div class="col-12 mt-2">
+                                <!-- Contenedor del horario con bordes y sombra -->
+                                <div class="p-3 border rounded shadow-sm bg-light">
+                                    <div class="d-flex justify-content-between align-items-center mb-2 flex-wrap">
+                                        <h5 class="text-start col-md-5"
+                                            th:text="${formSubmitted ? ('Horario de clases: ' + (docenteSeleccionado.getNombreDocente()) + ' ' + (docenteSeleccionado.getApellidoDocente())) : ''}">
+                                            ></h5>
+
+                                        <div class="d-flex gap-2">
+                                            <a class="btn btn-secondary"
+                                                th:href="@{/horarios/generarHorarioDocente(duiDocente=${duiDocente}, format='pdf')}"
+                                                data-bs-toggle="tooltip" data-bs-placement="top"
+                                                title="Imprimir horario" target="_blank"
+                                                onclick="openInPopup(this.href); return false;">
+                                                <i class="bi bi-printer"></i> Imprimir horario
+                                            </a>
+                                        </div>
+                                    </div>
+
+                                    <div class="table-responsive rounded">
+                                        <table
+                                            class="table table-bordered table-hover border border-secondary table-sm align-middle table-uniform"
+                                            style="--bs-border-opacity: .8;">
+                                            <thead class="table-dark">
+                                                <tr>
+                                                    <th>Hora</th>
+                                                    <th>Lunes</th>
+                                                    <th>Martes</th>
+                                                    <th>Miércoles</th>
+                                                    <th>Jueves</th>
+                                                    <th>Viernes</th>
+                                                    <th>Sábado</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody class="table-group-divider">
+                                                <!-- Turno matutino -->
+                                                <tr>
+                                                    <td>07:00 - 07:45 AM</td>
+                                                    <td th:data-idHorarioBase="1"></td>
+                                                    <td th:data-idHorarioBase="13"></td>
+                                                    <td th:data-idHorarioBase="25"></td>
+                                                    <td th:data-idHorarioBase="37"></td>
+                                                    <td th:data-idHorarioBase="49"></td>
+                                                    <td data-idHorarioBase="61"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>07:45 - 08:30 AM</td>
+                                                    <td data-idHorarioBase="2"></td>
+                                                    <td data-idHorarioBase="14"></td>
+                                                    <td data-idHorarioBase="26"></td>
+                                                    <td data-idHorarioBase="38"></td>
+                                                    <td data-idHorarioBase="50"></td>
+                                                    <td data-idHorarioBase="62"></td>
+                                                </tr>
+                                                <tr class="table-active">
+                                                    <td>08:30 - 08:50 AM</td>
+                                                    <td>R</td>
+                                                    <td>E</td>
+                                                    <td>C</td>
+                                                    <td>R</td>
+                                                    <td>E</td>
+                                                    <td>O</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>08:50 - 09:35 AM</td>
+                                                    <td data-idHorarioBase="3"></td>
+                                                    <td data-idHorarioBase="15"></td>
+                                                    <td data-idHorarioBase="27"></td>
+                                                    <td data-idHorarioBase="39"></td>
+                                                    <td data-idHorarioBase="51"></td>
+                                                    <td data-idHorarioBase="63"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>09:35 - 10:20 AM</td>
+                                                    <td data-idHorarioBase="4"></td>
+                                                    <td data-idHorarioBase="16"></td>
+                                                    <td data-idHorarioBase="28"></td>
+                                                    <td data-idHorarioBase="40"></td>
+                                                    <td data-idHorarioBase="52"></td>
+                                                    <td data-idHorarioBase="64"></td>
+                                                </tr>
+                                                <tr class="table-active">
+                                                    <td>10:20 - 10:30 AM</td>
+                                                    <td>R</td>
+                                                    <td>E</td>
+                                                    <td>C</td>
+                                                    <td>R</td>
+                                                    <td>E</td>
+                                                    <td>O</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>10:30 - 11:15 AM</td>
+                                                    <td data-idHorarioBase="5"></td>
+                                                    <td data-idHorarioBase="17"></td>
+                                                    <td data-idHorarioBase="29"></td>
+                                                    <td data-idHorarioBase="41"></td>
+                                                    <td data-idHorarioBase="53"></td>
+                                                    <td data-idHorarioBase="65"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>11:15 - 12:00 PM</td>
+                                                    <td data-idHorarioBase="6"></td>
+                                                    <td data-idHorarioBase="18"></td>
+                                                    <td data-idHorarioBase="30"></td>
+                                                    <td data-idHorarioBase="42"></td>
+                                                    <td data-idHorarioBase="54"></td>
+                                                    <td data-idHorarioBase="66"></td>
+                                                </tr>
+                                                <tr class="table-active">
+                                                    <td>12:00 - 01:00 PM</td>
+                                                    <td>R</td>
+                                                    <td>E</td>
+                                                    <td>C</td>
+                                                    <td>E</td>
+                                                    <td>S</td>
+                                                    <td>O</td>
+                                                </tr>
+
+                                                <!-- Turno vespertino -->
+                                                <tr>
+                                                    <td>01:00 - 01:45 PM</td>
+                                                    <td data-idHorarioBase="7"></td>
+                                                    <td data-idHorarioBase="19"></td>
+                                                    <td data-idHorarioBase="31"></td>
+                                                    <td data-idHorarioBase="43"></td>
+                                                    <td data-idHorarioBase="55"></td>
+                                                    <td data-idHorarioBase="67"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>01:45 - 02:30 PM</td>
+                                                    <td data-idHorarioBase="8"></td>
+                                                    <td data-idHorarioBase="20"></td>
+                                                    <td data-idHorarioBase="32"></td>
+                                                    <td data-idHorarioBase="44"></td>
+                                                    <td data-idHorarioBase="56"></td>
+                                                    <td data-idHorarioBase="68"></td>
+                                                </tr>
+                                                <tr class="table-active">
+                                                    <td>02:30 - 02:50 PM</td>
+                                                    <td>R</td>
+                                                    <td>E</td>
+                                                    <td>C</td>
+                                                    <td>R</td>
+                                                    <td>E</td>
+                                                    <td>O</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>02:50 - 03:35 PM</td>
+                                                    <td data-idHorarioBase="9"></td>
+                                                    <td data-idHorarioBase="21"></td>
+                                                    <td data-idHorarioBase="33"></td>
+                                                    <td data-idHorarioBase="45"></td>
+                                                    <td data-idHorarioBase="57"></td>
+                                                    <td data-idHorarioBase="69"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>03:35 - 04:20 PM</td>
+                                                    <td data-idHorarioBase="10"></td>
+                                                    <td data-idHorarioBase="22"></td>
+                                                    <td data-idHorarioBase="34"></td>
+                                                    <td data-idHorarioBase="46"></td>
+                                                    <td data-idHorarioBase="58"></td>
+                                                    <td data-idHorarioBase="70"></td>
+                                                </tr>
+                                                <tr class="table-active">
+                                                    <td>04:20 - 04:30 PM</td>
+                                                    <td>R</td>
+                                                    <td>E</td>
+                                                    <td>C</td>
+                                                    <td>R</td>
+                                                    <td>E</td>
+                                                    <td>O</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>04:30 - 05:15 PM</td>
+                                                    <td data-idHorarioBase="11"></td>
+                                                    <td data-idHorarioBase="23"></td>
+                                                    <td data-idHorarioBase="35"></td>
+                                                    <td data-idHorarioBase="47"></td>
+                                                    <td data-idHorarioBase="59"></td>
+                                                    <td data-idHorarioBase="71"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>05:15 - 06:00 PM</td>
+                                                    <td data-idHorarioBase="12"></td>
+                                                    <td data-idHorarioBase="24"></td>
+                                                    <td data-idHorarioBase="36"></td>
+                                                    <td data-idHorarioBase="48"></td>
+                                                    <td data-idHorarioBase="60"></td>
+                                                    <td data-idHorarioBase="72"></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer th:replace="~{home :: footer}"></footer>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script type="text/javascript" src="/js/validacionRequired.js"></script>
+    <script type="text/javascript" src="/js/horarioDocente.js"></script>
+    <script type="text/javascript" src="/js/tooltip.js"></script>
+    <script th:inline="javascript">var horasDeClase = JSON.parse(/*[[${horasDeClaseJson}]]*/ '[]');</script>
+    </div>
+</body>
+
+</html>

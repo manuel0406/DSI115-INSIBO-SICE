@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{home :: head}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css">
+</head>
+
+<body>
+    <!-- barra -->
+    <div th:fragment="navHorario" class="text-white sticky-top mt-5">
+        <div class="collapse show" id="collapseWidthExample">
+            <div class="custom-navbar2 d-flex align-items-center sticky-top w-100">
+                <div class="container-fluid">
+                    <div class="row no-gutters">
+                        <div class="col-12">
+                            <ul class="nav nav-pills justify-content-end">
+                                <li class="nav-item me-2 py-2">
+                                    <a class="nav-link text-white align-items-center" th:href="@{/horarios/asignarHoras}">
+                                        <i class="bi bi-journal-plus"></i>
+                                        <span class="fs-6 ms-2 d-none d-md-inline">Crear horas</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item me-2 py-2">
+                                    <a class="nav-link text-white align-items-center" th:href="@{/horarios/editarHoras}">
+                                        <i class="bi bi-journal-minus"></i>
+                                        <span class="fs-6 ms-2 d-none d-md-inline">Editar horas</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item me-2 py-2">
+                                    <a class="nav-link text-white align-items-center" th:href="@{/horarios/generarHorarioSeccion}">
+                                        <i class="bi bi-journal-check"></i>
+                                        <span class="fs-6 ms-2 d-none d-md-inline">Horario sección</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item py-2">
+                                    <a class="nav-link text-white align-items-center" th:href="@{/horarios/generarHorarioDocente}">
+                                        <i class="bi bi-journal-check"></i>
+                                        <span class="fs-6 ms-2 d-none d-md-inline">Horario docente</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+</body>
+
+
+<script>
+    // Inicializa el estado basado en la visibilidad del collapse
+    document.addEventListener('DOMContentLoaded', function () {
+        var collapseElement = document.getElementById('collapseWidthExample');
+        var toggleButton = document.getElementById('toggleButton');
+
+        // Actualiza el aria-expanded del botón según el estado inicial
+        toggleButton.setAttribute('aria-expanded', collapseElement.classList.contains('show'));
+
+        collapseElement.addEventListener('hidden.bs.collapse', function () {
+            toggleButton.setAttribute('aria-expanded', 'false');
+        });
+
+        collapseElement.addEventListener('shown.bs.collapse', function () {
+            toggleButton.setAttribute('aria-expanded', 'true');
+        });
+    });
+</script>
+</html>

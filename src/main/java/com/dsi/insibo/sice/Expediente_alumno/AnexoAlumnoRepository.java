@@ -8,14 +8,14 @@ import org.springframework.stereotype.Repository;
 import com.dsi.insibo.sice.entity.AnexoAlumno;
 
 @Repository
-public interface AnexoAlumnoRepository extends JpaRepository<AnexoAlumno, Integer> {
+public interface AnexoAlumnoRepository extends JpaRepository<AnexoAlumno, Integer> { 
 
-    @Query("SELECT a FROM AnexoAlumno a WHERE a.alumno.nie = :nie")
-    AnexoAlumno findByAlumnoNie(@Param("nie") int nie);   
+    @Query("SELECT a FROM AnexoAlumno a WHERE a.alumno.idAlumno = :idAlumno")
+    AnexoAlumno findByAlumnoNie(@Param("idAlumno") int idAlumno);   
 
     @Modifying
-    @Query("DELETE FROM AnexoAlumno n WHERE n.alumno.nie = :nie ")
-    void deleteByAlumnoNie(int nie);
+    @Query("DELETE FROM AnexoAlumno n WHERE n.alumno.idAlumno = :idAlumno ")
+    void deleteByAlumnoNie(int idAlumno);
 }
 
 

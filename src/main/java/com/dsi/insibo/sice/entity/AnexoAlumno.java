@@ -4,7 +4,6 @@ import java.util.Date;
 
 import jakarta.persistence.*;
 
-
 @Entity
 public class AnexoAlumno {
 
@@ -19,11 +18,10 @@ public class AnexoAlumno {
     private String nombreDui;
     @Lob
     private byte[] datosDui;
-    private Date fechaDui;    
+    private Date fechaDui;
 
     @ManyToOne
     private Alumno alumno;
-
 
     public int getIdAnexoAlumno() {
         return idAnexoAlumno;
@@ -89,9 +87,4 @@ public class AnexoAlumno {
         this.alumno = alumno;
     }
 
-
-    
-    
-    
-        
 }

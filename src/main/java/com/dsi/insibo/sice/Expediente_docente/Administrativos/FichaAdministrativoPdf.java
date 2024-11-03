@@ -25,7 +25,7 @@ import com.lowagie.text.pdf.PdfWriter;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-@Component("Expediente_docente/Administrativos/fichaAdministrativoEdit")
+@Component("Expediente_docente/Administrativos/fichaAdministrativoConsult")
 public class FichaAdministrativoPdf extends AbstractPdfView {
 
     @Override

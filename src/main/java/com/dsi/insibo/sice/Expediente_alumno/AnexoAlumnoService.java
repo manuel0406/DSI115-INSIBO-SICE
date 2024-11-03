@@ -23,10 +23,8 @@ public class AnexoAlumnoService {
         return anexoRepository.findById(id).orElse(null);
     }
     
-    public AnexoAlumno buscarAlumno(int nie){
-
-       
-        return  anexoRepository.findByAlumnoNie(nie);
+    public AnexoAlumno buscarAlumno(int idAlumno){      
+        return  anexoRepository.findByAlumnoNie(idAlumno);
     }
 
     @Transactional

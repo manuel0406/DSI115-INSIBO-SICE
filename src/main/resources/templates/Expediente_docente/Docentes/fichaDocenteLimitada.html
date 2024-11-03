@@ -7,31 +7,12 @@
     <title>Ficha Docente</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <!-- Estilos CSS para los elementos no editables -->
-    <!-- Estilos para los elementos no editables -->
-    <style>
-        /* Cambia el color de fondo y el texto para los campos desactivados */
-        .readonly {
-            background-color: #f0f0f0;
-            /* Cambia el color de fondo */
-            color: #333;
-            /* Cambia el color del texto */
-            opacity: 0.7;
-            /* Aplica un efecto de opacidad */
-            cursor: not-allowed;
-            /* Cambia el cursor para indicar que no se puede editar */
-        }
-    </style>
-
-
 </head>
 
 <body>
     <header th:replace="~{home :: header}"></header>
-    <header th:replace="~{Expediente_docente/barra :: barraExpediente}"></header>
 
-
-    <div class="container mt-4">
+    <div class="container my-4 py-5">
         <div class="card">
             <div class="card-header text-center">
                 <h5>INSTITUTO NACIONAL SIMON BOLIVAR</h5>
@@ -41,46 +22,55 @@
             <div class="card-body">
 
                 <form class="row g-3 needs-validation" novalidate th:object="${profesor}"
-                    th:action="@{/expedientedocente/actualizar}" method="post">
+                    th:action="@{/expedientedocente/actualizarGen}" method="post" sec:authorize="hasRole('DOCENTE')">
                     <!-- Datos Personales -->
                     <div class="col-12">
                         <h4 class="text-center">Datos Personales</h4>
                     </div>
 
-                    <div class="col-md-6">
+                    <div class="col-lg-4 col-md-6">
                         <label for="docente_nombres" class="form-label">Nombres:</label>
-                        <input type="text" th:field="*{nombreDocente}" class="form-control bg-light text-dark"
-                            id="docente_nombres" required readonly>
+                        <input type="text" th:field="*{nombreDocente}" class="form-control bg-light" id="docente_nombres"
+                            required readonly>
+                        <div class="invalid-feedback">
+                            Es necesario agregar nombres
+                        </div>
                     </div>
 
-
-                    <div class="col-md-6">
+                    <div class="col-lg-4 col-md-6">
                         <label for="docente_apellidos" class="form-label">Apellidos:</label>
-                        <input type="text" th:field="*{apellidoDocente}" class="form-control bg-light text-dark"
-                            id="docente_apellidos" required readonly>
+                        <input type="text" th:field="*{apellidoDocente}" class="form-control bg-light" id="docente_apellidos"
+                            required readonly>
+                        <div class="invalid-feedback">
+                            Es necesario agregar apellidos
+                        </div>
                     </div>
 
-                    <div class="col-md-6">
+                    <div class="col-lg-4 col-md-6">
                         <label for="docente_profesion" class="form-label">Profesión:</label>
-                        <input type="text" th:field="*{profesionDocente}" class="form-control bg-light text-dark"
-                            id="docente_profesion" required readonly>
+                        <input type="text" th:field="*{profesionDocente}" class="form-control bg-light" id="docente_profesion"
+                            required readonly>
+                        <div class="invalid-feedback">
+                            Es necesario agregar la profesión
+                        </div>
                     </div>
 
-                    <div class="col-md-6">
+                    <div class="col-lg-4 col-md-6">
                         <label for="docente_fecha_nacimiento" class="form-label">Fecha de nacimiento:</label>
-                        <input type="date" th:field="*{fechaNacimientoD}" class="form-control bg-light text-dark"
+                        <input type="date" th:field="*{fechaNacimientoD}" class="form-control bg-light"
                             id="docente_fecha_nacimiento" required readonly>
+                        <div class="invalid-feedback">
+                            Es necesario agregar la fecha de nacimiento
+                        </div>
                     </div>
-
 
                     <!-- Ubicación -->
                     <div class="col-12">
                         <h4 class="text-center">Ubicación</h4>
                     </div>
-
-                    <div class="col-12">
+                    <div class="col-lg-8 col-md-12">
                         <label for="docente_direccion" class="form-label">Dirección:</label>
-                        <input type="text" th:field="*{direccionDocente}" class="form-control" id="docente_direccion" ,
+                        <input type="text" th:field="*{direccionDocente}" class="form-control" id="docente_direccion",
                             required>
                         <div id="direccionHelp" class="form-text">Dirección completa. Ej. Colonia Roma, Pasaje #4, Casa
                             6.</div>
@@ -88,8 +78,7 @@
                             Es necesario agregar la direccion
                         </div>
                     </div>
-
-                    <div class="col-md-6">
+                    <div class="col-lg-4 col-md-6">
                         <label for="docente_departamento" class="form-label">Departamento</label>
                         <select id="docente_departamento" th:field="*{departamentoD}" class="form-select"
                             th:data-selected="${profesor.departamentoD}" required>
@@ -99,8 +88,7 @@
                             Es necesario seleccionar un departamento
                         </div>
                     </div>
-
-                    <div class="col-md-6">
+                    <div class="col-lg-4 col-md-6">
                         <label for="docente_municipio" class="form-label">Municipio</label>
                         <select id="docente_municipio" th:field="*{municipioD}" class="form-select"
                             th:data-selected="${profesor.municipioD}" required>
@@ -110,8 +98,7 @@
                             Es necesario seleccionar un municipio
                         </div>
                     </div>
-
-                    <div class="col-md-6">
+                    <div class="col-lg-4 col-md-6">
                         <label for="docente_distrito" class="form-label">Distrito</label>
                         <select id="docente_distrito" th:field="*{distritoDocente}" class="form-select"
                             th:data-selected="${profesor.distritoDocente}" required>
@@ -121,8 +108,7 @@
                             Es necesario seleccionar un distrito
                         </div>
                     </div>
-
-                    <div class="col-md-6">
+                    <div class="col-lg-4 col-md-6">
                         <label for="docente_zona" class="form-label">Zona</label>
                         <select id="docente_zona" th:field="*{zonaDocente}" class="form-select" required>
                             <option value="" selected>Seleccionar...</option>
@@ -134,32 +120,60 @@
                         </div>
                     </div>
 
-
                     <!-- Documentos de Identificación -->
                     <div class="col-12">
                         <h4 class="text-center">Documentos de Identificación</h4>
                     </div>
-                    <div class="col-md-6">
+
+                    <div class="col-lg-4 col-md-6">
                         <label for="docente_dui" class="form-label">DUI</label>
-                        <input type="text" th:field="*{duiDocente}" class="form-control bg-light text-dark" readonly
-                            id="docente_dui" required>
+                        <input type="text" th:field="*{duiDocente}" class="form-control bg-light" id="docente_dui" minlength="10"
+                            required readonly>
+                        <div class="invalid-feedback">
+                            Es necesario agregar un DUI valido
+                        </div>
                     </div>
+                    <!-- aplica las propiedadades solo cuando se cumple la condicion -->
 
-                    <div class="col-md-6">
+                    <div class="col-lg-4 col-md-6">
                         <label for="docente_nip" class="form-label">NIP</label>
-                        <input type="text" th:field="*{nip}" class="form-control bg-light text-dark" id="docente_nip"
-                            required readonly>
+                        <input type="text" th:field="*{nip}" class="form-control restricted-input bg-light" id="docente_nip"
+                            minlength="7" required readonly>
+                        <div class="invalid-feedback">
+                            Es necesario agregar un NIP valido
+                        </div>
                     </div>
 
-                    <div class="col-md-6">
-                        <label for="docente_nit" class="form-label">NIT</label>
-                        <input type="text" th:field="*{nit}" class="form-control bg-light text-dark" id="docente_nit"
-                            required readonly>
-                    </div>
-
-                    <div class="col-md-6">
+                    <div class="col-lg-4 col-md-6">
                         <label for="docente_nup" class="form-label">NUP</label>
-                        <input type="text" th:field="*{nup}" class="form-control bg-light text-dark" required readonly>
+                        <input type="text" th:field="*{nup}" class="form-control bg-light" id="docente_nup" minlength="12"
+                            required readonly>
+                        <div class="invalid-feedback">
+                            Es necesario agregar un NUP valido
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4 col-md-6">
+                        <label for="docente_nit" class="form-label">NIT</label>
+                        <input type="text" th:field="*{nit}" class="form-control restricted-input  bg-light" id="docente_nit"
+                            minlength="17" required readonly>
+
+                        <div class="col-auto mt-2">
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="nitOption" id="homologado"
+                                    value="homologado" disabled readonly>
+                                <label class="form-check-label" for="homologado">NIT Homologado</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="nitOption" id="convencional"
+                                    value="convencional" checked disabled readonly>
+                                <label class="form-check-label" for="convencional">NIT Convencional</label>
+                            </div>
+                        </div>
+
+                        <div class="invalid-feedback">
+                            Es necesario agregar un NIT válido.
+                        </div>
                     </div>
 
 
@@ -167,19 +181,17 @@
                     <div class="col-12">
                         <h4 class="text-center">Información de Contacto</h4>
                     </div>
-
-                    <div class="col-12">
+                    <div class="col-lg-4 col-md-12">
                         <label for="docente_correo_institucional" class="form-label">Correo Electrónico</label>
-                        <input type="email" th:field="*{correoDocente}" class="form-control"
+                        <input type="email" th:field="*{correoDocente}" class="form-control bg-light"
                             id="docente_correo_institucional" aria-describedby="correoHelp" required>
-                        <div id="correoHelp" class="form-text">Ingrese su correo institucional, en caso de no tener
-                            puede usar el personal.</div>
+                        <div id="correoHelp" class="form-text">Ingrese su correo electrónico (institucional o personal).
+                        </div>
                         <div class="invalid-feedback">
-                            Es necesario agregar el correo electronico
+                            Es necesario agregar un correo electronico valido
                         </div>
                     </div>
-
-                    <div class="col-md-6">
+                    <div class="col-lg-4 col-md-6">
                         <label for="docente_celular" class="form-label">Celular:</label>
                         <input type="text" th:field="*{telefonoDocente}" class="form-control" id="docente_celular"
                             minlength="9" required>
@@ -187,8 +199,7 @@
                             Es necesario agregar un numero de celular valido
                         </div>
                     </div>
-
-                    <div class="col-md-6">
+                    <div class="col-lg-4 col-md-6">
                         <label for="docente_telefono_fijo" class="form-label">Telefono Fijo:</label>
                         <input type="text" th:field="*{telefonoFijoDocente}" class="form-control"
                             id="docente_telefono_fijo" minlength="9">
@@ -201,92 +212,98 @@
                     <div class="col-12">
                         <h4 class="text-center">Información Adicional</h4>
                     </div>
-
                     <div class="col-12">
                         <label for="docente_especialidad" class="form-label">Especialidad en estudio: </label>
                         <input type="text" th:field="*{especialidadEnEstudio}" class="form-control"
                             id="docente_especialidad" aria-describedby="especialidadHelp" placeholder=" ">
-                        <div id="especialidadHelp" class="form-text" required>Ingrese solo si estudia actualmente.</div>
+                        <div id="especialidadHelp" class="form-text">Ingrese solo si estudia actualmente.</div>
                     </div>
-
-                    <div class="col-12">
+                    <div class="col-lg-8 col-md-12">
+                        <label for="docente_titulo" class="form-label">Título que lo acredita como docente:</label>
+                        <input type="text" th:field="*{tituloDocente}" class="form-control bg-light" id="docente_titulo"
+                            name="titulo" required readonly>
+                        <div class="invalid-feedback">
+                            Es necesario agregar el titulo que lo acredita
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-12">
                         <label for="docente_fecha_ingreso" class="form-label">Fecha de ingreso al MYNEDUCIT:</label>
                         <div class="row">
-                            <div class="col-md-2">
-                                <input type="date" th:field="*{fechaMineducyt}" class="form-control bg-light text-dark"
+                            <div class="col-lg-12 col-md-5">
+                                <input type="date" th:field="*{fechaMineducyt}" class="form-control bg-light"
                                     id="docente_fecha_ingreso" name="fecha_ingreso" required readonly>
+                            </div>
+                            <div class="invalid-feedback">
+                                Es necesario agregar la fecha de ingreso al MYNEDUCIT
                             </div>
                         </div>
                     </div>
 
-                    <div class="col-12">
-                        <label for="docente_titulo" class="form-label">Título que lo acredita como docente:</label>
-                        <input type="text" th:field="*{tituloDocente}" class="form-control bg-light text-dark"
-                            id="docente_titulo" name="titulo" required readonly>
-                    </div>
-
-
                     <!-- Atestados -->
-                    <div class="col-12">
+                    <div class="col-12 d-none">
                         <h4 class="text-center">Atestados</h4>
                     </div>
-
-                    <div class="form-group">
-                        <label>Adjunta curriculum VITAE actualizado:</label>
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" th:field="*{curriculumDocente}"
-                                id="docente_curriculum_si" value="true" readonly>
-                            <label class="form-check-label" for="docente_curriculum_si">Sí</label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" th:field="*{curriculumDocente}"
-                                id="docente_curriculum_no" value="false" readonly>
-                            <label class="form-check-label" for="docente_curriculum_no">No</label>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
+                    <div class="form-group d-none">
                         <label>Adjunta atestados:</label>
                         <div class="form-check">
                             <input class="form-check-input" type="radio" th:field="*{atestadosDocente}"
-                                id="docente_atestados_si" value="true" readonly>
+                                id="docente_atestados_si" value="true">
                             <label class="form-check-label" for="docente_atestados_si">Sí</label>
                         </div>
                         <div class="form-check">
                             <input class="form-check-input" type="radio" th:field="*{atestadosDocente}"
-                                id="docente_atestados_no" value="false" readonly>
+                                id="docente_atestados_no" value="false">
                             <label class="form-check-label" for="docente_atestados_no">No</label>
                         </div>
                     </div>
-
+                    <div class="form-group d-none">
+                        <label>Adjunta curriculum VITAE actualizado:</label>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" th:field="*{curriculumDocente}"
+                                id="docente_curriculum_si" value="true">
+                            <label class="form-check-label" for="docente_curriculum_si">Sí</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" th:field="*{curriculumDocente}"
+                                id="docente_curriculum_no" value="false">
+                            <label class="form-check-label" for="docente_curriculum_no">No</label>
+                        </div>
+                    </div>
                     <div class="col-12">
-                        <label for="docente_fecha_entrega" class="form-label">Fecha de entrega:</label>
+                        <label for="docente_fecha_entrega" class="form-label d-none">Fecha de entrega:</label>
                         <div class="row">
-                            <div class="col-md-2">
-                                <input type="date" th:field="*{fechaEntrega}" class="form-control bg-light text-dark"
+                            <div class="col-lg-4 col-md-4">
+                                <input type="hidden" th:field="*{fechaEntrega}" class="form-control"
                                     id="docente_fecha_entrega" name="fecha_entrega" required readonly>
                             </div>
+                            <div class="invalid-feedback">
+                                Es necesario agregar la fecha de entrega del formulario
+                            </div>
                         </div>
+                    </div>
 
+                    <input type="hidden" class="form-control" id="docente_rol" name="docenteRol"  value="Docente"
+                    required readonly>
 
-
-                        <!-- Botón Guardar -->
-                        <div class="col-12 text-center mt-4">
+                    <div class="row justify-content-center text-center  mt-4">
+                        <div class="col-auto">
                             <button type="submit" class="btn btn-primary">Guardar</button>
                         </div>
+                        <div class="col-auto">
+                            <a class="btn btn-danger"  th:href="@{/expedientedocente/miexpediente}"
+                                th:text="Cancelar"></a>
+                        </div>
+                    </div>
                 </form>
             </div>
         </div>
+
 
         <footer th:replace="~{home :: footer}"></footer>
         <script type="text/javascript" src="/js/direccion.js"></script>
         <script type="text/javascript" src="/js/validacionRequired.js"></script>
         <script type="text/javascript" src="/js/mascarasDocentes.js"></script>
-        <script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
-            crossorigin="anonymous"></script>
 </body>
 
 </html>

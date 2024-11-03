@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head th:replace="~{home :: head}">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body>
+  <header th:replace="~{home :: header}"></header>
+  <div class="py-5"></div>
+
+  <div class="container">
+
+    <!--Mensajes-->
+    <div th:replace="~{alertas::alertas}"></div>
+    <nav class="px-4" aria-label="breadcrumb">
+      <ol class="breadcrumb mb-3">
+        <li class="breadcrumb-item">
+          <a th:href="@{/administracion}" class="text-decoration-none text-secondary">Administración</a>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">Asignaciones de orientador</li>
+      </ol>
+    </nav>
+    <div class="py-4 bg-light">
+      <h1 class="text-center">Asignaciones de orientador</h1>
+    </div>
+    <div class="py-2"></div>
+
+    <div class=" py-1">
+      <div class="d-flex justify-content-between align-items-center mb-3 my-3 flex-wrap">
+        <h3 class="text-start col-lg-9">Listado de orientadores</h3>
+        <div class="d-flex gap-2">
+          <a class="btn btn-primary Agregar-btn" data-bs-toggle="tooltip" data-bs-placement="top"
+            title="Agregar Asignación" th:text="'Agregar asignación'"></a>
+        </div>
+      </div>
+
+      <div class="table-responsive py-2">
+        <table class="table table-hover">
+          <thead class="tabla-c">
+            <tr>
+              <th scope="col">N°</th>
+              <th scope="col">Docente</th>
+              <th scope="col">Año</th>
+              <th scope="col">Especialidad</th>
+              <th scope="col">Sección</th>
+              <th scope="col">Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr th:each="orientador, stat : ${listaOrientadores}">
+              <th scope="row" th:text="${baseIndex + stat.index + 1}"></th>
+              <td th:text="${orientador.docente.nombreDocente+ ' '+orientador.docente.apellidoDocente}"></td>
+              <td th:text="${orientador.bachillerato.grado}"></td>
+              <td th:text="${orientador.bachillerato.nombreCarrera}"></td>
+              <td th:text="${orientador.bachillerato.seccion}"></td>
+              <td>
+                <a class="btn btn-primary editar-btn" data-bs-toggle="modal" data-bs-target="#actualizarOrientadorModal"
+                  data-bs-placement="top" title="Editar" th:data-id="${orientador.idOrientador}"
+                  th:data-doc="${orientador.docente.duiDocente}"
+                  th:data-bac="${orientador.bachillerato.codigoBachillerato}">
+                  <i class="bi bi-pencil-square"></i>
+                </a>
+                <a class="btn btn-danger delete-btn"
+                  th:href="@{/AsignacionOrientador/eliminar/}+${orientador.idOrientador}" data-bs-placement="top"
+                  title="Eliminar">
+                  <i class="bi bi-trash"></i>
+                </a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <!-- Se mostrara cuando se le mande una lista de asignaciones vacias -->
+        <div class="alert alert-info alert-dismissible fade show mt-1 ms-2 mr-2" th:if="${totalElements == 0}">
+          <i class="bi bi-info-circle"></i>
+          <label th:text="${'¡No hay asignaciones registrados!'}"></label>
+        </div>
+      </div>
+    </div>
+    <!-- Contenedor de navegación para la paginación -->
+    <!-- Solo se mostrara cuando existan paginas y el total de las lista de alumnos supero los 50 estudiantes -->
+    <div th:if="${totalPages != 0 && totalElements > 20}">
+      <nav aria-label="...">
+        <!-- Lista de elementos de paginación centrada -->
+        <ul class="pagination justify-content-center">
+          <!-- Elemento de la lista para el enlace "Anterior" -->
+          <!-- Si la página actual es la primera, se desactiva el enlace -->
+          <li class="page-item" th:classappend="${page == 1} ? 'disabled' : ''">
+            <!-- Enlace que lleva a la página anterior -->
+            <a class="page-link" th:href="@{/AsignacionOrientador/Asignar(page=${page - 1})}">Anterior</a>
+          </li>
+          <!-- Bucle que genera los enlaces para cada página -->
+          <!-- Se usa th:each para iterar desde 1 hasta el total de páginas -->
+          <!-- Se resalta el enlace de la página actual con la clase "active" -->
+          <li class="page-item" th:each="i : ${#numbers.sequence(1, totalPages)}"
+            th:classappend="${i == page} ? 'active' : ''">
+            <!-- Enlace que lleva a la página correspondiente -->
+            <a class="page-link" th:href="@{/AsignacionOrientador/Asignar(page=${i})}" th:text="${i}"></a>
+          </li>
+          <!-- Elemento de la lista para el enlace "Siguiente" -->
+          <!-- Si la página actual es la última, se desactiva el enlace -->
+          <li class="page-item" th:classappend="${page == totalPages} ? 'disabled' : ''">
+            <!-- Enlace que lleva a la página siguiente -->
+            <a class="page-link" th:href="@{/AsignacionOrientador/Asignar(page=${page + 1})}">Siguiente</a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+
+  <!-- Modal de agregar Orientador -->
+  <div class="modal fade" id="agregarModal" tabindex="-1" aria-labelledby="confirmAgregarModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="confirmAgregarModalLabel">Agregar asingnación</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <form th:object="${orientador}" class="needs-validation" id="formOrientador" novalidate method="post"
+          th:action="@{/AsignacionOrientador/guardarOrientacion}">
+          <div class="modal-body">
+            <div class="mb-3">
+              <label for="docente" class="form-label fw-bold">Docente:</label>
+              <select th:field="*{docente}" class="form-select border-secondary border-opacity-75" id="docente"
+                required>
+                <option value="" selected>Seleccione</option>
+                <option th:each="docente : ${Docentes}" th:value="${docente.duiDocente}"
+                  th:text="${docente.nombreDocente+ ' '+ docente.apellidoDocente}"></option>
+              </select>
+              <div class="invalid-feedback">Es necesario seleccionar el docente</div>
+            </div>
+            <div class="mb-3">
+              <label for="exampleInputPassword1" class="form-label fs-6 fw-bold">Especialidad del bachillerato:</label>
+              <select th:field="*{bachillerato}" class="form-select border-secondary border-opacity-75"
+                aria-label="Default select example" id="bachillerato" required>
+                <option value="" selected>Seleccione</option>
+                <option th:each="bachillerato : ${bachilleratos}" th:value="${bachillerato.codigoBachillerato}"
+                  th:text="${bachillerato.grado +'° '+ bachillerato.nombreCarrera  + ' - Sección ' + bachillerato.seccion}">
+                </option>
+              </select>
+              <div class="invalid-feedback">Es necesario seleccionar una especialidad</div>
+            </div>
+          </div>
+          <div class="modal-footer text-center">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+              id="cancelarSancion">Cancelar</button>
+            <button type="submit" class="btn btn-primary" id="agregarModalButton">Guardar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal de editar sancion -->
+  <div class="modal fade" id="actualizarOrientadorModal" tabindex="-1" aria-labelledby="actualizarOrientadorLabel"
+    aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="actualizarOrientadorLabel">Agregar sanción</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <form th:object="${orientador}" class="needs-validation" id="formOrientador" novalidate method="post"
+          th:action="@{/AsignacionOrientador/actualizarOrientacion}">
+          <div class="modal-body">
+            <div class="mb-3">
+              <input type="hidden" id="idOrientador" name="idOrientador">
+              <input type="hidden" id="EditBachillerato" name="bachillerato">
+              <label for="docente" class="form-label fw-bold">Docente:</label>
+              <select th:field="*{docente}" class="form-select border-secondary border-opacity-75" id="EditDocente"
+                required>
+                <option value="" selected>Seleccione</option>
+                <option th:each="docente : ${Docentes}" th:value="${docente.duiDocente}"
+                  th:text="${docente.nombreDocente+ ' '+ docente.apellidoDocente}"></option>
+              </select>
+              <div class="invalid-feedback">Es necesario seleccionar el docente</div>
+            </div>
+            <!-- <div class="mb-3">
+              <label for="exampleInputPassword1" class="form-label fs-6">Especialidad del bachillerato:</label>
+              <select th:field="*{bachillerato}" class="form-select border-secondary border-opacity-75"
+                aria-label="Default select example" id="EditBachillerato" required>
+                <option value="" selected>Seleccione</option>
+                <option th:each="bachillerato : ${bachilleratos}" th:value="${bachillerato.codigoBachillerato}"
+                  th:text="${bachillerato.grado +'° '+ bachillerato.nombreCarrera  + ' - Sección ' + bachillerato.seccion}">
+                </option>
+              </select>
+              <div class="invalid-feedback">Es necesario seleccionar una especialidad</div>
+            </div> -->
+          </div>
+          <div class="modal-footer text-center">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+              id="cancelarSancion">Cancelar</button>
+            <button type="submit" class="btn btn-primary" id="agregarModalButton">Guardar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal de Confirmación -->
+  <div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-labelledby="confirmDeleteModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="confirmDeleteModalLabel">Confirmar Eliminación</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          ¿Estás seguro de eliminar el registro? Esta acción no puede deshacerse.
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button type="button" class="btn btn-danger" id="confirmDeleteButton">Eliminar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer th:replace="~{home :: footer}"></footer>
+  <script type="text/javascript" th:src="@{/js/GestionOrientador.js}"></script>
+  <script type="text/javascript" th:src="@{/js/modalEliminacion.js}"></script>
+</body>
+
+</html>

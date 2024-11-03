@@ -1,138 +1,118 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
-  <head th:replace="home :: head">
+<html
+  lang="es"
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+>
+  <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
-    />
-    <title>Arquivo</title>
+    <title>Asistencia | Cargar asistencia</title>
     <link rel="stylesheet" th:href="@{/css/style.css}" />
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.7.2/font/bootstrap-icons.css"
+      rel="stylesheet"
+    />
   </head>
 
   <body>
     <header th:replace="~{home :: header}"></header>
-    <div class="p-4">
-      <form class="form-container" enctype="multipart/form-data">
-     <div class="upload-files-container">
-       <div class="drag-file-area">
-         <span class="material-icons-outlined upload-icon">Subir archivo</span>
-         <h3 class="dynamic-message">Suba o suelte su archivo aquí</h3>
-         <label class="label" style="width:10rem">
-           o
-           <span class="browse-files">
-             <input type="file" class="default-file-input" />
-             <span class="browse-files-text">Buscar Archivo</span>
-             <span>desde el dispositivo</span>
-           </span>
-         </label>
-       </div>
-       <span class="cannot-upload-message">
-         <span class="material-icons-outlined"></span> Seleccione un archivo primero
-         <span class="material-icons-outlined cancel-alert-button"
-           >X</span
-         >
-       </span>
-       <div class="file-block">
-         <div class="file-info">
-           <span class="material-icons-outlined file-icon">-</span>
-           <span class="file-name"> </span> | <span class="file-size"> </span>
-         </div>
-         <span class="material-icons remove-file-icon">X</span>
-         <div class="progress-bar"></div>
-       </div>
-       <button type="button" class="upload-button">Subir</button>
-     </div>
-   </form>   
-   </div>
-   <div>
-    <input type="file" id="input-excel" />
-    <div id="output"></div>
-  </div>
-    <script type="text/javascript" th:src="@{/js/input-file.js}"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.9/xlsx.full.min.js"></script>
-    <script type="text/javascript">
-      document.getElementById('input-excel').addEventListener('change', handleFile, false);
+    <div class="p-4 mt-5">
+      <!-- TITULO PRINCIPAL -->
+      <div class="container mt-4 d-flex justify-content-center mb-3 flex-wrap">
+        <h3 class="text-center"><b>Cargar archivo de asistencias</b></h3>
+      </div>
 
-function handleFile(e) {
-    const file = e.target.files[0];
-    const reader = new FileReader();
+      <div class="w-75 mx-auto d-flex flex-column">
+        <!-- Entrada de archivos -->
+        <div
+          class="p-3 inputExcel text-white text-center rounded"
+          id="inputExcel"
+        >
+          <div id="dropzone" class="border-trazado">
+            <h3 class="text-center pb-3"><b>Subir archivo Excel</b></h3>
+            <img
+              th:src="@{/Imagenes/ExcelIco.png}"
+              id="iconExcel"
+              alt="Excel Icon"
+              class="img-fluid pb-3"
+            />
+            <div class="p-2">
+              <input
+                class="d-none"
+                id="input-excel"
+                type="file"
+                accept=".xlsx,.xls"
+              />
+              <!-- Label que actúa como botón -->
+              <label for="input-excel" class="btn btn-light btn-lg">
+                <i class="bi bi-cloud-arrow-up"></i> Seleccionar archivo Excel
+              </label>
+              <div class="pt-3">
+                <span
+                  >Arrastra y suelta un archivo Excel aquí, o haz clic para
+                  seleccionar</span
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Icono de Excel y el nombre del archivo -->
+        <div class="pt-3 d-none text-center" id="file-info">
+          <!-- Contenedor para el contenido -->
+          <div class="d-flex flex-column align-items-center">
+            <!-- Botón para eliminar el archivo cargado -->
+            <button id="remove-file" class="btn btn-danger btn-sm mb-2">
+              <i class="bi bi-x-circle"></i> Anular archivo
+            </button>
+            <img
+              id="file-uploaded-icon"
+              th:src="@{/Imagenes/colorExcelLogo.png}"
+              alt="Archivo cargado"
+              class="img-fluid mb-3"
+              style="max-width: 300px"
+            />
+            <h4 id="file-name" class="mb-0"></h4>
+          </div>
+        </div>
+        <div class="py-3 text-center">
+          <div class="d-flex justify-content-center gap-2">
+            <!-- Botón de carga con texto inicial -->
+            <button id="idCarga" class="btn btn-primary" type="button">
+              Cargar Archivo
+            </button>
 
-    reader.onload = function(event) {
-        try {
-            const data = new Uint8Array(event.target.result);
-            const workbook = XLSX.read(data, { type: 'array' });
-
-            const output = document.getElementById('output');
-            output.innerHTML = '';
-
-            const sheetNameToFind = "Estadísticas de anormalías"; // Reemplaza esto con el nombre de la hoja que buscas
-
-            if (workbook.SheetNames.includes(sheetNameToFind)) {
-                const sheet = workbook.Sheets[sheetNameToFind];
-                const json = XLSX.utils.sheet_to_json(sheet, { header: 1 });
-
-                let results = [];
-                let columnIndex;
-
-                function isValidTime(value) {
-                    return /^([01]\d|2[0-3]):([0-5]\d)$/.test(value);
-                }
-
-                function formatDate(dateStr) {
-                    const [day, month, year] = dateStr.split('/');
-                    return `${year}-${month}-${day}`;
-                }
-
-                // Encuentra la columna con el título "Nombre"
-                for (let i = 0; i < json.length; i++) {
-                    let row = json[i];
-                    columnIndex = row.indexOf("Nombre");
-                    if (columnIndex !== -1) {
-                        // Encontró la columna "Nombre"
-                        for (let j = i + 1; j < json.length; j++) {
-                            let dataRow = json[j];
-                            let name = dataRow[columnIndex];
-                            if (name !== undefined) {
-                                let adjacentData = [];
-                                for (let k = 1; k <= 6; k++) {
-                                    adjacentData.push(dataRow[columnIndex + k]);
-                                }
-                                // Validar y reemplazar horas no válidas
-                                for (let index = 2; index <= 5; index++) {
-                                    if (adjacentData[index] === null || adjacentData[index] === "Falta" || !isValidTime(adjacentData[index])) {
-                                        adjacentData[index] = "01:00";
-                                    }
-                                }
-                                // Formatear los datos según el formato deseado
-                                const formattedDate = formatDate(adjacentData[1]);
-                                results.push({
-                                    "Nombre": name,
-                                    "Turno": adjacentData[0],
-                                    "Inicio 1": `${formattedDate} ${adjacentData[2]}`,
-                                    "Fin 1": `${formattedDate} ${adjacentData[3]}`,
-                                    "Inicio 2": `${formattedDate} ${adjacentData[4]}`,
-                                    "Fin 2": `${formattedDate} ${adjacentData[5]}`
-                                });
-                            }
-                        }
-                        break;
-                    }
-                }
-
-                output.innerHTML = JSON.stringify(results, null, 2);
-            } else {
-                output.innerHTML = `<p>La hoja con el nombre "${sheetNameToFind}" no se encontró en el archivo.</p>`;
-            }
-        } catch (error) {
-            console.error("Error al procesar el archivo:", error);
-            document.getElementById('output').innerText = "Hubo un error al procesar el archivo. Por favor, inténtalo de nuevo.";
-        }
-    };
-
-    reader.readAsArrayBuffer(file);
-}
-  </script>
+            <form
+              id="formulario"
+              method="post"
+              th:action="@{/asistencias/seleccionInicio}"
+            >
+              <a
+                type="button"
+                class="btn btn-secondary"
+                href="javascript:window.history.back()"
+              >
+                Regresar
+              </a>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div id="output" class=""></div>
+    </div>
+    <script
+      type="text/javascript"
+      src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.9/xlsx.full.min.js"
+    ></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script
+      type="text/javascript"
+      th:src="@{/js/bootstrap.bundle.min.js}"
+    ></script>
+    <script type="text/javascript" th:src="@{/js/subirAsistencia.js}"></script>
   </body>
 </html>

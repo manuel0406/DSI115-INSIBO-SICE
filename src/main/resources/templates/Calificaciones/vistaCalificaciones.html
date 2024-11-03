@@ -1,118 +1,243 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
-<head th:fragment="head">
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Gestión de Actividades</title>
-     <link rel="shortcut icon" type="image/x-icon" th:href="@{/Imagenes/INSIBO2.ico}">
-    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
-    <link rel="stylesheet" th:href="@{/css/style.css}" />
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.7.2/font/bootstrap-icons.css" rel="stylesheet">
-</head>
+<head th:replace="~{home :: head}"></head>
 
 <body>
-    <!--Esto es una barra de navegación-->
-     <header th:replace="~{home :: header}"></header>
 
-    <!--Aca comienza-->
-    <div class="container-fluid my-2 py-5">
+    <div class="container-fluid">
         <div class="row">
-            <!--Barra Lateral-->
-            <aside class="barra-lateral col-12 col-sm-auto p-0">
-                <div class="logo">
-                    <h2 class="py-4 m-0">Año 2024</h2>
-                </div>
-                <nav class="menu d-flex d-sm-block justify-content-center flex-wrap">
-                    <a href="/Actividades">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-journal-check" viewBox="0 0 16 16">
-                            <path fill-rule="evenodd" d="M10.854 6.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7.5 8.793l2.646-2.647a.5.5 0 0 1 .708 0"/>
-                            <path d="M3 0h10a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-1h1v1a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v1H1V2a2 2 0 0 1 2-2"/>
-                            <path d="M1 5v-.5a.5.5 0 0 1 1 0V5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1zm0 3v-.5a.5.5 0 0 1 1 0V8h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1zm0 3v-.5a.5.5 0 0 1 1 0v.5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1z"/>
-                          </svg>
-                        Gestor de Actividades
-                    </a>
-                    <a href="/calificaciones">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-journal-x" viewBox="0 0 16 16">
-                            <path fill-rule="evenodd" d="M6.146 6.146a.5.5 0 0 1 .708 0L8 7.293l1.146-1.147a.5.5 0 1 1 .708.708L8.707 8l1.147 1.146a.5.5 0 0 1-.708.708L8 8.707 6.854 9.854a.5.5 0 0 1-.708-.708L7.293 8 6.146 6.854a.5.5 0 0 1 0-.708"/>
-                            <path d="M3 0h10a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-1h1v1a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v1H1V2a2 2 0 0 1 2-2"/>
-                            <path d="M1 5v-.5a.5.5 0 0 1 1 0V5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1zm0 3v-.5a.5.5 0 0 1 1 0V8h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1zm0 3v-.5a.5.5 0 0 1 1 0v.5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1z"/>
-                          </svg>
-                        Gestor de Calificaciones
-                    </a>
-                </nav>
-            </aside>
-            <!--Fin Barra Lateral-->
-            <main class="main col">
-                <div class="row">
-                    <div class="columna col-12">
-                        <div class="widget registrar">
-                            <!-- Opciones de Selección Lateral -->
-                            <fieldset class="border p-2">
-                                <legend class="float-none w-auto">Registro de Notas</legend>
-                                <form th:action="@{/calificaciones/alumnosPorBachillerato}" method="get">
-                                    <div class="row">
-                                        <div class="col-6">
-                                            <!-- Select Bachillerato -->
-                                            <div class="row">
-                                                <div class="col-3">
-                                                    <label for="selectBachillerato" class="col-form-label">Seleccione Grado:</label>
-                                                </div>
-                                                <div class="col-9">
-                                                    <select id="codigoBachillerato" name="codigoBachillerato" class="form-select" aria-label="Default select example" onchange="actualizarMaterias()">
-                                                        <option value="">Seleccione Carrera</option>
-                                                        <option th:each="bachillerato : ${grados}" th:value="${bachillerato.codigoBachillerato}" th:text="${bachillerato.grado +'° '+ bachillerato.nombreCarrera  + ' - Sección ' + bachillerato.seccion}"></option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-6">
-                                            <button class="btn btn-primary" type="submit">Cargar Listado de Alumnos</button>
-                                        </div> 
+            <div th:replace="~{Calificaciones\vistaActividades :: barraCalificaciones}">
+            </div>
+            <div class="col ms-auto py-5 my-2">
+                <header th:replace="~{home :: header}"></header>
+
+                <div class="container-fluid py-2 my-2 align-items-center">
+                    <!--Mensajes-->
+                    <div th:replace="~{alertas::alertas}"></div>
+                    <!-- Carta para filtrar General -->
+                    <div sec:authorize="hasAnyRole('ADMINISTRADOR','DIRECTOR','SUBDIRECTORA','SECRETARIA')"
+                        class="card bg-light shadow-sm p-4 my-3">
+                        <div class="container-fluid">
+                            <form class="row gy-3 gx-4 align-items-center needs-validation" id="formCalificaciones"
+                                novalidate method="get" th:action="@{/Calificaciones/General}">
+
+                                <!-- Materia -->
+                                <div class="col-md-6">
+                                    <label for="materia" class="form-label fs-6 fw-semibold">Materia:</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="bi bi-journal-bookmark"></i></span>
+                                        <select id="idMateria" name="idMateria" th:value="${idMateria}"
+                                            class="form-select" aria-label="Seleccione una materia" required>
+                                            <option value="" selected>Seleccione</option>
+                                            <option th:each="materi : ${listaMaterias}" th:value="${materi.idMateria}"
+                                                th:text="${materi.nomMateria}"
+                                                th:selected="${materi.idMateria.toString() == idMateria}">
+                                            </option>
+                                        </select>
+                                        <div class="invalid-feedback">Es necesario seleccionar una materia.</div>
                                     </div>
-                                </form>
-                            </fieldset>
+                                </div>
+
+                                <!-- Docente -->
+                                <div class="col-md-6">
+                                    <label for="docente" class="form-label fs-6 fw-semibold">Docente:</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="bi bi-person-circle"></i></span>
+                                        <select id="docente" name="docente" th:value="${docente}" class="form-select"
+                                            aria-label="Seleccione un docente" required>
+                                            <option value="" selected>Seleccione</option>
+                                            <option th:each="docent : ${docentes}" th:value="${docent.duiDocente}"
+                                                th:text="${docent.nombreDocente + ' ' + docent.apellidoDocente}"
+                                                th:selected="${docent.duiDocente == docente}">
+                                            </option>
+                                        </select>
+                                        <div class="invalid-feedback">Es necesario seleccionar un docente.</div>
+                                    </div>
+                                </div>
+                                <!-- Carrera -->
+                                <div class="col-md-6">
+                                    <label for="carrera" class="form-label fs-6 fw-semibold">Carrera:</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="bi bi-building"></i></span>
+                                        <select id="carrera" name="carrera" th:value="${carrera}" class="form-select"
+                                            aria-label="Seleccione una carrera" required>
+                                            <option value="" selected>Seleccione</option>
+                                            <option th:each="bachillerato : ${bachilleratos}"
+                                                th:value="${bachillerato.nombreCarrera}"
+                                                th:text="${bachillerato.nombreCarrera}"
+                                                th:selected="${bachillerato.nombreCarrera == carrera}">
+                                            </option>
+                                        </select>
+                                        <div class="invalid-feedback">Es necesario seleccionar una carrera.</div>
+                                    </div>
+                                </div>
+                                <!-- Año (Grado) -->
+                                <div class="col-md-6">
+                                    <label for="grado" class="form-label fs-6 fw-semibold">Año:</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="bi bi-calendar-event"></i></span>
+                                        <select id="grado" name="grado" th:value="${grado}" class="form-select"
+                                            aria-label="Seleccione un grado" required>
+                                            <option value="" selected>Seleccione</option>
+                                            <option value="1" th:selected="${grado == '1'}">1</option>
+                                            <option value="2" th:selected="${grado == '2'}">2</option>
+                                            <option value="3" th:selected="${grado == '3'}">3</option>
+                                        </select>
+                                        <div class="invalid-feedback">Es necesario seleccionar un año.</div>
+                                    </div>
+                                </div>
+                                <!-- Sección -->
+                                <div class="col-md-6">
+                                    <label for="seccion" class="form-label fs-6 fw-semibold">Sección:</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="bi bi-list-check"></i></span>
+                                        <select id="seccion" name="seccion" th:value="${seccion}" class="form-select"
+                                            aria-label="Seleccione una sección" required>
+                                            <option value="" selected>Seleccione</option>
+                                            <option value="A" th:selected="${seccion == 'A'}">A</option>
+                                            <option value="B" th:selected="${seccion == 'B'}">B</option>
+                                            <option value="C" th:selected="${seccion == 'C'}">C</option>
+                                            <option value="D" th:selected="${seccion == 'D'}">D</option>
+                                        </select>
+                                        <div class="invalid-feedback">Es necesario seleccionar una seccion.</div>
+                                    </div>
+                                </div>
+                                <!-- Periodo -->
+                                <div class="col-md-6">
+                                    <label for="periodo" class="form-label fs-6 fw-semibold">Periodo:</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="bi bi-clock-history"></i></span>
+                                        <select id="pe" name="pe" th:value="${pe}" class="form-select"
+                                            aria-label="Seleccione un periodo" required>
+                                            <option value="" selected>Seleccione</option>
+                                            <option th:each="period : ${periodos}" th:value="${period.idPeriodo}"
+                                                th:text="${period.numeroPeriodo}"
+                                                th:selected="${period.idPeriodo.toString() == pe}">
+                                            </option>
+                                        </select>
+                                        <div class="invalid-feedback">Es necesario seleccionar un periodo.</div>
+                                    </div>
+                                </div>
+                                <!-- Botón de Buscar -->
+                                <div class="col-12 text-end">
+                                    <button type="submit" class="btn btn-primary">
+                                        <i class="bi bi-search"></i> Buscar
+                                    </button>
+                                </div>
+                            </form>
                         </div>
                     </div>
-                </div>
-                <div class="container-fluid mt-5">
-                    <div class="row justify-content-center">
-                        <div class="col">
-                            <h3 class="text-center" id="tituloSeleccion">Listado de alumnos</h3>
-                            <table class="table table-striped">
-                                <thead>
+
+                    <!-- Carta para filtrar para docente -->
+                    <div sec:authorize="hasAnyRole('DOCENTE')" th:if="${asignacion.materia.tipoMateria == 'Básica'}"
+                        class="card bg-light shadow-sm p-3">
+                        <div class="container-fluid">
+                            <form class="row gy-3 gx-4 align-items-center" id="formPeriodo" method="get"
+                                th:action="@{/Calificaciones/}+${asignacion.materia.idMateria+'/'+asignacion.bachillerato.codigoBachillerato}">
+                                <!-- Label for Periodo -->
+                                <div class="col-auto">
+                                    <label for="periodo" class="form-label fs-5 fw-semibold ">Periodo:</label>
+                                </div>
+                                <!-- Periodo Select -->
+                                <div class="col-12 col-md-4">
+                                    <select id="pe" name="pe" th:value="${pe}" class="form-select"
+                                        aria-label="Seleccione un periodo">
+                                        <option value="" selected>Seleccione</option>
+                                        <option th:each="period : ${periodos}" th:value="${period.idPeriodo}"
+                                            th:text="${period.numeroPeriodo}"
+                                            th:selected="${period.idPeriodo.toString() == pe}">
+                                        </option>
+                                    </select>
+                                </div>
+                                <!-- Submit Button -->
+                                <div class="col-auto">
+                                    <button type="submit" class="btn btn-primary">
+                                        <i class="bi bi-search"></i> Buscar
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>                    
+                    <div
+                        th:if="${pe != null || (asignacion != null and asignacion.materia != null and asignacion.materia.tipoMateria != 'Básica')}">
+                        <div class="d-flex justify-content-between align-items-center mb-3 my-3 flex-wrap">
+                            <h3 class="text-start col-lg-9" th:text="${'Cuadro de notas de la materia: '+asignacion.materia.nomMateria +' - '+
+                        asignacion.bachillerato.grado + '° ' + 
+                        (asignacion.bachillerato.nombreCarrera == 'Electrónica' ? 'ECA' :
+                        asignacion.bachillerato.nombreCarrera == 'Atención Primaria en Salud' ? 'APS' :
+                        asignacion.bachillerato.nombreCarrera == 'Sistemas Eléctricos' ? 'SE' :
+                        asignacion.bachillerato.nombreCarrera == 'Desarrollo de Software' ? 'DS' :
+                        asignacion.bachillerato.nombreCarrera == 'Administrativo Contable' ? 'AC' :
+                        asignacion.bachillerato.nombreCarrera) + ' ' + 
+                        asignacion.bachillerato.seccion + ' '}"></h3>
+                            <div class="d-flex gap-2">
+
+                                <!-- <a class="btn btn-primary Agregar-btn" data-bs-toggle="tooltip" data-bs-placement="top"
+                                title="Agregar Sancion" th:text="'Agregar actividad'"></a> -->
+                            </div>
+                        </div>
+                        <div class="col-12 table-responsive">
+                            <table class="table table-hover table-sm table-bordered">
+                                <thead class="thead table-sm">
                                     <tr>
-                                        <th>Nombre</th>
-                                        <th>Apellido</th>
-                                        <th>Ver Actividades</th>
-                                        <!-- Nueva columna para el botón -->
-                                        <!-- Más columnas si es necesario -->
+                                        <th scope="col" colspan="3"></th>
+
+                                        <!-- Encabezado para tipos de actividades -->
+                                        <th scope="col" th:each="actividad : ${actividadDTOList}"
+                                            th:text="${actividad.nombreActividad}"
+                                            th:attr="colspan=${actividad.cantidadActividades}"></th>
+                                        <th scope="col"></th>
+                                    </tr>
+                                    <tr>
+                                        <th scope="col" colspan="3"></th>
+                                        <!-- Encabezado para nombres de actividades, iterar solo por actividades -->
+                                        <th scope="col" th:each="actividad : ${listadoActividades}"
+                                            th:text="${actividad.nombreActividad}" class="text-center align-middle "
+                                            style="writing-mode: vertical-rl; text-orientation: mixed;"> </th>
+                                        <th scope="col">Total</th>
                                     </tr>
                                 </thead>
-                                <tbody>
+                                <thead class="thead ">
+                                    <tr>
+                                        <th scope="col">N°</th>
+                                        <th scope="col">NIE</th>
+                                        <th scope="col">Nombre alumno</th>
+                                        <!-- Mostrar la ponderación de cada actividad -->
+                                        <th scope="col" th:each="actividad : ${listadoActividades}"
+                                            th:text="${actividad.ponderacionActividad} + '%'"></th>
+                                        <th scope="col">100%</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="fs-6">
                                     <!-- Iterar sobre la lista de alumnos -->
-                                    <tr th:each="alumno : ${alumnos}">
-                                        <td th:text="${alumno.nombreAlumno}"></td>
-                                        <td th:text="${alumno.apellidoAlumno}"></td>
-                                        <td>
-                                            <a th:href="@{/calificaciones/Alumno/{nie}(nie=${alumno.nie})}" class="btn btn-primary">Visualizar Notas</a>
+                                    <tr th:each="alumno, stat : ${listaAlumnos}">
+                                        <th scope="row" th:text="${stat.index + 1}"></th>
+                                        <td th:text="${alumno.nie}"></td>
+                                        <td class="text-start"
+                                            th:text="${alumno.apellidoAlumno+' '+alumno.nombreAlumno}"></td>
+                                        <!-- Iterar sobre las actividades para cada alumno -->
+                                        <td th:each="actividad : ${listadoActividades}">
+                                            <!-- Acceder a la nota correspondiente al alumno y actividad -->
+                                            <span
+                                                th:text="${notasPorAlumno[alumno.idAlumno][actividad.idActividad]?.notaObtenida ?: '-'}"></span>
                                         </td>
-                                        <!-- Más columnas si es necesario -->
+                                        <!-- Mostrar el total de notas por alumno -->
+                                        <td th:text="${totalNotasPorAlumno[alumno.idAlumno]}"></td>
                                     </tr>
                                 </tbody>
                             </table>
                         </div>
+
                     </div>
                 </div>
-            </main>
+            </div>
         </div>
     </div>
 
+
     <footer th:replace="~{home :: footer}"></footer>
-
-    <script th:inline="javascript">
-
-    </script>
+    <script type="text/javascript" th:src="@{/js/validacionRequired.js}"></script>
 </body>
 
 </html>

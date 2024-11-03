@@ -108,6 +108,14 @@ document.addEventListener("DOMContentLoaded", function() {
   });
 
   confirmAcceptButton.addEventListener('click', function() {
-      window.location.href = currentHref;
+    Swal.fire({
+      title: "¡Procesado creación de credenciales!",
+      html: "Se está procesando la petición de aceptación de usuario",
+      allowOutsideClick: false, // Evita que se cierre al hacer clic fuera de la alerta
+      didOpen: () => {
+        Swal.showLoading(); // Muestra el indicador de carga
+      }
+    });
+    window.location.href = currentHref;     
   });
 });

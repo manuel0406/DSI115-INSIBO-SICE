@@ -78,6 +78,30 @@ document.addEventListener("DOMContentLoaded", function() {
   });
 
   confirmAcceptButton.addEventListener('click', function() {
-      window.location.href = currentHref;
+    Swal.fire({
+      title: "¡Procesado creación de credenciales!",
+      html: "Se está procesando la petición de aceptación de usuario",
+      allowOutsideClick: false, // Evita que se cierre al hacer clic fuera de la alerta
+      didOpen: () => {
+        Swal.showLoading(); // Muestra el indicador de carga
+      }
+    });
+    window.location.href = currentHref;
   });
 });
+
+
+// Usuario que no se pueden desbloquear
+document.querySelectorAll(".btn-rechazado-inactivo").forEach(function (element) {
+  element.addEventListener("click", function () {
+    Swal.fire({
+      position: "center",
+      icon: "error",
+      title: "Oops",
+      text: "Este usuario no puede ser aceptado, informar a soporte.",
+      showConfirmButton: false,
+      timer: 5000,
+    });
+  });
+});
+

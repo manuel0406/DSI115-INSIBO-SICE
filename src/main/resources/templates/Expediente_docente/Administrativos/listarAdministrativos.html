@@ -7,30 +7,33 @@
     <title>Ficha Personal Docente</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css">
     <link rel="stylesheet" th:href="@{/css/style.css}" />
-    <link rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css">
 </head>
 
 <body>
     <header th:replace="~{home :: header}"></header>
-    <header th:replace="~{Expediente_docente/barra :: barraExpediente}"></header>
 
-    <div class="container mt-2">
+    <div class="container my-4 py-5">
         <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap">
             <h1 th:text="${titulo}" class="flex-grow-1"></h1>
             <div class="d-flex gap-2 mt-2 mt-md-0">
                 <a class="btn btn-secondary" th:href="@{/expedienteadministrativo/plantaadministrativa(format='pdf')}"
                     data-bs-toggle="tooltip" data-bs-placement="top" title="Imprimir listado actual" target="_blank"
                     onclick="openInPopup(this.href); return false;">
-                    <i class="bi bi-printer"></i> Imprimir listado
+                    <i class="bi bi-printer"></i> Imprimir
                 </a>
-                <a th:href="@{/expedienteadministrativo/formulario}" class="btn btn-primary">Nuevo Administrativo</a>
+                <a class="btn btn-primary" th:href="@{/expedienteadministrativo/formulario}" data-bs-toggle="tooltip"
+                    data-bs-placement="top" title="Agregar administrativo">
+                    <i class="bi bi-person-plus"></i> Agregar
+                </a>
             </div>
         </div>
 
+        <header th:replace="~{alertas :: alertas}"></header>
+
+
         <div class="table-responsive">
-            <table class="table table-striped table-hover">
-                <thead class="table-dark">
+            <table class="table table-hover">
+                <thead>
                     <tr>
                         <th>Nombre</th>
                         <th>Apellido</th>
@@ -42,7 +45,8 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr th:each="administrativoDTO : ${page.content}">
+                    <tr th:each="administrativoDTO : ${page.content}"
+                        th:if="${administrativoDTO.administrativo.activoPersonalAdministrativo}">
                         <td th:text="${administrativoDTO.administrativo.nombrePersonal}"></td>
                         <td th:text="${administrativoDTO.administrativo.apellidoPersonal}"></td>
                         <td th:text="${administrativoDTO.administrativo.profesionPersonal}"></td>
@@ -66,17 +70,11 @@
                                     data-bs-toggle="tooltip" data-bs-placement="top" title="Eliminar">
                                     <i class="bi bi-trash"></i>
                                 </a>
-                                <a th:href="@{/expedienteadministrativo/editarexpediente/{id}(id=${administrativoDTO.administrativo.duiPersonal}, format='pdf')}"
+                                <a th:href="@{/expedienteadministrativo/consultarexpediente/{id}(id=${administrativoDTO.administrativo.duiPersonal}, format='pdf')}"
                                     class="btn btn-secondary btn-sm mx-1" data-bs-toggle="tooltip"
                                     data-bs-placement="top" title="Imprimir" target="_blank"
                                     onclick="openInPopup(this.href); return false;">
                                     <i class="bi bi-printer"></i>
-                                </a>
-
-                                <a class="btn btn-warning btn-sm mx-1"
-                                th:href="@{/expedienteadministrativo/Documentos/} + ${administrativoDTO.administrativo.duiPersonal}"
-                                data-bs-toggle="tooltip" data-bs-placement="top" title="Ver Documentos">
-                                    <i class="bi bi-file-earmark-text"></i>
                                 </a>
                             </div>
                         </td>
@@ -84,27 +82,54 @@
                 </tbody>
             </table>
 
-            <nav aria-label="...">
-                <ul class="pagination justify-content-center">
-                    <li class="page-item" th:classappend="${page.number == 0} ? 'disabled'">
-                        <a class="page-link"
-                            th:href="@{'/expedienteadministrativo/plantaadministrativa?page=' + ${page.number - 1}}">Anterior</a>
-                    </li>
-                    <li class="page-item" th:each="i : ${#numbers.sequence(0, page.totalPages - 1)}"
-                        th:classappend="${page.number == i} ? 'active'">
-                        <a class="page-link" th:href="@{'/expedienteadministrativo/plantaadministrativa?page=' + ${i}}"
-                            th:text="${i + 1}">1</a>
-                    </li>
-                    <li class="page-item" th:classappend="${page.number + 1 >= page.totalPages} ? 'disabled'">
-                        <a class="page-link"
-                            th:href="@{'/expedienteadministrativo/plantaadministrativa?page=' + ${page.number + 1}}">Siguiente</a>
-                    </li>
-                </ul>
-            </nav>
+            <div class="alert alert-info alert-dismissible fade show mt-1 ms-2 mr-2" th:if="${totalPages == 0}">
+                <i class="bi bi-exclamation-triangle"></i>
+                <label th:text="${'¡No hay administrativos registrados!'}"></label>
+            </div>
+
+            <!-- Maneja la paginacion  -->
+            <div th:if="${totalPages != 0}">
+                <nav aria-label="Paginación">
+                    <ul class="pagination justify-content-center">
+
+                        <!-- Botón "Anterior" -->
+                        <li class="page-item" th:classappend="${page.number == 0} ? 'disabled'">
+                            <a class="page-link"
+                                th:href="@{'/expedienteadministrativo/plantaadministrativa?page=' + ${page.number - 1}}"
+                                tabindex="-1">Anterior</a>
+                        </li>
+
+                        <!-- Si hay más de 5 páginas, agregar marcador "..." antes -->
+                        <li class="page-item" th:if="${page.number > 2}">
+                            <span class="page-link">...</span>
+                        </li>
+
+                        <!-- Páginas limitadas a un rango visible de 5 alrededor de la página actual -->
+                        <li class="page-item"
+                            th:each="i : ${#numbers.sequence((page.number - 2) > 0 ? (page.number - 2) : 0, (page.number + 2) < page.totalPages - 1 ? (page.number + 2) : page.totalPages - 1)}"
+                            th:classappend="${page.number == i} ? 'active'">
+                            <a class="page-link"
+                                th:href="@{'/expedienteadministrativo/plantaadministrativa?page=' + ${i}}"
+                                th:text="${i + 1}">1</a>
+                        </li>
+
+                        <!-- Si hay más páginas después del rango visible, agregar marcador "..." -->
+                        <li class="page-item" th:if="${page.number + 3 < page.totalPages}">
+                            <span class="page-link">...</span>
+                        </li>
+
+                        <!-- Botón "Siguiente" -->
+                        <li class="page-item" th:classappend="${page.number + 1 >= page.totalPages} ? 'disabled'">
+                            <a class="page-link"
+                                th:href="@{'/expedienteadministrativo/plantaadministrativa?page=' + ${page.number + 1}}">Siguiente</a>
+                        </li>
+
+                    </ul>
+                </nav>
+            </div>
         </div>
     </div>
-
-
+    
     <!-- Modal de Confirmación -->
     <div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-labelledby="confirmDeleteModalLabel"
         aria-hidden="true">
@@ -127,7 +152,8 @@
 
     <footer th:replace="~{home :: footer}"></footer>
     <script type="text/javascript" src="/js/modalEliminacion.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
+    <script type="text/javascript" src="/js/tooltip.js"></script>
     <script>
         function openInPopup(url) {
             window.open(url, 'popup', 'width=800,height=600');

@@ -13,14 +13,16 @@
 
 <body>
     <header th:replace="~{home :: header}"></header>
-    <header th:replace="~{Expediente_docente/barra :: barraExpediente}"></header>
 
-    <div class="container mt-8">
+    <div class="container my-4 py-5">
         <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap">
 
             <!-- Titulo -->
-            <h1 class="flex-grow-1">Documentos del docente</h1>
+            <h2 class="text-start col-lg-6"
+                th:text="${'Documentos de ' + docente.nombreDocente + ' ' + docente.apellidoDocente}"></h2>
         </div>
+        <header th:replace="~{alertas :: alertas}"></header>
+
 
         <div class="table-responsive">
             <table class="table table-striped table-hover">
@@ -45,8 +47,7 @@
 
                         <!-- Aquí empieza la sección de subida y visualización de documentos -->
                         <td th:if="${anexos == null || anexos.nombreDuiDocente == null}">
-                            <a class="btn btn-primary"
-                                th:href="@{/docente/Subir/dui/}+${docente.duiDocente}"  
+                            <a class="btn btn-primary" th:href="@{/docente/Subir/dui/}+${docente.duiDocente}"
                                 data-bs-toggle="tooltip" data-bs-placement="top" title="Adjuntar documento">
                                 <i class="bi bi-upload"></i>
                             </a>
@@ -56,7 +57,7 @@
                             <!-- Ver documento -->
                             <a class="btn btn-outline-primary"
                                 th:href="@{/docente/expedientedocente/files/dui/}+${anexos.idAnexoDocente}"
-                                data-bs-toggle="tooltip" data-bs-placement="bottom" title="Click para ver documento"
+                                data-bs-toggle="tooltip" data-bs-placement="top" title="Ver el documento"
                                 target="_blank">
                                 <i class="fs-4 bi bi-file-earmark-pdf"></i>
                             </a>
@@ -64,8 +65,7 @@
                             <!-- Eliminar documento -->
                             <a class="btn btn-outline-danger mx-2 delete-btn"
                                 th:href="@{/docente/delete/dui/}+${anexos.idAnexoDocente}+@{/}+${docente.duiDocente}"
-                                data-bs-toggle="tooltip" data-bs-placement="top"
-                                title="Click para eliminar documento">
+                                data-bs-toggle="tooltip" data-bs-placement="top" title="Click para eliminar documento">
                                 <i class="fs-4 bi bi-x-circle"></i>
                             </a>
                         </td>
@@ -83,19 +83,17 @@
 
                         <!-- Aquí empieza la sección de subida y visualización de documentos, docente.duiDocente es el #DUI-->
                         <td th:if="${anexos == null || anexos.nombreCurriculumDocente == null}">
-                            <a class="btn btn-primary"
-                                th:href="@{/docente/Subir/curriculum/}+${docente.duiDocente}"
+                            <a class="btn btn-primary" th:href="@{/docente/Subir/curriculum/}+${docente.duiDocente}"
                                 data-bs-toggle="tooltip" data-bs-placement="top" title="Adjuntar documento">
                                 <i class="bi bi-upload"></i>
                             </a>
                         </td>
 
-                        <td class="text-center"
-                            th:if="${anexos != null && anexos.nombreCurriculumDocente != null}">
+                        <td class="text-center" th:if="${anexos != null && anexos.nombreCurriculumDocente != null}">
                             <!-- Ver documento -->
                             <a class="btn btn-outline-primary"
                                 th:href="@{/docente/expedientedocente/files/curriculum/}+${anexos.idAnexoDocente}"
-                                data-bs-toggle="tooltip" data-bs-placement="bottom" title="Click para ver documento"
+                                data-bs-toggle="tooltip" data-bs-placement="top" title="Ver el documento"
                                 target="_blank">
                                 <i class="fs-4 bi bi-file-earmark-pdf"></i>
                             </a>
@@ -103,8 +101,7 @@
                             <!-- Eliminar documento -->
                             <a class="btn btn-outline-danger mx-2 delete-btn"
                                 th:href="@{/docente/delete/curriculum/}+${anexos.idAnexoDocente}+@{/}+${docente.duiDocente}"
-                                data-bs-toggle="tooltip" data-bs-placement="top"
-                                title="Click para eliminar documento">
+                                data-bs-toggle="tooltip" data-bs-placement="top" title="Click para eliminar documento">
                                 <i class="fs-4 bi bi-x-circle"></i>
                             </a>
                         </td>
@@ -122,8 +119,7 @@
 
                         <!-- Aquí empieza la sección de subida y visualización de documentos, docente.duiDocente es el #DUI-->
                         <td th:if="${anexos == null || anexos.nombreNupDocente == null}">
-                            <a class="btn btn-primary"
-                                th:href="@{/docente/Subir/nup/}+${docente.duiDocente}"
+                            <a class="btn btn-primary" th:href="@{/docente/Subir/nup/}+${docente.duiDocente}"
                                 data-bs-toggle="tooltip" data-bs-placement="top" title="Adjuntar documento">
                                 <i class="bi bi-upload"></i>
                             </a>
@@ -133,7 +129,7 @@
                             <!-- Ver documento -->
                             <a class="btn btn-outline-primary"
                                 th:href="@{/docente/expedientedocente/files/nup/}+${anexos.idAnexoDocente}"
-                                data-bs-toggle="tooltip" data-bs-placement="bottom" title="Click para ver documento"
+                                data-bs-toggle="tooltip" data-bs-placement="top" title="Ver el documento"
                                 target="_blank">
                                 <i class="fs-4 bi bi-file-earmark-pdf"></i>
                             </a>
@@ -141,8 +137,7 @@
                             <!-- Eliminar documento -->
                             <a class="btn btn-outline-danger mx-2 delete-btn"
                                 th:href="@{/docente/delete/nup/}+${anexos.idAnexoDocente}+@{/}+${docente.duiDocente}"
-                                data-bs-toggle="tooltip" data-bs-placement="top"
-                                title="Click para eliminar documento">
+                                data-bs-toggle="tooltip" data-bs-placement="top" title="Click para eliminar documento">
                                 <i class="fs-4 bi bi-x-circle"></i>
                             </a>
                         </td>
@@ -152,7 +147,11 @@
             </table>
         </div>
         <div class="text-start">
-            <a th:href="@{/expedientedocente/plantadocente}" class="btn btn-primary "
+            <a sec:authorize="hasRole('DOCENTE')"
+                th:href="@{/expedientedocente/miexpediente}" class="btn btn-primary "
+                th:text="'Regresar'"> </a>
+            <a sec:authorize="hasAnyRole('ADMINISTRADOR','DIRECTOR','SUBDIRECTORA','SECRETARIA')"
+                th:href="@{/expedientedocente/consultarexpediente/} + ${docente.duiDocente}" class="btn btn-primary "
                 th:text="'Regresar'"> </a>
         </div>
     </div>
@@ -180,6 +179,7 @@
 
     <footer th:replace="~{home :: footer}"></footer>
     <script type="text/javascript" src="/js/modalEliminacion.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script type="text/javascript" src="/js/tooltip.js"></script>
 </body>
+
 </html>

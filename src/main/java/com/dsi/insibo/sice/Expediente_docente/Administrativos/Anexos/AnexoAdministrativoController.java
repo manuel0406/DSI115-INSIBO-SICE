@@ -7,6 +7,7 @@ import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,6 +23,7 @@ import com.dsi.insibo.sice.entity.AnexoPersonalAdministrativo;
 import com.dsi.insibo.sice.entity.PersonalAdministrativo;
 
 @Controller
+@PreAuthorize("hasAnyRole('ADMINISTRADOR', 'SECRETARIA', 'SUBDIRECTORA', 'DIRECTOR')")
 public class AnexoAdministrativoController {
 
     @Autowired
@@ -48,7 +50,6 @@ public class AnexoAdministrativoController {
         model.addAttribute("duiPersonal", duiPersonal);
         model.addAttribute("titulo", "Documentos");
         model.addAttribute("enlace", "/expedienteadministrativo/Documentos/" + duiPersonal);
-        System.out.println("duiPersonal: " + duiPersonal); // Imprime el duiPersonal en la consola
         return "Expediente_docente/Administrativos/upload";
         //return "upload";
 
@@ -74,11 +75,17 @@ public class AnexoAdministrativoController {
             archivo = new AnexoPersonalAdministrativo();
         }
 
+        if (!file.getContentType().equals("application/pdf")) {
+            redirectAttributes.addFlashAttribute("message", "Solo se permiten archivos PDF.");
+            redirectAttributes.addFlashAttribute("warning", "Error, el archivo a subir debe ser PDF.");
+            return "redirect:/expedienteadministrativo/Documentos/" + administrativo.getDuiPersonal();
+        }
+
         // Cuando la clave es DUI
         if (clave.equals("dui")) {
             if (file.isEmpty()) {
                 redirectAttributes.addFlashAttribute("success", "Por favor, seleccione un archivo para subir.");
-                return "redirect:/expedienteadministrativo/plantaadministrativa";
+                return "redirect:/expedienteadministrativo/Documentos/" + administrativo.getDuiPersonal();
             }
             try {
                 byte[] bytes = file.getBytes(); // Lee los bytes del archivo
@@ -102,7 +109,7 @@ public class AnexoAdministrativoController {
         else if (clave.equals("curriculum")) {
             if (file.isEmpty()) {
                 redirectAttributes.addFlashAttribute("success", "Por favor, seleccione un archivo para subir.");
-                return "redirect:/expedienteadministrativo/plantaadministrativa";
+                return "redirect:/expedienteadministrativo/Documentos/" + administrativo.getDuiPersonal();
             }
             try {
                 byte[] bytes = file.getBytes();
@@ -126,7 +133,7 @@ public class AnexoAdministrativoController {
         else if (clave.equals("nup")) {
             if (file.isEmpty()) {
                 redirectAttributes.addFlashAttribute("success", "Por favor, seleccione un archivo para subir.");
-                return "redirect:/expedienteadministrativo/plantaadministrativa";
+                return "redirect:/expedienteadministrativo/Documentos/" + administrativo.getDuiPersonal();
             }
             try {
                 byte[] bytes = file.getBytes();

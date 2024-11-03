@@ -7,6 +7,7 @@ import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,6 +21,7 @@ import com.dsi.insibo.sice.entity.Alumno;
 import com.dsi.insibo.sice.entity.AnexoAlumno;
 
 @Controller
+@PreAuthorize("hasAnyRole('DOCENTE','ADMINISTRADOR','DIRECTOR','SUBDIRECTORA','SECRETARIA')")
 public class AnexoAlumnoController {
 
     @Autowired
@@ -57,7 +59,7 @@ public class AnexoAlumnoController {
 
 
         // Retorna la vista "upload"
-        return "upload";
+        return "Expediente_alumno/upload";
     }
     
     /**
@@ -100,6 +102,12 @@ public class AnexoAlumnoController {
         // Si el anexo es nulo, crea uno nuevo
         if (archivo == null) {
             archivo = new AnexoAlumno();
+        }
+
+        if (!file.getContentType().equals("application/pdf")) {
+            redirectAttributes.addFlashAttribute("message", "Solo se permiten archivos PDF.");
+            redirectAttributes.addFlashAttribute("warning", "Error, el archivo a subir debe ser PDF.");
+            return "redirect:/ExpedienteAlumno/Documentos/" + alumno.getIdAlumno();
         }
 
         // Verifica si la clave es "dui"

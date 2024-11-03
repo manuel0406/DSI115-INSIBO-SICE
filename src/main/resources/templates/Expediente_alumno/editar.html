@@ -15,26 +15,55 @@
 
     <div class="container my-4 py-5">
 
-        <form class="row g-3 needs-validation" novalidate th:action="@{/ExpedienteAlumno/actualizar}" th:object="${alumno}"
-            method="post" id="formulario">
+        <form class="row g-3 needs-validation" novalidate th:action="${url}" th:object="${alumno}" method="post"
+            id="formulario">
 
             <div class="row g-3 align-items-center text-center">
                 <h3 class="text-center custom-h2">
                     IDENTIFICACION DEL CENTRO EDUCATIVO
-                </h3>
-                <div class="col-12 col-md-8 mx-auto">
-                    <label for="exampleInputPassword1" class="form-label fs-6">Especialidad del bachillerato:</label>
-
-                    <select th:field="*{bachillerato}" class="form-select" aria-label="Default select example" required>
-                        <option value="" selected>Seleccione</option>
-                        <option th:each="bachillerato : ${bachilleratos}" th:value="${bachillerato.codigoBachillerato}"
-                            th:text="${bachillerato.grado +'° '+ bachillerato.nombreCarrera  + ' - Sección ' + bachillerato.seccion}">
+                </h3> <input type="hidden" id="idAlumno" name="idAlumno" th:field="*{idAlumno}">
+                <div class="col-12 col-md-4">
+                    <input type="hidden" id="matricula" name="matricula" th:value="${matricula}">
+                    <label for="carrera" class="form-label fs-6">Carrera:</label>
+                    <select id="carrera" name="carrera" class="form-select" aria-label="Default select example"
+                        th:disabled="${editarO}" required>
+                        <option value="" th:if="${carrera == null}" selected>Seleccione</option>
+                        <option th:each="bachillerato : ${bachilleratos}" th:value="${bachillerato.nombreCarrera}"
+                            th:text="${bachillerato.nombreCarrera}"
+                            th:selected="${bachillerato.nombreCarrera == carrera}">
                         </option>
                     </select>
+
                     <div class="invalid-feedback">
-                        Es necesario seleccionar una especialidad
+                        Es necesario agregar la especialidad
                     </div>
                 </div>
+                <div class="col-12 col-md-4">
+                    <label for="grado" class="form-label fs-6">Año:</label>
+                    <select id="grado" name="grado" class="form-select" th:disabled="${editarO}" required>
+                        <option value="" th:if="${grado == null}" selected>Seleccione</option>
+                        <option value="1" th:selected="${grado == '1'}">1</option>
+                        <option value="2" th:selected="${grado == '2'}">2</option>
+                        <option value="3" th:selected="${grado == '3'}">3</option>
+                    </select>
+
+                    <div class="invalid-feedback">
+                        Es necesario agregar el año
+                    </div>
+                </div>
+                <div class="col-12 col-md-4">
+                    <label for="seccion" class="form-label fs-6">Sección:</label>
+                    <select id="seccion" name="seccion" class="form-select" th:disabled="${editarO}" required>
+                        <option value="" th:if="${seccion == null}" selected>Seleccione</option>
+                        <option th:value="${seccion}" th:text="${seccion}" th:selected="true"></option>
+                    </select>
+
+
+                    <div class="invalid-feedback">
+                        Es necesario agregar la seccion
+                    </div>
+                </div>
+
             </div>
 
             <div class="row">
@@ -130,7 +159,7 @@
                     <label for="docente_departamento" class="form-label">Departamento</label>
                     <select id="docente_departamento" th:field="*{departamentoAlumno}" class="form-select"
                         th:data-selected="${alumno.departamentoAlumno}" required>
-                        <option value="" selected>Seleccionar...</option>
+                        <option value="">Seleccionar...</option>
                     </select>
                     <div class="invalid-feedback">
                         Es necesario seleccionar un departamento
@@ -307,8 +336,13 @@
                     <button type="submit" class="btn btn-primary my-2">Guardar</button>
                 </div>
 
-                <div class="col-auto">
-                    <a class="btn btn-danger my-2" th:href="@{/ExpedienteAlumno/ver}" th:text="Cancelar"></a>
+                <div class="col-auto"
+                    sec:authorize="hasAnyRole('ADMINISTRADOR','DIRECTOR','SUBDIRECTORA','SECRETARIA')">
+                    <a class="btn btn-danger my-2" th:href="${btnCancelar}" th:text="Cancelar"></a>
+                </div>
+                <div class="col-auto" sec:authorize="hasAnyRole('DOCENTE')">
+                    <a class="btn btn-danger my-2" th:href="@{/AsignacionOrientador/seccionAsigada/}+${id}"
+                        th:text="Cancelar"></a>
                 </div>
             </div>
         </form>
@@ -335,7 +369,6 @@
 
     <!-- Incluye Bootstrap JS y sus dependencias -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.js"></script>
     <script>
         $('#telefono').mask('0000-0000');
@@ -344,15 +377,12 @@
         $('#duiEncargado').mask('00000000-0');
         $('#nie').mask('0000000');
     </script>
-
-
-
     <script type="text/javascript" th:src="@{/js/validacionAlumno.js}"></script>
     <script type="text/javascript" src="/js/direccion.js"></script>
 </body>
 
 <footer th:replace="~{home ::footer}">
-    
+
 </footer>
 
 </html>

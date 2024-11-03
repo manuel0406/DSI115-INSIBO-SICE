@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <title>SICE: Nueva Asignación</title>
+    <link rel="icon" type="image/x-icon" th:href="@{/imagenes/INSIBO.ico}">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css">
+</head>
+<body>
+    <header th:replace="~{home :: header}"></header>
+    
+    <div class="container mb-2 justify-content-center">
+        <!-- TITULO PRINCIPAL -->
+        <div class="container mt-4 d-flex justify-content-center mb-3 flex-wrap">
+            <h3 class="text-center mt-5"><b>Asignación de Materia</b></h3>
+        </div>
+
+        <!-- FORMULARIO PRINCIPAL -->
+        <div class="container col-md-7">
+            <form class="needs-validation" novalidate th:action="@{/crearAsignacion}" method="post">
+                <input class="needs-validation" type="hidden" id="idMateria" name="idMateria" th:value="${materia.idMateria}" required/>
+                
+                <div class="mb-3">
+                    <label for="materia" class="form-label">Materia</label>
+                    <input type="text" class="form-control needs-validation" id="materia" name="materia" th:value="${materia.nomMateria}" readonly required/>
+                    <div class="invalid-feedback">Por favor, Escriba el nombre de la materia.</div>
+                </div>
+                
+                <div class="mb-3">
+                    <label for="profesor" class="form-label">Profesor</label>
+                    <select class="form-select needs-validation" id="profesor" name="duiDocente" required>
+                        <option value="">Seleccionar docente...</option>
+                        <option th:each="docente : ${docentes}"
+                            th:value="${docente.duiDocente}"
+                            th:text="${docente.nombreDocente} + ' ' + ${docente.apellidoDocente}">
+                        </option>
+                    </select>
+                    <div class="invalid-feedback">Por favor, Seleccione el docente.</div>
+                </div>
+                
+                <!-- Nuevo contenido -->
+                <div class="mb-3">
+                    <div class="card">
+                        <div class="card-header">
+                            <ul class="nav nav-tabs card-header-tabs" id="menuTabs" role="tablist">
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link active" id="primeros-anos-tab" data-bs-toggle="tab" data-bs-target="#primeros-anos" type="button" role="tab" aria-controls="primeros-anos" aria-selected="true">Primeros años</button>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link" id="segundos-anos-tab" data-bs-toggle="tab" data-bs-target="#segundos-anos" type="button" role="tab" aria-controls="segundos-anos" aria-selected="false">Segundos años</button>
+                                </li>
+                                <li class="nav-item" role="presentation" th:if="${materia.tipoMateria != 'Básica'}">
+                                    <button class="nav-link" id="terceros-anos-tab" data-bs-toggle="tab" data-bs-target="#terceros-anos" type="button" role="tab" aria-controls="terceros-anos" aria-selected="false">Terceros años</button>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="card-body">
+                            <div class="tab-content" id="menuTabsContent">
+                                <!-- Primeros años -->
+                                <div class="tab-pane fade show active" id="primeros-anos" role="tabpanel" aria-labelledby="primeros-anos-tab">
+                                    <div class="mb-3 form-check form-switch" th:if="${#lists.isEmpty(primeros)}">
+                                        No se encuentran primeros años por asignar.
+                                    </div>
+                                    <div class="mb-3 form-check form-switch" th:if="${not #lists.isEmpty(primeros)}">
+                                        <input class="form-check-input marcar-todos checkbox-group" type="checkbox" id="marcarTodosPrimerosAnos" data-group="primeros-anos" />
+                                        <label class="form-check-label label-checkbox-group" for="marcarTodosPrimerosAnos">Todos los primeros años</label>
+                                    </div>
+                                    <div class="row mx-0">
+                                        <div class="col-md-6 mb-3 form-check form-switch" th:each="primero : ${primeros}">
+                                            <input class="form-check-input primeros-anos checkbox-group" type="checkbox" name="codigoBachillerato" th:id="${primero.codigoBachillerato}" th:value="${primero.codigoBachillerato}" />
+                                            <label class="form-check-label label-checkbox-group">
+                                                <span th:text="${primero.nombreCarrera}"></span><br />
+                                                <span id="seccionSpan" th:text="'Sección: ' + ${primero.seccion}"></span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Segundos años -->
+                                <div class="tab-pane fade" id="segundos-anos" role="tabpanel" aria-labelledby="segundos-anos-tab">
+                                    <div class="mb-3 form-check form-switch" th:if="${#lists.isEmpty(segundos)}">
+                                        No se encuentran segundos años por asignar.
+                                    </div>
+                                    <div class="mb-3 form-check form-switch" th:if="${not #lists.isEmpty(segundos)}">
+                                        <input class="form-check-input marcar-todos checkbox-group" type="checkbox" id="marcarTodosSegundosAnos" data-group="segundos-anos" />
+                                        <label class="form-check-label label-checkbox-group" for="marcarTodosSegundosAnos">Todos los segundos años</label>
+                                    </div>
+                                    <div class="row mx-0">
+                                        <div class="col-md-6 mb-3 form-check form-switch" th:each="segundo : ${segundos}">
+                                            <input class="form-check-input segundos-anos checkbox-group" type="checkbox" name="codigoBachillerato" th:id="${segundo.codigoBachillerato}" th:value="${segundo.codigoBachillerato}" />
+                                            <label class="form-check-label label-checkbox-group">
+                                                <span th:text="${segundo.nombreCarrera}"></span><br />
+                                                <span id="seccionSpan" th:text="'Sección: ' + ${segundo.seccion}"></span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Terceros años -->
+                                <div class="tab-pane fade" id="terceros-anos" role="tabpanel" aria-labelledby="terceros-anos-tab" th:if="${materia.tipoMateria != 'Básica'}">
+                                    <div class="mb-3 form-check form-switch" th:if="${#lists.isEmpty(terceros)}">
+                                        No se encuentran terceros años por asignar.
+                                    </div>
+                                    <div class="mb-3 form-check form-switch" th:if="${not #lists.isEmpty(terceros)}">
+                                        <input class="form-check-input marcar-todos checkbox-group" type="checkbox" id="marcarTodosTercerosAnos" data-group="terceros-anos" />
+                                        <label class="form-check-label label-checkbox-group" for="marcarTodosTercerosAnos">Todos los terceros años</label>
+                                    </div>
+                                    <div class="row mx-0">
+                                        <div class="col-md-6 mb-3 form-check form-switch" th:each="tercero : ${terceros}">
+                                            <input class="form-check-input terceros-anos checkbox-group" type="checkbox" name="codigoBachillerato" th:id="${tercero.codigoBachillerato}" th:value="${tercero.codigoBachillerato}" />
+                                            <label class="form-check-label label-checkbox-group">
+                                                <span th:text="${tercero.nombreCarrera}"></span><br />
+                                                <span id="seccionSpan" th:text="'Sección: ' + ${tercero.seccion}"></span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Mensaje de error -->
+                    <div id="error-message" class="text-danger mb-3" style="display: none;">
+                        <p>Por favor, Debe seleccionar al menos un bachillerato.</p>
+                    </div>
+                </div>
+                <!-- Fin del nuevo contenido -->
+
+                <!-- BOTÓN DE GUARDAR -->
+                <div class="container mt-3 d-flex justify-content-center">
+                    <button class="btn btn-primary me-2" type="submit">Guardar</button>
+                    <a class="btn btn-danger" th:href="@{/AsignacionMateria/} + ${materia.idMateria}">Cancelar</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript" th:src="@{/js/NuevaAsignacion.js}"></script>
+</body>
+</html>

@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{home :: head}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css">
+</head>
+
+<body>
+    <header th:replace="~{Horario/nav :: navHorario}"></header>
+
+
+    <div class="container-fluid">
+        <div class="row">
+
+            <!-- Area de trabajo -->
+            <div class="p-3 min-vh-100">
+                <header th:replace="~{home :: header}"></header>
+
+                <div class="container-fluid">
+                    <nav class="px-4"  aria-label="breadcrumb">
+                        <ol class="breadcrumb mb-3">
+                            <li class="breadcrumb-item">
+                                <a th:href="@{/administracion}" class="text-decoration-none text-secondary">Administración</a>
+                            </li>
+                            <li class="breadcrumb-item active" aria-current="page">Horario</li>
+                        </ol>
+                    </nav>
+                    <div class="card border-0">
+                        <div class="card-header bg-light text-dark">
+                            <div class="d-flex justify-content-between align-items-center mb-2 flex-wrap">
+                                <h2 class="mb-0 ms-2"><i class="fas fa-chalkboard-teacher"></i> Editar Horas de Clase
+                                </h2>
+                                <button class="btn btn-dark bi bi-layout-sidebar" type="button" id="botonNav"
+                                    data-bs-toggle="collapse" data-bs-target="#collapseWidthExample"
+                                    aria-expanded="true" aria-controls="collapseWidthExample"
+                                    title="Ocultar Opciones - Barra de navegación">
+                                </button>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <form th:action="@{/horarios/editarHoras}" method="get">
+                                <div class="row justify-content-center">
+                                    <!-- Carrera -->
+                                    <div class="col-md-3">
+                                        <div class="form-group mb-3">
+                                            <label for="selectGrado" class="form-label">Carrera</label>
+                                            <select id="carrera" name="carrera" th:value="${carrera}"
+                                                class="form-select" aria-label="Default select example">
+                                                <option value="" selected>Seleccione</option>
+                                                <option th:each="bachillerato : ${bachilleratos}"
+                                                    th:value="${bachillerato.nombreCarrera}"
+                                                    th:text="${bachillerato.nombreCarrera}"
+                                                    th:selected="${carrera == bachillerato.nombreCarrera}"></option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <!-- Año -->
+                                    <div class="col-md-3">
+                                        <div class="form-group mb-3">
+                                            <label for="selectGrado" class="form-label">Grado</label>
+                                            <select id="grado" name="grado" th:value="${grado}" class="form-select">
+                                                <option value="" selected>Seleccione</option>
+                                                <option value="1" th:selected="${grado == '1'}">1</option>
+                                                <option value="2" th:selected="${grado == '2'}">2</option>
+                                                <option value="3" th:selected="${grado == '3'}">3</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <!-- Sección -->
+                                    <div class="col-md-3">
+                                        <div class="form-group mb-3">
+                                            <label for="selectGrado" class="form-label">Sección</label>
+                                            <select id="seccion" name="seccion" th:value="${seccion}"
+                                                class="form-select">
+                                                <option value="" selected>Seleccione</option>
+                                                <option value="A" th:selected="${seccion == 'A'}">A</option>
+                                                <option value="B" th:selected="${seccion == 'B'}">B</option>
+                                                <option value="C" th:selected="${seccion == 'C'}">C</option>
+                                                <option value="D" th:selected="${seccion == 'D'}">D</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <!-- Botones -->
+                                    <div class="col-md-3 d-flex align-items-end mb-3">
+                                        <div class="w-100 d-flex justify-content-between gap-2">
+                                            <!-- Filtrar -->
+                                            <input type="submit" class="btn btn-primary w-100" value="Buscar">
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+
+                            <!-- Mensajes de alerta -->
+                            <div class="alert-container">
+                                <header th:replace="~{alertas :: alertas}"></header>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="container">
+                        <div class="row" th:if="${bachillerato != null and bachillerato.getCodigoBachillerato() != 0}">
+                            <div class="p-3 border rounded shadow-sm bg-light">
+                                <!-- Contiene la sección elegida -->
+                                <h5 class="text-start col-md-6" th:text="${formSubmitted ? ('Horas: ' + (grado != null ? grado + '° ' : '') + 
+                                    (carrera != null ? carrera + ' ' : '') + (seccion != null ? seccion: '')) : ''}">
+                                </h5>
+
+                                <div class="d-flex justify-content-between align-items-center flex-wrap">
+                                    <div class="col-md-4 mt-2">
+                                        <select id="filtroDia" class="form-select">
+                                            <option value="Todos" selected>Mostrar todos</option>
+                                            <option value="Lunes">Lunes</option>
+                                            <option value="Martes">Martes</option>
+                                            <option value="Miércoles">Miércoles</option>
+                                            <option value="Jueves">Jueves</option>
+                                            <option value="Viernes">Viernes</option>
+                                            <option value="Sábado">Sábado</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="gap-2">
+                                        <a class="btn btn-secondary mt-2"
+                                            th:href="@{/horarios/asignarHoras(carrera=${carrera}, grado=${grado}, seccion=${seccion})}"
+                                            data-bs-toggle="tooltip" data-bs-placement="top"
+                                            title="Crear horas de clase para esta sección" alt="Botón Asignar"> Crear
+                                            horas
+                                        </a>
+
+                                        <a class="btn btn-secondary mt-2"
+                                            th:href="@{/horarios/generarHorarioSeccion(carrera=${carrera}, grado=${grado}, seccion=${seccion})}"
+                                            data-bs-toggle="tooltip" data-bs-placement="top"
+                                            title="Ver horario de clase para esta sección">
+                                            Ver horario
+                                        </a>
+                                    </div>
+                                </div>
+
+                                <!-- Contenedor para la tabla -->
+                                <div class="card mt-4">
+                                    <div class="card-body">
+                                        <div class="row mb-3 justify-content-center">
+                                            <div class="table-responsive">
+                                                <table class="table table-hover">
+                                                    <thead>
+                                                        <tr>
+                                                            <th><input type="checkbox" id="selectAll"></th>
+                                                            <th>#</th> <!-- Columna de numeración -->
+                                                            <th>Día</th>
+                                                            <th>Hora</th>
+                                                            <th>Materia</th>
+                                                            <th>Docente</th>
+                                                            <th style="width: 10%; text-align: left;">Acciones</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr th:each="hours, iterStat : ${horasDeClase}">
+                                                            <td><input type="checkbox" name="selectItem"
+                                                                    th:value="${hours.idAsignacionHorario}"
+                                                                    class="select-item"></td>
+                                                            <td th:text="${iterStat.index + 1}"></td>
+                                                            <td th:text="${hours.nombreDia}"></td>
+                                                            <td
+                                                                th:text="${hours.horaFinalizacion + ' - ' + hours.horaInicio}">
+                                                            </td>
+                                                            <td th:text="${hours.nomMateria}"></td>
+                                                            <td
+                                                                th:text="${hours.nombreDocente + ' ' + hours.apellidoDocente}">
+                                                            </td>
+                                                            <td>
+                                                                <div class="d-flex justify-content-left">
+                                                                    <button
+                                                                        class="btn btn-primary btn-sm mx-1 editar-btn"
+                                                                        data-bs-toggle="modal"
+                                                                        data-bs-target="#nuevaHoradeClase"
+                                                                        th:data-id="${hours.idAsignacionHorario}"
+                                                                        th:data-horario="${hours.idHorarioBase}"
+                                                                        th:data-intervalo="${hours.horaFinalizacion + ' - ' + hours.horaInicio}"
+                                                                        th:data-docente="${hours.idAsignacion}"
+                                                                        th:data-hora="${hours.idHora}"
+                                                                        th:data-dia="${hours.nombreDia}">
+                                                                        <i class="bi bi-pencil-square"></i>
+                                                                    </button>
+                                                                    <a class="btn btn-danger btn-sm mx-1 delete-btn"
+                                                                        th:href="@{/horarios/eliminarHora/{id}(id=${hours.idAsignacionHorario}, carrera=${carrera}, grado=${grado}, seccion=${seccion})}"
+                                                                        data-bs-toggle="tooltip" data-bs-placement="top"
+                                                                        title="Eliminar">
+                                                                        <i class="bi bi-trash"></i>
+                                                                    </a>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+
+                                                <div class="alert alert-info alert-dismissible fade show mt-1 ms-2 mr-2"
+                                                    th:if="${totalElements == 0}">
+                                                    <i class="bi bi-exclamation-triangle"></i>
+                                                    <label th:text="${'¡No hay horas de clase registradas!'}"></label>
+                                                </div>
+                                            </div>
+
+                                            <!-- Botón que abre el modal de confirmación -->
+                                            <div class="align-items-start">
+                                                <button type="button" class="btn btn-danger col-sm-auto"
+                                                    id="deleteSelected" disabled data-bs-toggle="modal"
+                                                    data-bs-target="#confirmSelectedDeleteModal">
+                                                    Eliminar seleccionados
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <script type="text/javascript" src="/js/horariosEditar.js"></script>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- Modal de Confirmación para un unico registro-->
+            <div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-labelledby="confirmDeleteModal"
+                aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="confirmDeleteModal">Confirmar Eliminación</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            ¿Estás seguro de eliminar el registro? Esta acción no puede deshacerse.
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                            <button type="button" class="btn btn-danger" id="confirmDeleteButton">Eliminar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal de Confirmación para multiples registros -->
+            <div class="modal fade" id="confirmSelectedDeleteModal" tabindex="-1"
+                aria-labelledby="confirmSelectedDeleteModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="confirmSelectedDeleteModalLabel">Confirmar Eliminación</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="alert alert-warning" role="alert">
+                                ¡Cuidado! Estás a punto de eliminar múltiples registros. Esta acción no puede
+                                deshacerse.
+                            </div>
+                            ¿Estás seguro de que deseas continuar?
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                            <button type="button" class="btn btn-danger"
+                                id="confirmSelectedDeleteButton">Eliminar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Formulario de eliminación multiple oculto en el modal -->
+            <form th:action="@{/horarios/eliminarHoras(carrera=${carrera}, grado=${grado}, seccion=${seccion})}"
+                method="post" id="eliminarHorasForm" style="display:none;">
+            </form>
+
+            <!-- Modal de edición -->
+            <div class="modal fade" id="nuevaHoradeClase" tabindex="-1" aria-labelledby="nuevaHoradeClaseLabel"
+                aria-hidden="true" th:if="${bachillerato != null and bachillerato.getCodigoBachillerato() != 0}">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="nuevaHoradeClaseLabel">Hora de clase</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+
+                            <!-- Formulario para asignar horas de clase-->
+                            <form class="needs-validation" novalidate id="formNuevaHora"
+                                th:action="@{/horarios/actualizarHora}" method="post">
+
+                                <div>
+                                    <!-- Datos necesarios para saber si se esta entrando en un bloque de mas de 2 horas de una misma materia -->
+                                    <!-- Día (ej. Lunes)-->
+                                    <input type="hidden" class="form-control" id="dia" name="dia" readonly>
+                                    <!-- Llave primaria sección -->
+                                    <input type="hidden" class="form-control" id="codigoBachillerato"
+                                        name="codigoBachillerato" th:value="${bachillerato.codigoBachillerato}"
+                                        readonly>
+                                    <!-- Hora Base (ej. 1 = 07:00AM)-->
+                                    <input type="hidden" class="form-control" id="horaBase" name="horaBase" readonly>
+
+                                    <!-- Datos necesarios para actualizar el registro asignacionHorario  -->
+                                    <!-- Llave primaria del registro "asignacionHorario" es decir una hora de clase -->
+                                    <input type="hidden" class="form-control" id="idAsignacionHorario"
+                                        name="idAsignacionHorario" readonly>
+                                    <!-- LLave primaria de la "horaBase" asociada al registro es decir la hora en que se da una clase-->
+                                    <input type="hidden" class="form-control" id="horaSeleccionada"
+                                        name="horaSeleccionada" readonly>
+                                </div>
+
+                                <!-- Hora de inicio - hora de fin (Dato solo de referencia al usuario)-->
+                                <div class="mb-3">
+                                    <label for="intervaloHora" class="form-label">Hora</label>
+                                    <input type="text" class="form-control" id="intervaloHora" name="intervaloHora"
+                                        readonly required>
+                                    <div class="invalid-feedback">Ha ocurrido un error, por favor refresca la pestaña
+                                    </div>
+                                </div>
+
+                                <!-- Sección -->
+                                <div class="mb-3">
+                                    <label for="seccionSeleccionada" class="form-label">Sección</label>
+                                    <input type="text" class="form-control" id="seccionSeleccionada"
+                                        name="seccionSeleccionada" th:value="${grado + 'º ' + carrera + ' ' + seccion}"
+                                        required readonly>
+
+                                    <div class="invalid-feedback">Ha ocurrido un error, por favor refresca la pestaña
+                                    </div>
+                                </div>
+
+                                <!-- Asignación -->
+                                <div class="mb-3">
+                                    <label for="asignacion" class="form-label">Materia y docente</label>
+                                    <select class="form-select" id="asignacionSeleccionada"
+                                        name="asignacionSeleccionada" aria-label="Default select example" required>
+                                        <option value="" selected>Seleccione</option>
+                                        <option th:each="asignaciones : ${asignaciones}"
+                                            th:value="${asignaciones.idAsignacion}"
+                                            th:text="${asignaciones.materia.nomMateria + ' - ' +  asignaciones.docente.nombreDocente + '  ' + asignaciones.docente.apellidoDocente}"
+                                            th:data-docente="${asignaciones.docente.duiDocente}"></option>
+                                    </select>
+                                    <div class="invalid-feedback">Por favor, selecciona la materia y el docente.</div>
+                                </div>
+
+                                <div class="d-flex justify-content-end">
+                                    <button type="button" class="btn btn-danger me-2" id="cancelarNuevaHora"
+                                        data-bs-dismiss="modal">Cancelar</button>
+                                    <button type="submit" class="btn btn-primary" id="guardarNuevaHora">Guardar</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <footer th:replace="~{home :: footer}"></footer>
+            <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+            <script type="text/javascript" src="/js/validacionRequired.js"></script>
+            <script type="text/javascript" src="/js/modalEliminacion.js"></script>
+            <script type="text/javascript" src="/js/tooltip.js"></script>
+            <script>
+                var button = document.getElementById('botonNav');
+
+                // Inicializa el tooltip usando el atributo title, solo al pasar el cursor (hover)
+                new bootstrap.Tooltip(button, {
+                    placement: 'top',
+                    title: function () {
+                        return button.getAttribute('title');
+                    },
+                    delay: { show: 600, hide: 100 },
+                    trigger: 'hover'
+                });
+            </script>
+        </div>
+</body>
+
+</html>

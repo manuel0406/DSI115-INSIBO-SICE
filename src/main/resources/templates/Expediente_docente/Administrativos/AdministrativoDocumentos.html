@@ -13,14 +13,16 @@
 
 <body>
     <header th:replace="~{home :: header}"></header>
-    <header th:replace="~{Expediente_docente/barra :: barraExpediente}"></header>
 
-    <div class="container mt-8">
+    <div class="container my-4 py-5">
         <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap">
 
             <!-- Titulo -->
-            <h1 class="flex-grow-1">Documentos del administrativo</h1>
+            <h2 class="text-start col-lg-6"
+                th:text="${'Documentos de ' + administrativo.nombrePersonal + ' ' + administrativo.apellidoPersonal}">
+            </h2>
         </div>
+        <header th:replace="~{alertas :: alertas}"></header>
 
         <div class="table-responsive">
             <table class="table table-striped table-hover">
@@ -64,8 +66,7 @@
                             <!-- Eliminar documento -->
                             <a class="btn btn-outline-danger mx-2 delete-btn"
                                 th:href="@{/administrativo/delete/dui/}+${anexos.idAnexoPersonal}+@{/}+${administrativo.duiPersonal}"
-                                data-bs-toggle="tooltip" data-bs-placement="top"
-                                title="Click para eliminar documento">
+                                data-bs-toggle="tooltip" data-bs-placement="top" title="Click para eliminar documento">
                                 <i class="fs-4 bi bi-x-circle"></i>
                             </a>
                         </td>
@@ -90,8 +91,7 @@
                             </a>
                         </td>
 
-                        <td class="text-center"
-                            th:if="${anexos != null && anexos.nombreCurriculumPersonal != null}">
+                        <td class="text-center" th:if="${anexos != null && anexos.nombreCurriculumPersonal != null}">
                             <!-- Ver documento -->
                             <a class="btn btn-outline-primary"
                                 th:href="@{/administrativo/expedienteadministrativo/files/curriculum/}+${anexos.idAnexoPersonal}"
@@ -103,8 +103,7 @@
                             <!-- Eliminar documento -->
                             <a class="btn btn-outline-danger mx-2 delete-btn"
                                 th:href="@{/administrativo/delete/curriculum/}+${anexos.idAnexoPersonal}+@{/}+${administrativo.duiPersonal}"
-                                data-bs-toggle="tooltip" data-bs-placement="top"
-                                title="Click para eliminar documento">
+                                data-bs-toggle="tooltip" data-bs-placement="top" title="Click para eliminar documento">
                                 <i class="fs-4 bi bi-x-circle"></i>
                             </a>
                         </td>
@@ -141,8 +140,7 @@
                             <!-- Eliminar documento -->
                             <a class="btn btn-outline-danger mx-2 delete-btn"
                                 th:href="@{/administrativo/delete/nup/}+${anexos.idAnexoPersonal}+@{/}+${administrativo.duiPersonal}"
-                                data-bs-toggle="tooltip" data-bs-placement="top"
-                                title="Click para eliminar documento">
+                                data-bs-toggle="tooltip" data-bs-placement="top" title="Click para eliminar documento">
                                 <i class="fs-4 bi bi-x-circle"></i>
                             </a>
                         </td>
@@ -152,7 +150,7 @@
             </table>
         </div>
         <div class="text-start">
-            <a th:href="@{/expedienteadministrativo/plantaadministrativa}" class="btn btn-primary "
+            <a th:href="@{/expedienteadministrativo/consultarexpediente/} + ${administrativo.duiPersonal}" class="btn btn-primary "
                 th:text="'Regresar'"> </a>
         </div>
     </div>
@@ -180,6 +178,6 @@
 
     <footer th:replace="~{home :: footer}"></footer>
     <script type="text/javascript" src="/js/modalEliminacion.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-</body>
+    </body>
+
 </html>

@@ -7,6 +7,7 @@ import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,6 +23,7 @@ import com.dsi.insibo.sice.entity.AnexoDocente;
 import com.dsi.insibo.sice.entity.Docente;
 
 @Controller
+@PreAuthorize("hasAnyRole('ADMINISTRADOR','SECRETARIA', 'DOCENTE', 'SUBDIRECTORA', 'DIRECTOR')")
 public class AnexoDocenteController {
 
     @Autowired
@@ -48,9 +50,8 @@ public class AnexoDocenteController {
         model.addAttribute("duiDocente", duiDocente);
         model.addAttribute("titulo", "Documentos");
         model.addAttribute("enlace", "/expedientedocente/Documentos/" + duiDocente); // cambiar por el del controller
-        System.out.println("duiDocente: " + duiDocente); // Imprime el duiDocente en la consola
         return "Expediente_docente/Docentes/upload";
-        //return "upload";
+        // return "upload";
 
     }
 
@@ -74,11 +75,17 @@ public class AnexoDocenteController {
             archivo = new AnexoDocente();
         }
 
+        if (!file.getContentType().equals("application/pdf")) {
+            redirectAttributes.addFlashAttribute("message", "Solo se permiten archivos PDF.");
+            redirectAttributes.addFlashAttribute("warning", "Error, el archivo a subir debe ser PDF.");
+            return "redirect:/expedientedocente/Documentos/" + docente.getDuiDocente();
+        }
+
         // Cuando la clave es DUI
         if (clave.equals("dui")) {
             if (file.isEmpty()) {
                 redirectAttributes.addFlashAttribute("success", "Por favor, seleccione un archivo para subir.");
-                return "redirect:/expedientedocente/plantadocente";
+                return "redirect:/expedientedocente/Documentos/" + docente.getDuiDocente();
             }
             try {
                 byte[] bytes = file.getBytes(); // Lee los bytes del archivo
@@ -102,7 +109,7 @@ public class AnexoDocenteController {
         else if (clave.equals("curriculum")) {
             if (file.isEmpty()) {
                 redirectAttributes.addFlashAttribute("success", "Por favor, seleccione un archivo para subir.");
-                return "redirect:/expedientedocente/plantadocente";
+                return "redirect:/expedientedocente/Documentos/" + docente.getDuiDocente();
             }
             try {
                 byte[] bytes = file.getBytes();
@@ -126,7 +133,7 @@ public class AnexoDocenteController {
         else if (clave.equals("nup")) {
             if (file.isEmpty()) {
                 redirectAttributes.addFlashAttribute("success", "Por favor, seleccione un archivo para subir.");
-                return "redirect:/expedientedocente/plantadocente";
+                return "redirect:/expedientedocente/Documentos/" + docente.getDuiDocente();
             }
             try {
                 byte[] bytes = file.getBytes();
@@ -145,7 +152,7 @@ public class AnexoDocenteController {
             }
             return "redirect:/expedientedocente/Documentos/" + duiDocente; // cambiar por el del controller
         }
-        return "redirect:/expedientedocente/plantadocente";
+        return "redirect:/expedientedocente/Documentos/" + docente.getDuiDocente();
     }
 
     // Controlador para eliminar archivos
@@ -191,7 +198,7 @@ public class AnexoDocenteController {
 
             return "redirect:/expedientedocente/Documentos/" + duiDocente;
         }
-        
+
         return "Expediente_docente/upload";
     }
 

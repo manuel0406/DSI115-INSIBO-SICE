@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head th:replace="~{home ::head}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <div class="container-fluid">
+        <div class="row">
+            <div th:replace="~{Calificaciones/vistaActividades :: barraCalificaciones}"></div>
+
+            <div class="col ms-auto py-3 my-3">
+                <header th:replace="~{home :: header}"></header>
+                <div class="container py-5">
+                    <h1 th:text="${'Promedios finales de '+asignacion.materia.nomMateria}">Calificaciones finales</h1>
+                    <!-- Tabla de notas por periodo -->
+                    <div class="table-responsive ">
+                        <table class="table tabla-sm table-bordered table-hover">
+                            <thead class="table-secondary">
+                                <tr>
+                                    <th>N°</th>
+                                    <th>NIE</th>
+                                    <th>Nombre del Alumno</th>
+                                    <th>Periodo 1</th>
+                                    <th>Periodo 2</th>
+                                    <th>Periodo 3</th>
+                                    <th>Periodo 4</th>
+                                    <th>Nota Final</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="entry, stat : ${notasPorAlumnoYPeriodo}">
+                                    <!-- Nombre del Alumno -->
+                                    <th scope="row" th:text="${stat.index + 1}"></th>
+                                    <td th:text="${entry.key.nie}"></td>
+                                    <td class="text-start" th:text="${entry.key.apellidoAlumno} + ', ' +${entry.key.nombreAlumno} ">Nombre
+                                        Alumno</td>
+
+                                    <!-- Notas por cada período -->
+                                    <td th:text="${entry.value[1]}">0.0</td>
+                                    <td th:text="${entry.value[2]}">0.0</td>
+                                    <td th:text="${entry.value[3]}">0.0</td>
+                                    <td th:text="${entry.value[4]}">0.0</td>
+
+                                    <!-- Nota Final calculada -->
+                                    <td th:text="${#numbers.formatDecimal(notaGlobalPorAlumno[entry.key], 1, 2)}">0.00
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+
+    <footer th:replace="~{home :: footer}"></footer>
+</body>
+
+</html>

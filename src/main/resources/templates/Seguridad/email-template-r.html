@@ -62,7 +62,7 @@
         <div class="content">
             <h2 th:text="${titulo}">Asunto del correo</h2>
             <p>Les saluda el Instituto Nacional Simón Bolívar [INSIBO]</p>
-            <p>Ante su solicitud de recuperación de contraseña, por este medio se la hacemos llegar, aconsejamos guardarla de manera privada para evitar contratiempos en el desarrollo de sus actividades.</p>
+            <p th:text="${descripcion}"></p>
             <p><strong>Tu usuario es:</strong> <span th:text="${usuarioCorreo}">[Correo de Usuario]</span></p>
             <p><strong>Tu nueva contraseña es:</strong> <span th:text="${nuevaContrasena}">[Nueva Contraseña]</span></p>
             <p>Att. Administrador del Sistema Integral de Control y Progreso Educativo INSIBO [SICE - INSIBO]</p>

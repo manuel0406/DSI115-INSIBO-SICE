@@ -1,47 +1,39 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
-<head th:fragment="head">
+<head >
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title th:text="${titulo}"></title>
+    <title>Error 400 - Solicitud Incorrecta</title>
+    <link rel="shortcut icon" type="image/x-icon" th:href="@{/Imagenes/INSIBO2.ico}">
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
     <link rel="stylesheet" th:href="@{/css/style.css}" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.7.2/font/bootstrap-icons.css" rel="stylesheet">
 </head>
 
 <body>
-    <!--Esto es una barra de navegación-->
+    <!-- Barra de navegación -->
     <header th:replace="~{home :: header}"></header>
-
-    <div class="container text-center py-3">
-        <div class="panel">
-            <div class="panel-heading">
-                <h3>
-                    <span th:text="${error}"></span> - <span th:text="${status}"></span>
-
-                </h3>
+    <div class="py-5"></div>
+    <div class="container text-center">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <h1 class="display-4 text-warning"><i class="bi bi-exclamation-triangle-fill"></i> Error 400: Solicitud Incorrecta</h1>
+                <p class="lead">La solicitud que realizaste no es válida.</p>
+                <img th:src="@{/Imagenes/400.jpg}" class="img-fluid rounded mb-4" alt="Solicitud incorrecta" style="max-width: 50%;">
+                <div class="mt-1">
+                    <button class="btn btn-success btn-lg" onclick="goBack()">
+                        <i class="bi bi-arrow-left-circle"></i> Regresar
+                    </button>
+                </div>
             </div>
-            <div class="panel-body">
-                <br>
-                <h4>Existe un error interno</h4>
-                <p>Lo sentimos, algo salió mal. Por favor, intente nuevamente más tarde.</p>
-                <br>
-                <button class="btn btn-success" onclick="goBack()">&laquo;Regresar</button>
-
-            </div>
-
         </div>
-
     </div>
 
     <footer th:fragment="footer">
         <script type="text/javascript" th:src="@{/js/bootstrap.bundle.min.js}"></script>
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script type="text/javascript" th:src="@{/js/popper.min.js}"></script>
-
-
-
     </footer>
 
     <script>
@@ -49,8 +41,5 @@
             window.history.back();
         }
     </script>
-
-
 </body>
-
 </html>

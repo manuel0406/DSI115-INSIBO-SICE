@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="http://wwww.thymelead.org">
+<head th:replace="~{home :: head}">
+</head>
+<body>
+    <header th:replace="~{home :: header}"></header>
+
+    <div class="container mt-3 my-5 py-5">
+        <div class="jumbotron  mb-3 bg-light rounded-3">
+            <div class="container py-5 text-center">
+                <h1 class="display-5 fw-bold "> Gestión de Biblioteca</h1>
+            </div>
+        </div>
+
+        <div class="row row-cols-1 row-cols-md-4 g-4">
+            <div class="col">
+                <div class="card">
+                    <img src="https://img.freepik.com/vector-premium/personaje-dibujos-animados-grafico-vector-ilustracion-educacion-empresarial_516790-524.jpg?w=740" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title">Gestión de Prestamos</h5>
+                        <p class="card-text"></p>
+                        <a th:href="@{/Biblioteca/Prestamos}" class="btn btn-primary">Entrar</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card">
+                    <img src="https://img.freepik.com/vector-gratis/ilustracion-concepto-entrega_114360-2094.jpg?t=st=1721271592~exp=1721275192~hmac=80f33babbf2f996a6432ca00e53bd863e1c77e25c28f24dc60a5e5ce14558e77&w=740" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title">Entrega de Papelería</h5>
+                        <p class="card-text"></p>
+                        <a th:href="@{/Biblioteca/Papeleria/Control}" class="btn btn-primary">Entrar</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card">
+                    <img src="https://img.freepik.com/vector-premium/icono-paquete-entrega-ilustracion-isometrica-icono-vector-paquete-entrega-web_96318-36117.jpg?w=740" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title">Inventario Libros</h5>
+                        <p class="card-text"></p>
+                        <a th:href="@{/Biblioteca/InventarioLibros}" class="btn btn-primary">Entrar</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card">
+                    <img src="https://img.freepik.com/vector-premium/circulo-suministros-escolares-incluido-boligrafo-telefono-celular-otros-articulos_135595-97294.jpg?w=740" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title">Inventario Papelería</h5>
+                        <p class="card-text"></p>
+                        <a th:href="@{/Biblioteca/Papeleria/InventarioPapeleria}" class="btn btn-primary ">Entrar</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer th:replace="~{home :: footer}"></footer>
+</body>
+</html>

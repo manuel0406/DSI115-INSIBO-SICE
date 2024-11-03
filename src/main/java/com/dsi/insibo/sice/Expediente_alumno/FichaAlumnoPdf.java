@@ -5,6 +5,8 @@ import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
+
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.view.document.AbstractPdfView;
 import com.dsi.insibo.sice.entity.Alumno;
@@ -26,8 +28,8 @@ import jakarta.servlet.http.HttpServletResponse;
 public class FichaAlumnoPdf extends AbstractPdfView {
 
     @Override
-    protected void buildPdfDocument(Map<String, Object> model, Document document, PdfWriter writer,
-            HttpServletRequest request, HttpServletResponse response) throws Exception {
+    protected void buildPdfDocument(@NonNull Map<String, Object> model, @NonNull Document document, @NonNull PdfWriter writer,
+    @NonNull HttpServletRequest request,@NonNull HttpServletResponse response) throws Exception {
         Alumno alumno = (Alumno) model.get("alumno");
         document.setPageSize(PageSize.LETTER);
         document.setMargins(85, 85, 36, 72); // Margen de 3 cm a los lados y 2.5 cm abajo

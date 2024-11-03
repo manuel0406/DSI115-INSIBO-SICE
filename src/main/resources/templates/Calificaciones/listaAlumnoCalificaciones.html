@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head th:replace="~{home:: head}"></head>
+
+<body>
+
+    <div class="container-fluid">
+        <div class="row">
+            <div th:replace="~{Calificaciones\vistaActividades :: barraCalificaciones}">
+            </div>
+            <div class="col ms-auto py-5 my-2">
+                <header th:replace="~{home :: header}"></header>
+
+                <div class="container-fluid py-2 my-2 align-items-center">
+                    <!--Mensajes-->
+                    <div th:replace="~{alertas::alertas}"></div>
+                    <!-- Carta para filtrar General -->
+                    <div sec:authorize="hasAnyRole('ADMINISTRADOR','DIRECTOR','SUBDIRECTORA','SECRETARIA')"
+                        class="card bg-light shadow-sm p-4 my-3">
+                        <div class="container-fluid">
+                            <form class="row gy-3 gx-4 align-items-end" id="formPeriodo" method="get"
+                                th:action="@{/Calificaciones/alumnos}">
+
+                                <!-- Carrera -->
+                                <div class="col-md-3">
+                                    <label for="carrera" class="form-label fs-6 fw-semibold">Carrera:</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="bi bi-building"></i></span>
+                                        <select id="carrera" name="carrera" th:value="${carrera}" class="form-select"
+                                            aria-label="Seleccione una carrera">
+                                            <option value="" selected>Seleccione</option>
+                                            <option th:each="bachillerato : ${bachilleratos}"
+                                                th:value="${bachillerato.nombreCarrera}"
+                                                th:text="${bachillerato.nombreCarrera}"
+                                                th:selected="${bachillerato.nombreCarrera == carrera}">
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <!-- Año (Grado) -->
+                                <div class="col-md-3">
+                                    <label for="grado" class="form-label fs-6 fw-semibold">Año:</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="bi bi-calendar-event"></i></span>
+                                        <select id="grado" name="grado" th:value="${grado}" class="form-select"
+                                            aria-label="Seleccione un grado">
+                                            <option value="" selected>Seleccione</option>
+                                            <option value="1" th:selected="${grado == '1'}">1</option>
+                                            <option value="2" th:selected="${grado == '2'}">2</option>
+                                            <option value="3" th:selected="${grado == '3'}">3</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <!-- Sección -->
+                                <div class="col-md-3">
+                                    <label for="seccion" class="form-label fs-6 fw-semibold">Sección:</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="bi bi-list-check"></i></span>
+                                        <select id="seccion" name="seccion" th:value="${seccion}" class="form-select"
+                                            aria-label="Seleccione una sección">
+                                            <option value="" selected>Seleccione</option>
+                                            <option value="A" th:selected="${seccion == 'A'}">A</option>
+                                            <option value="B" th:selected="${seccion == 'B'}">B</option>
+                                            <option value="C" th:selected="${seccion == 'C'}">C</option>
+                                            <option value="D" th:selected="${seccion == 'D'}">D</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <!-- Botón de Buscar -->
+                                <div class="row col-md-3 text-end">
+                                    <button type="submit" class="btn btn-primary">
+                                        <i class="bi bi-search"></i> Buscar
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- tabla -->
+                    <div>
+                        <table class="table table-sm table-hover align-middle">
+                            <thead class="text-start">
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Nie</th>
+                                    <th scope="col">Apellidos</th>
+                                    <th scope="col">Nombre</th>
+                                    <th scope="col">Carrera</th>
+                                    <th scope="col">Sección</th>
+                                    <th scope="col">Año</th>                                    
+                                    <th scope="col">Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody class="">
+                                <!-- Iterar sobre la lista de alumnos -->
+                                <tr th:each="alumno, stat : ${alumnos}">
+                                    <th scope="row" th:text="${stat.index + 1}">
+
+                                    </th>
+                                    <td class="text-start " th:text="${alumno.nie}"></td>
+                                    <td class="text-start " th:text="${alumno.apellidoAlumno}"></td>
+                                    <td class="text-start " th:text="${alumno.nombreAlumno}"></td>
+                                    <td class="text-start " th:text="${alumno.bachillerato.nombreCarrera}"></td>
+                                    <td class="text-center " th:text="${alumno.bachillerato.seccion}"></td>
+                                    <td class="text-center" th:text="${alumno.bachillerato.grado}"></td>
+                                   
+                                    <td class="text-center">
+                                        <a class="btn btn-success " th:href="@{/Calificaciones/alumno/}+${alumno.idAlumno}"
+                                            data-bs-toggle="tooltip" data-bs-placement="top" title="Consultar">
+                                            <i class="bi bi-file-earmark-text"></i>
+                                        </a>
+                                             
+                                    </td>
+
+                                </tr>
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <footer th:replace="~{home :: footer}"></footer>
+</body>
+
+</html>

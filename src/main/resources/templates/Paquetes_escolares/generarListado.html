@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{home :: head}">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <title>Paquetes Escolares</title>
+  <link rel="stylesheet" th:href="@{/css/style.css}" />
+</head>
+
+<body>
+  <header th:replace="~{home :: header}"></header>
+  <div class="p-4 mt-5">
+    <div>
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a th:href="@{/}" class="text-decoration-none text-secondary">Inicio</a></li>
+          <li class=" breadcrumb-item active" aria-current="page">Listado entrega</li>
+        </ol>
+      </nav>
+    </div>
+    <h2 class="text-center">Generación Listado</h2>
+
+    <div class="container">
+      <div class="alert-container">
+        <header th:replace="~{alertas :: alertas}"></header>
+      </div>
+
+      <div class="alert alert-info alert-dismissible fade show mr-2" id="alertaPaquetes" style="display: none;">
+        <i class="bi bi-info-circle"></i>
+        <label>Todos los paquetes han sido entregados</label>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+
+      <!-- Formulario de Selección de Paquete -->
+      <div class="d-flex justify-content-center align-items-center mb-2">
+        <form th:action="@{/entregasPaquetes/seccion/{id}(id=${id})}" method="get" class="needs-validation" novalidate>
+          <div class="input-group mt-2">
+            <select name="tipoPaquete" id="tipoPaquete" class="form-select me-2" required>
+              <option value="">Seleccione tipo de paquete</option>
+              <option value="paqueteZapatos">Paquete de Zapatos</option>
+              <option value="paqueteUtiles">Paquete de Útiles</option>
+              <option value="paqueteUniforme">Primer Paquete de Uniforme</option>
+              <option value="paqueteUniforme">Segundo Paquete de Uniforme</option>
+            </select>
+            <button type="submit" class="btn btn-primary me-2" id="btn-generar" disabled data-bs-toggle="tooltip" data-bs-placement="top" title="Generar cuadro de entregas"><i class="bi bi-list-ul"></i>
+              Crear lista de entrega</button>
+            <a th:href="@{/entregasPaquetes/reportesEntrega/{id}(id=${id})}" class="btn btn-secondary"
+              data-bs-toggle="tooltip" data-bs-placement="top" title="Ver reportes de paquetes entregados">
+              <i class="bi bi-card-checklist"></i> Ver Paquetes Entregados
+            </a>
+          </div>
+        </form>
+      </div>
+
+
+      <form class="needs-validation" novalidate th:action="@{/entregasPaquetes/entregarPaquete}" method="post">
+        <input type="hidden" name="id" th:value="${id}" id="id" />
+        <input type="hidden" name="tipoPaquete" th:value="${tipoPaquete}" />
+
+        <!-- Encabezado de la Tabla -->
+        <div class="d-flex justify-content-end mb-2" th:if="${alumnos} and ${tipoPaquete != null}">
+          <a th:href="@{/entregasPaquetes/imprimirListado/{id}(id=${id}, tipoPaquete=${tipoPaquete})}"
+            class="btn btn-secondary me-1" data-bs-toggle="tooltip" data-bs-placement="top"
+            title="Imprimir la lista de entrega para completar manualmente" target="_blank"
+            onclick="openInPopup(this.href); return false;">
+            <i class="bi bi-printer"></i> Imprimir
+          </a>
+        </div>
+
+
+        <table class="table table-bordered" th:if="${alumnos} and ${tipoPaquete != null}" tipoPaquete>
+          <thead>
+            <tr>
+              <th class="fs-3" colspan="7" th:text="${bachillerato.nombreCarrera}">Nombre del Bachillerato</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Tipo de Paquete -->
+            <tr>
+              <td class="fs-4 fw-bolder" colspan="7" th:text="'Tipo de Paquete: ' + ${tipoPaquete}">Tipo de Paquete</td>
+            </tr>
+            <tr>
+              <td colspan="7" class="fs-5"
+                th:text="'Año: ' + ${bachillerato.grado} + '° Sección: ' + ${bachillerato.seccion}">
+                Año y Sección
+              </td>
+            </tr>
+            <tr class="align-middle">
+              <th>#</th>
+              <th>NIE</th>
+              <th>Apellido</th>
+              <th>Nombre</th>
+              <th>Género</th>
+              <th th:if="${tipoPaquete == 'paqueteZapatos' || tipoPaquete == 'paqueteUniforme'}">Talla</th>
+              <th>Entregado</th>
+            </tr>
+
+            <tr class="align-middle" th:each="alumno, iter : ${alumnos}">
+              <input type="hidden" name="alumnoId" th:value="${alumno.idAlumno}" />
+              <td th:text="${iter.index + 1}"></td>
+              <td th:text="${alumno.nie}"></td>
+              <td th:text="${alumno.apellidoAlumno}"></td>
+              <td th:text="${alumno.nombreAlumno}"></td>
+              <td th:text="${alumno.sexoAlumno}"></td>
+
+              <td th:if="${tipoPaquete == 'paqueteZapatos'}">
+                <input type="number" th:name="'talla_' + ${alumno.idAlumno}" th:id="'talla_' + ${alumno.idAlumno}"
+                  class="form-control" placeholder="Talla de zapato" min="10" max="50" required />
+                <div class="invalid-feedback">Ingresa una talla de zapato válida (entre 10 y 50).</div>
+              </td>
+
+              <td th:if="${tipoPaquete == 'paqueteUniforme'}">
+                <input type="text" th:name="'talla_' + ${alumno.idAlumno}" th:id="'talla_' + ${alumno.idAlumno}"
+                  class="form-control" placeholder="Talla de uniforme" required />
+                <div class="invalid-feedback">Ingresa una talla valida de uniforme.</div>
+              </td>
+
+              <td>
+                <div class="form-check d-flex justify-content-center">
+                  <input class="form-check-input me-2 border border-2 border-secondary" type="checkbox"
+                    th:name="'entregado_' + ${alumno.idAlumno}" th:id="'entregado_' + ${alumno.idAlumno}"
+                    checked="checked">
+                  <label class="form-check-label" th:for="'entregado_' + ${alumno.idAlumno}">Entregado</label>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="d-flex justify-content-end mt-3" th:if="${alumnos} and ${tipoPaquete != null}">
+          <input type="submit" value="Guardar registro de entrega" class="btn btn-primary" data-bs-toggle="tooltip"
+            data-bs-placement="top" title="El listado de entrega actual sera guardado">
+        </div>
+      </form>
+    </div>
+
+    <script>
+      function openInPopup(url) {
+        window.open(url, 'popup', 'width=800,height=600');
+      }
+    </script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript" src="/js/validacionRequired.js"></script>
+    <footer th:replace="~{home :: footer}"></footer>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script type="text/javascript" src="/js/tooltip.js"></script>
+
+
+    <script>
+      $(document).ready(function () {
+
+        var idBachillerato = document.getElementById("id").value;
+        console.log(idBachillerato)
+
+        $.ajax({
+          url: '/entregasPaquetes/fechasPaquetesContar/' + idBachillerato,
+          type: 'GET',
+          success: function (data) {
+            console.log("zapatos" + data.zapatos)
+            // Verificar la cantidad de zapatos y ocultar o mostrar la opción correspondiente
+            if (data.zapatos > 0) {
+              $('#tipoPaquete option[value="paqueteZapatos"]').hide();
+            } else {
+              $('#tipoPaquete option[value="paqueteZapatos"]').show();
+            }
+
+            console.log("utiles" + data.utiles);
+
+            // Verificar la cantidad de útiles y ocultar o mostrar la opción correspondiente
+            if (data.utiles > 0) {
+              $('#tipoPaquete option[value="paqueteUtiles"]').hide();
+            } else {
+              $('#tipoPaquete option[value="paqueteUtiles"]').show();
+            }
+
+
+            // Manejo de las opciones "Paquetes Uniforme"
+            console.log("uniforme" + data.uniformes)
+            if (data.uniformes == 0) {
+              // Si no hay uniformes, muestra solo el primer paquete y oculta el segundo
+              $('#tipoPaquete option[value="paqueteUniforme"]').eq(0).show();
+              $('#tipoPaquete option[value="paqueteUniforme"]').eq(1).hide();
+            } else if (data.uniformes == 1) {
+              // Si ya hay un uniforme entregado, oculta el primer paquete y muestra el segundo
+              $('#tipoPaquete option[value="paqueteUniforme"]').eq(0).hide();
+              $('#tipoPaquete option[value="paqueteUniforme"]').eq(1).show();
+            } else if (data.uniformes >= 2) {
+              // Si hay 2 o más uniformes, oculta ambos paquetes
+              $('#tipoPaquete option[value="paqueteUniforme"]').eq(0).hide();
+              $('#tipoPaquete option[value="paqueteUniforme"]').eq(1).hide();
+            }
+
+            // Mostrar la alerta solo si hay al menos 1 zapato, 1 útil, y 2 uniformes
+            if (data.zapatos >= 1 && data.utiles >= 1 && data.uniformes >= 2) {
+              $('#alertaPaquetes').show(); // Muestra la alerta
+            } else {
+              $('#alertaPaquetes').hide(); // Oculta la alerta
+            }
+          }
+        });
+      });
+    </script>
+    <script>
+      let select_paquete = document.getElementById("tipoPaquete");
+      let btn_paquete = document.getElementById("btn-generar");
+      select_paquete.addEventListener("change", () => {
+        if (select_paquete.value != "") {
+          console.log(select_paquete.value);
+          btn_paquete.disabled = false;
+        } else {
+          btn_paquete.disabled = true;
+        }
+      })
+    </script>
+</body>
+<footer th:replace="~{home :: footer}"></footer>
+
+</html>

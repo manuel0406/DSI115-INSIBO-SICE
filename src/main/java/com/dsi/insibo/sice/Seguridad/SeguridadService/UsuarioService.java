@@ -36,6 +36,7 @@ public class UsuarioService {
         1. Para restaurar la contraseña.
         2. Para guardar un nuevo usuario.
     */
+    @PreAuthorize("permitAll()")
     public void guardarUsuario(Usuario usuario) {
         usuarioRepository.save(usuario);
     }

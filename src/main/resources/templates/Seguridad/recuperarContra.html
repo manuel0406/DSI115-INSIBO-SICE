@@ -12,55 +12,53 @@
 </head>
 
 <body class="cuerpoRecuperar">
-    <div class="container">
-      <div class="row justify-content-center">
-        <div class="col-md-6">
-          <div id="formContent" class="card">
-            <div class="card-body">
-              <!-- Tarjetero de titulos -->
-              <h2 class="tituloIniciarSesion"> Restablecer Contraseña  </h2>
-  
-              <!-- Icono -->
-              <div class="fadeIn first text-center my-3">
-                <img th:src="@{/Imagenes/LogoINSIBO.jpg}" id="icon" alt="User Icon" class="img-fluid" style="max-width: 150px;" />
-              </div>
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-6">
+        <div id="formContent" class="card">
+          <div class="card-body">
+            <!-- Tarjetero de titulos -->
+            <h2 class="tituloIniciarSesion"> Restablecer Contraseña </h2>
 
-              <div class="fadeIn first text-center my-3">
-                <p class="advertencia"><b>¡Importante aviso de seguridad!</b><br>
-                    Estamos comprometidos con la protección de tu cuenta. Si has solicitado restablecer tu contraseña, ten en cuenta que, por razones de seguridad, la nueva contraseña será enviada únicamente a tu correo registrado o comunicarte con el administrador. Si no encuentras el correo en tu bandeja de entrada, por favor verifica la carpeta de spam. Gracias por tu comprensión y colaboración en mantener tu cuenta segura.</p>
-              </div>
-
-              <div th:if="${mensaje != null and !#strings.isEmpty(mensaje)}" th:utext="${mensaje}" class="alert alert-danger"></div>
-
-              <!-- Formulario de iniciar sesión -->
-              <form id="formulario" th:object="${usuario}" method="post" th:action="@{/correoDeRecuperacion}" oninput="validateForm()">
-                <!-- Entrada de Usuario -->
-                <div class="form-group">
-                  <label class="entradaIniciarSesion" for="login">Correo Electrónico:</label>
-                  <div>
-                    <span id="correoInvalido" class="w-100 text-center">
-                      <i class="bi bi-exclamation-circle-fill"></i> Correo inválido
-                    </span>
-                  </div>
-                  <input th:field="*{correoUsuario}" type="text" id="correoIniciarSesion" class="form-control fadeIn second" name="login" placeholder="Ingrese su correo..." required>
-                </div>
-                <div class="form-group row">
-                  <div class="col">
-                    <input class="btnRecuperar" type="submit" value="Restablecer contraseña" id="botonRecuperar" onclick="recuperar()">
-                  </div>
-                  <div class="col">
-                    <a th:href="@{/login}" class="btn btn-secondary btnCancelar">Cancelar</a>
-                  </div>
-                </div>
-              </form>
+            <!-- Icono -->
+            <div class="fadeIn first text-center my-3">
+              <img th:src="@{/Imagenes/LogoINSIBO.jpg}" id="icon" alt="User Icon" class="img-fluid" style="max-width: 150px;" />
             </div>
+
+            <div class="fadeIn first text-center my-3">
+              <p class="advertencia"><b>¡Importante aviso de seguridad!</b><br>
+                Estamos comprometidos con la protección de tu cuenta. Si has solicitado restablecer tu contraseña, ten en
+                cuenta que, por razones de seguridad, la nueva contraseña será enviada únicamente a tu correo registrado
+                o comunicarte con el administrador. Si no encuentras el correo en tu bandeja de entrada, por favor verifica
+                la carpeta de spam. Gracias por tu comprensión y colaboración en mantener tu cuenta segura.</p>
+            </div>
+
+            <div th:if="${mensaje != null and !#strings.isEmpty(mensaje)}" th:utext="${mensaje}" class="alert alert-danger"></div>
+
+            <!-- Formulario de iniciar sesión -->
+            <form id="formulario" th:object="${usuario}" method="post" th:action="@{/correoDeRecuperacion}" oninput="validateForm()">
+              <!-- Entrada de Usuario -->
+              <div class="mb-3">
+                <label for="correo" class="form-label"><b>Correo Electrónico:</b></label>
+                <input th:field="*{correoUsuario}" type="text" id="correoIniciarSesion" class="form-control needs-validation" name="login" placeholder="Ingrese su correo..." required>
+                <div class="invalid-feedback">Por favor, escriba correctamente el correo.</div>
+
+              </div>
+              
+              <div class="form-group mt-3 text-center">
+                <input class="btn btn-primary" type="submit" value="Restablecer contraseña" id="botonRecuperar" disabled>
+                <a th:href="@{/login}" class="btn btn-dark">Cancelar</a>
+              </div>
+            </form>
           </div>
         </div>
       </div>
     </div>
-    <script type="text/javascript" th:src="@{/js/recuperarContra.js}"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/js/bootstrap.min.js"></script>
-  </body>
+  </div>
+  <script type="text/javascript" th:src="@{/js/recuperarContra.js}"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/js/bootstrap.min.js"></script>
+</body>
 </html>
