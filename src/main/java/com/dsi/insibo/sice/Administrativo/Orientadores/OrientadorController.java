@@ -31,7 +31,7 @@ import com.dsi.insibo.sice.entity.Orientador;
  */
 @Controller
 @RequestMapping("/AsignacionOrientador")
-@PreAuthorize("hasAnyRole('ADMINISTRADOR','DIRECTOR','SUBDIRECTORA')")
+@PreAuthorize("hasAnyRole('DOCENTE','ADMINISTRADOR','DIRECTOR','SUBDIRECTORA','SECRETARIA')")
 public class OrientadorController {
 
     @Autowired
@@ -42,7 +42,7 @@ public class OrientadorController {
     OrientadorService orientadorService;
     @Autowired
     AlumnoService alumnoService;
-
+    @PreAuthorize("hasAnyRole('ADMINISTRADOR','DIRECTOR','SUBDIRECTORA','SECRETARIA')")
     @GetMapping("/Asignar")
     public String asignacion(Model model, @RequestParam(value = "page", defaultValue = "1") int page,
             @RequestParam(value = "size", defaultValue = "20") int size) {
@@ -72,7 +72,7 @@ public class OrientadorController {
 
         return "Administrativo/GestionOrientador/asignacionOrientador";
     }
-
+    @PreAuthorize("hasAnyRole('ADMINISTRADOR','DIRECTOR','SUBDIRECTORA','SECRETARIA')")
     @PostMapping("/guardarOrientacion")
     public String guardar(@ModelAttribute Orientador orientador, RedirectAttributes attributes) {
 
@@ -88,7 +88,7 @@ public class OrientadorController {
 
         return "redirect:/AsignacionOrientador/Asignar";
     }
-
+    @PreAuthorize("hasAnyRole('ADMINISTRADOR','DIRECTOR','SUBDIRECTORA','SECRETARIA')")
     @PostMapping("/actualizarOrientacion")
     public String actualizarorientador(@ModelAttribute Orientador orientador, RedirectAttributes attributes) {
 
