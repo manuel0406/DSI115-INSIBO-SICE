@@ -48,6 +48,7 @@ public class JustificacionController {
         // Agregar los datos al modelo
         model.addAttribute("idAsistencia", idAsistencia);
         model.addAttribute("nombreDocente", nombreDocente);
+        model.addAttribute("titulo", "Justificacion");
         return "Asistencia_personal/Docente_asistencia/agregarJustificacion";
     }
 
@@ -62,18 +63,20 @@ public class JustificacionController {
             justificacionDocente.setDescripcionJustificacion(descripcion);
             justificacionDocente.setArchivo(archivo.getBytes());
 
-
             AsistenciaDocente asistenciaDocente = asistenciaDocenteService.findById(idAsistencia);
             justificacionDocente.setAsistenciaDocente(asistenciaDocente);
             // Llamar al método save del servicio
             justificacionDocenteService.save(justificacionDocente);
+            model.addAttribute("titulo", "Justificacion");
 
             return "redirect:/asistencias/asistenciaTardia"; // Redirige a la ruta deseada
         } catch (IOException e) {
             model.addAttribute("error", "Error al guardar el archivo");
+            model.addAttribute("titulo", "Justificacion");
             return "Asistencia_personal/Docente_asistencia/agregarJustificacion"; // error
         } catch (EntityNotFoundException e) {
             model.addAttribute("error", e.getMessage());
+            model.addAttribute("titulo", "Justificacion");
             return "Asistencia_personal/Docente_asistencia/agregarJustificacion"; // error
         }
     }
@@ -87,6 +90,7 @@ public class JustificacionController {
             JustificacionDocente justificacionDocente = justificacionDocenteService
                     .findByAsistenciaDocente_IdAsistencia(idJustificacion);
             model.addAttribute("justificacion", justificacionDocente);
+
         } catch (RuntimeException e) {
             model.addAttribute("error", "Justificación no encontrada con ID: " + idJustificacion);
             return "Asistencia_personal/Docente_asistencia/asistenciaGeneral";
@@ -142,14 +146,16 @@ public class JustificacionController {
             justificacionPersonal.setAsistenciaPersonal(asistenciaPersonal);
             // Llamar al método save del servicio
             justificacionPersonalService.save(justificacionPersonal);
-            
-            return "redirect:/asistencias/asistenciaTardiaadm"; 
+            model.addAttribute("titulo", "Justificacion");
+            return "redirect:/asistencias/asistenciaTardiaadm";
         } catch (IOException e) {
+            model.addAttribute("titulo", "Justificacion");
             model.addAttribute("error", "Error al guardar el archivo");
-            return "Asistencia_personal/Personal_asistencia/agregarJustificacionAdm"; //error
+            return "Asistencia_personal/Personal_asistencia/agregarJustificacionAdm"; // error
         } catch (EntityNotFoundException e) {
+            model.addAttribute("titulo", "Justificacion");
             model.addAttribute("error", e.getMessage());
-            return "Asistencia_personal/Personal_asistencia/agregarJustificacionAdm"; //error
+            return "Asistencia_personal/Personal_asistencia/agregarJustificacionAdm"; // error
         }
     }
 
@@ -159,7 +165,8 @@ public class JustificacionController {
         System.out.println("ID recibido: " + idJustificacion); // Verifica el ID recibido
         try {
             model.addAttribute("nombrePersonal", nombrePersonal);
-            JustificacionPersonal justificacionPersonal = justificacionPersonalService.findByAsistenciaPersonal_IdAsistencia(idJustificacion);
+            JustificacionPersonal justificacionPersonal = justificacionPersonalService
+                    .findByAsistenciaPersonal_IdAsistencia(idJustificacion);
             model.addAttribute("justifiacion", justificacionPersonal);
         } catch (RuntimeException e) {
             model.addAttribute("error", "Justificación no encontrada con ID: " + idJustificacion);
