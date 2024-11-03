@@ -91,6 +91,7 @@ public class JustificacionController {
             model.addAttribute("error", "Justificación no encontrada con ID: " + idJustificacion);
             return "Asistencia_personal/Docente_asistencia/asistenciaGeneral";
         }
+        model.addAttribute("titulo", "Justificacion");
         return "Asistencia_personal/Docente_asistencia/mostrarJustificacion";
     }
 
@@ -164,6 +165,7 @@ public class JustificacionController {
             model.addAttribute("error", "Justificación no encontrada con ID: " + idJustificacion);
             return "Asistencia_personal/Personal_asistencia/asistenciaTardiaAdm";
         }
+        model.addAttribute("titulo", "Justificacion");
         return "Asistencia_personal/Personal_asistencia/mostrarJustificacionAdm";
     }
 
