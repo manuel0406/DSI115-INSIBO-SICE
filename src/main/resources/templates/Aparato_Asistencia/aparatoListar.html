@@ -1,591 +1,364 @@
 <!DOCTYPE html>
-<html
-  lang="es"
-  xmlns:th="http://www.thymeleaf.org"
-  xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
->
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Asistencia | Listado de identificadores</title>
-    <link rel="stylesheet" th:href="@{/css/style.css}" />
-    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
-    <link
-      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.7.2/font/bootstrap-icons.css"
-      rel="stylesheet"
-    />
-  </head>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
-  <body>
-    <header th:replace="~{home :: header}"></header>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Asistencia | Listado de identificadores</title>
+  <link rel="icon" type="image/x-icon" th:href="@{/Imagenes/INSIBO.ico}">
+  <link rel="stylesheet" th:href="@{/css/style.css}" />
+  <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.7.2/font/bootstrap-icons.css" rel="stylesheet" />
+</head>
 
-    <div class="py-4 my-3"></div>
+<body>
+  <header th:replace="~{home :: header}"></header>
 
-    <nav aria-label="breadcrumb" class="px-4 py-2 rounded">
-      <ol class="breadcrumb mb-2">
-        <li class="breadcrumb-item">
-          <a
-            th:href="@{/asistencias/seleccionInicio}"
-            class="text-decoration-none text-secondary"
-            >Asistencia</a
-          >
-        </li>
-        <li class="breadcrumb-item active" aria-current="page">
-          Números asignados de aparato
-        </li>
-      </ol>
-    </nav>
+  <div class="py-4 my-3"></div>
 
-    <!-- TITULO PRINCIPAL -->
-    <div class="container d-flex justify-content-center flex-wrap">
-      <h1 class="h1 text-center"><b>Listado de números asignados</b></h1>
-    </div>
+  <nav aria-label="breadcrumb" class="px-4 py-2 rounded">
+    <ol class="breadcrumb mb-2">
+      <li class="breadcrumb-item">
+        <a th:href="@{/asistencias/seleccionInicio}" class="text-decoration-none text-secondary">Asistencia</a>
+      </li>
+      <li class="breadcrumb-item active" aria-current="page">
+        Números asignados de aparato
+      </li>
+    </ol>
+  </nav>
 
-    <!-- BOTONES DE ASIGNACIÓN -->
-    <div class="p-3">
-      <div class="row g-2 d-flex justify-content-center">
-        <div class="col-auto">
-          <button
-            type="button"
-            class="btn btn-outline-primary"
-            data-bs-toggle="modal"
-            data-bs-target="#asignarNumeroDocenteModal"
-          >
-            Asignar número Docente
-          </button>
-        </div>
-        <div class="col-auto">
-          <button
-            type="button"
-            class="btn btn-outline-primary"
-            data-bs-toggle="modal"
-            data-bs-target="#asignarNumeroAdministrativoModal"
-          >
-            Asignar número Administrativo
-          </button>
-        </div>
+  <!-- TITULO PRINCIPAL -->
+  <div class="container d-flex justify-content-center flex-wrap">
+    <h1 class="h1 text-center"><b>Listado de números asignados</b></h1>
+  </div>
+
+  <!-- BOTONES DE ASIGNACIÓN -->
+  <div class="p-3">
+    <div class="row g-2 d-flex justify-content-center">
+      <div class="col-auto">
+        <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal"
+          data-bs-target="#asignarNumeroDocenteModal">
+          Asignar número Docente
+        </button>
+      </div>
+      <div class="col-auto">
+        <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal"
+          data-bs-target="#asignarNumeroAdministrativoModal">
+          Asignar número Administrativo
+        </button>
       </div>
     </div>
+  </div>
 
-    <!-- TABLA DE LISTADO -->
-    <div class="w-75 mx-auto">
-      <div class="table-responsive">
-        <table class="table table-hover">
-          <thead class="table-dark">
-            <tr>
-              <th class="text-center">Área</th>
-              <th class="text-center">Nombre personal</th>
-              <th class="text-center">ID asistencia</th>
-              <th class="text-center">Opciones</th>
-            </tr>
-          </thead>
-          <tbody>
-            <!-- LISTA DOCENTES APARATO -->
-            <tr th:each="ap:${aparatoDocente}">
-              <td>Docente</td>
-              <td
-                th:text="${ap.docente?.nombreDocente ?: ''} + ' ' + ${ap.docente?.apellidoDocente ?: ''}"
-              ></td>
-              <td th:text="${ap.numeroAparatoDocente}"></td>
-              <td>
-                <a
-                  class="btn btn-primary btn-sm mx-1 editar-btn-docente"
-                  data-bs-toggle="modal"
-                  data-bs-target="#editarNumeroDocenteModal"
-                  th:data-docente-Actual="${ap.docente.nombreDocente} + ' ' + ${ap.docente.apellidoDocente}"
-                  th:data-docente-Dui="${ap.docente.duiDocente}"
-                  th:data-numero-Aparato-Docente="${ap.numeroAparatoDocente}"
-                  th:data-id-Aparato-Docente="${ap.idDocenteAparato}"
-                  title="Editar"
-                >
-                  <i class="bi bi-pencil-square"></i>
-                </a>
+  <!-- TABLA DE LISTADO -->
+  <div class="w-75 mx-auto">
+    <div class="table-responsive">
+      <table class="table table-hover">
+        <thead class="table-dark">
+          <tr>
+            <th class="text-center">Área</th>
+            <th class="text-center">Nombre personal</th>
+            <th class="text-center">ID asistencia</th>
+            <th class="text-center">Opciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- LISTA DOCENTES APARATO -->
+          <tr th:each="ap:${aparatoDocente}">
+            <td>Docente</td>
+            <td th:text="${ap.docente?.nombreDocente ?: ''} + ' ' + ${ap.docente?.apellidoDocente ?: ''}"></td>
+            <td th:text="${ap.numeroAparatoDocente}"></td>
+            <td>
+              <a class="btn btn-primary btn-sm mx-1 editar-btn-docente" data-bs-toggle="modal"
+                data-bs-target="#editarNumeroDocenteModal"
+                th:data-docente-Actual="${ap.docente.nombreDocente} + ' ' + ${ap.docente.apellidoDocente}"
+                th:data-docente-Dui="${ap.docente.duiDocente}"
+                th:data-numero-Aparato-Docente="${ap.numeroAparatoDocente}"
+                th:data-id-Aparato-Docente="${ap.idDocenteAparato}" title="Editar">
+                <i class="bi bi-pencil-square"></i>
+              </a>
 
-                <a
-                  class="btn btn-danger btn-sm mx-1"
-                  th:href="@{/aparato/eliminarNumeroDocente/}+ ${ap.idDocenteAparato}"
-                  title="Eliminar"
-                >
-                  <i class="bi bi-trash"></i>
-                </a>
-              </td>
-            </tr>
-            <!-- LISTA PERSONAL ADMINISTRATIVO APARATO -->
-            <tr th:each="pp:${aparatoPersonal}">
-              <td>Personal Administrativo</td>
-              <td
-                th:text="${pp.personal.nombrePersonal + ' ' + pp.personal.apellidoPersonal}"
-              ></td>
-              <td th:text="${pp.numeroAparatoPersonal}"></td>
-              <td>
-                <a
-                  class="btn btn-primary btn-sm mx-1 editar-btn-personal"
-                  data-bs-toggle="modal"
-                  data-bs-target="#editarNumeroAdministrativoModal"
-                  th:data-personal-Actual="${pp.personal.nombrePersonal + ' ' + pp.personal.apellidoPersonal}"
-                  th:data-personal-Dui="${pp.personal.duiPersonal}"
-                  th:data-numero-Aparato-personal="${pp.numeroAparatoPersonal}"
-                  th:data-id-Aparato-personal="${pp.idPersonalAparato}"
-                  title="Editar"
-                >
-                  <i class="bi bi-pencil-square"></i>
-                </a>
-                <a
-                  class="btn btn-danger btn-sm mx-1"
-                  th:href="@{/aparato/eliminarNumeroAdministrativo/}+ ${pp.idPersonalAparato}"
-                  title="Eliminar"
-                >
-                  <i class="bi bi-trash"></i>
-                </a>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+              <a class="btn btn-danger btn-sm mx-1" th:href="@{/aparato/eliminarNumeroDocente/}+ ${ap.idDocenteAparato}"
+                title="Eliminar">
+                <i class="bi bi-trash"></i>
+              </a>
+            </td>
+          </tr>
+          <!-- LISTA PERSONAL ADMINISTRATIVO APARATO -->
+          <tr th:each="pp:${aparatoPersonal}">
+            <td>Personal Administrativo</td>
+            <td th:text="${pp.personal.nombrePersonal + ' ' + pp.personal.apellidoPersonal}"></td>
+            <td th:text="${pp.numeroAparatoPersonal}"></td>
+            <td>
+              <a class="btn btn-primary btn-sm mx-1 editar-btn-personal" data-bs-toggle="modal"
+                data-bs-target="#editarNumeroAdministrativoModal"
+                th:data-personal-Actual="${pp.personal.nombrePersonal + ' ' + pp.personal.apellidoPersonal}"
+                th:data-personal-Dui="${pp.personal.duiPersonal}"
+                th:data-numero-Aparato-personal="${pp.numeroAparatoPersonal}"
+                th:data-id-Aparato-personal="${pp.idPersonalAparato}" title="Editar">
+                <i class="bi bi-pencil-square"></i>
+              </a>
+              <a class="btn btn-danger btn-sm mx-1"
+                th:href="@{/aparato/eliminarNumeroAdministrativo/}+ ${pp.idPersonalAparato}" title="Eliminar">
+                <i class="bi bi-trash"></i>
+              </a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
 
-      <!-- Alerta para lista vacía -->
-      <div
-        th:if="${totalPages == 0}"
-        class="alert alert-info d-flex align-items-center"
-        role="alert"
-      >
-        <div>
-          <i class="bi bi-exclamation-triangle"></i> ¡No se han encontrado
-          asignaciones de identificador al aparato biométrico!
-        </div>
-      </div>
-
-      <!-- Paginación -->
-      <div class="d-flex justify-content-center">
-        <nav aria-label="Paginación" th:if="${totalPages > 0}">
-          <ul class="pagination">
-            <!-- Botón Anterior -->
-            <li
-              class="page-item"
-              th:classappend="${currentPage == 0} ? 'disabled'"
-            >
-              <a
-                class="page-link"
-                th:href="@{'/aparato/listarAparato?page=' + (${currentPage} - 1) + '&size=' + ${size}}"
-                >Anterior</a
-              >
-            </li>
-            <!-- Números de página -->
-            <li
-              class="page-item"
-              th:each="i : ${#numbers.sequence(0, totalPages - 1)}"
-              th:classappend="${i == currentPage} ? 'active'"
-            >
-              <a
-                class="page-link"
-                th:text="${i + 1}"
-                th:href="@{'/aparato/listarAparato?page=' + ${i} + '&size=' + ${size}}"
-              ></a>
-            </li>
-            <!-- Botón Siguiente -->
-            <li
-              class="page-item"
-              th:classappend="${currentPage == totalPages - 1} ? 'disabled'"
-            >
-              <a
-                class="page-link"
-                th:href="@{'/aparato/listarAparato?page=' + (${currentPage} + 1) + '&size=' + ${size}}"
-                >Siguiente</a
-              >
-            </li>
-          </ul>
-        </nav>
+    <!-- Alerta para lista vacía -->
+    <div th:if="${totalPages == 0}" class="alert alert-info d-flex align-items-center" role="alert">
+      <div>
+        <i class="bi bi-exclamation-triangle"></i> ¡No se han encontrado
+        asignaciones de identificador al aparato biométrico!
       </div>
     </div>
 
-    <!-- MODAL ASIGNAR NÚMERO A DOCENTE -->
-    <div
-      class="modal fade"
-      id="asignarNumeroDocenteModal"
-      tabindex="-1"
-      aria-labelledby="docenteModalLabel"
-      aria-hidden="true"
-    >
-      <div class="modal-dialog">
-        <!-- Cambié a modal-lg para un modal más grande -->
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="docenteModalLabel">
-              Asignar Número al Docente
-            </h5>
-            <button
-              id="cancelarDocente"
-              type="button"
-              class="btn-close"
-              data-bs-dismiss="modal"
-              aria-label="Close"
-            ></button>
-          </div>
-          <div class="modal-body">
-            <form
-              class="needs-validation"
-              id="formDocente"
-              th:object="${docenteAparato}"
-              th:action="@{/aparato/guardarNumeroDocente}"
-              method="post"
-              novalidate
-            >
-              <div class="mb-3">
-                <label for="docente" class="form-label"
-                  >Seleccionar Docente</label
-                >
-                <select
-                  class="form-select"
-                  id="docente"
-                  name="docente"
-                  th:field="*{docente}"
-                  required
-                >
-                  <option value="">Seleccionar docentes...</option>
-                  <option
-                    th:each="docente : ${listaDocentes}"
-                    th:value="${docente.duiDocente}"
-                    th:text="${docente.nombreDocente} + ' ' + ${docente.apellidoDocente}"
-                  ></option>
-                </select>
-                <div class="invalid-feedback">
-                  Por favor selecciona un docente.
-                </div>
-              </div>
-              <div class="mb-3">
-                <label for="numeroDocente" class="form-label"
-                  >Número de Aparato</label
-                >
-                <input
-                  type="number"
-                  th:field="*{numeroAparatoDocente}"
-                  class="form-control"
-                  id="numeroAparatoDocente"
-                  name="numeroAparatoDocente"
-                  min="1"
-                  value="1"
-                  required
-                />
-                <div class="invalid-feedback">
-                  Por favor ingresa un número de aparato válido.
-                </div>
-                <div class="text-danger" id="mensajeAdvertenciaDocente" style="display: none;">Identificador ya es usado por otro empleado.</div>
+    <!-- Paginación -->
+    <div class="d-flex justify-content-center">
+      <nav aria-label="Paginación" th:if="${totalPages > 0}">
+        <ul class="pagination">
+          <!-- Botón Anterior -->
+          <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
+            <a class="page-link"
+              th:href="@{'/aparato/listarAparato?page=' + (${currentPage} - 1) + '&size=' + ${size}}">Anterior</a>
+          </li>
+          <!-- Números de página -->
+          <li class="page-item" th:each="i : ${#numbers.sequence(0, totalPages - 1)}"
+            th:classappend="${i == currentPage} ? 'active'">
+            <a class="page-link" th:text="${i + 1}"
+              th:href="@{'/aparato/listarAparato?page=' + ${i} + '&size=' + ${size}}"></a>
+          </li>
+          <!-- Botón Siguiente -->
+          <li class="page-item" th:classappend="${currentPage == totalPages - 1} ? 'disabled'">
+            <a class="page-link"
+              th:href="@{'/aparato/listarAparato?page=' + (${currentPage} + 1) + '&size=' + ${size}}">Siguiente</a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </div>
 
+  <!-- MODAL ASIGNAR NÚMERO A DOCENTE -->
+  <div class="modal fade" id="asignarNumeroDocenteModal" tabindex="-1" aria-labelledby="docenteModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog">
+      <!-- Cambié a modal-lg para un modal más grande -->
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="docenteModalLabel">
+            Asignar Número al Docente
+          </h5>
+          <button id="cancelarDocente" type="button" class="btn-close" data-bs-dismiss="modal"
+            aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form class="needs-validation" id="formDocente" th:object="${docenteAparato}"
+            th:action="@{/aparato/guardarNumeroDocente}" method="post" novalidate>
+            <div class="mb-3">
+              <label for="docente" class="form-label">Seleccionar Docente</label>
+              <select class="form-select" id="docente" name="docente" th:field="*{docente}" required>
+                <option value="">Seleccionar docentes...</option>
+                <option th:each="docente : ${listaDocentes}" th:value="${docente.duiDocente}"
+                  th:text="${docente.nombreDocente} + ' ' + ${docente.apellidoDocente}"></option>
+              </select>
+              <div class="invalid-feedback">
+                Por favor selecciona un docente.
               </div>
-              <div class="modal-footer">
-                <button
-                  id="btnCancelarDocente"
-                  type="button"
-                  class="btn btn-secondary"
-                  data-bs-dismiss="modal"
-                >
-                  Cancelar
-                </button>
-                <button type="submit" class="btn btn-primary" id="btnGuardarDocente">Guardar</button>
+            </div>
+            <div class="mb-3">
+              <label for="numeroDocente" class="form-label">Número de Aparato</label>
+              <input type="number" th:field="*{numeroAparatoDocente}" class="form-control" id="numeroAparatoDocente"
+                name="numeroAparatoDocente" min="1" value="1" required />
+              <div class="invalid-feedback">
+                Por favor ingresa un número de aparato válido.
               </div>
-            </form>
-          </div>
+              <div class="text-danger" id="mensajeAdvertenciaDocente" style="display: none;">Identificador ya es usado
+                por otro empleado.</div>
+
+            </div>
+            <div class="modal-footer">
+              <button id="btnCancelarDocente" type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                Cancelar
+              </button>
+              <button type="submit" class="btn btn-primary" id="btnGuardarDocente">Guardar</button>
+            </div>
+          </form>
         </div>
       </div>
     </div>
+  </div>
 
-    <!-- MODAL ASIGNAR NÚMERO A PERSONAL ADMINISTRATIVO -->
-    <div
-      class="modal fade"
-      id="asignarNumeroAdministrativoModal"
-      tabindex="-1"
-      aria-labelledby="administrativoModalLabel"
-      aria-hidden="true"
-    >
-      <div class="modal-dialog">
-        <!-- Cambié a modal-sm para un modal más pequeño -->
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="administrativoModalLabel">
-              Asignar Número al Personal Administrativo
-            </h5>
-            <button
-              id="cancelarAdministrativo"
-              type="button"
-              class="btn-close"
-              data-bs-dismiss="modal"
-              aria-label="Close"
-            ></button>
-          </div>
-          <div class="modal-body">
-            <form
-              id="formAdministrativo"
-              class="needs-validation"
-              th:object="${personalAparato}"
-              th:action="@{/aparato/guardarNumeroPersonal}"
-              method="post"
-              novalidate
-            >
-              <div class="mb-3">
-                <label for="personal" class="form-label"
-                  >Seleccionar Personal</label
-                >
-                <select
-                  class="form-select"
-                  id="personal"
-                  name="personal"
-                  th:field="*{personal}"
-                  required
-                >
-                  <option value="">Seleccionar personal...</option>
-                  <option
-                    th:each="personal : ${listaAdministrativo}"
-                    th:value="${personal.duiPersonal}"
-                    th:text="${personal.nombrePersonal} + ' ' + ${personal.apellidoPersonal}"
-                  ></option>
-                </select>
-                <div class="invalid-feedback">
-                  Por favor selecciona personal.
-                </div>
+  <!-- MODAL ASIGNAR NÚMERO A PERSONAL ADMINISTRATIVO -->
+  <div class="modal fade" id="asignarNumeroAdministrativoModal" tabindex="-1" aria-labelledby="administrativoModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog">
+      <!-- Cambié a modal-sm para un modal más pequeño -->
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="administrativoModalLabel">
+            Asignar Número al Personal Administrativo
+          </h5>
+          <button id="cancelarAdministrativo" type="button" class="btn-close" data-bs-dismiss="modal"
+            aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form id="formAdministrativo" class="needs-validation" th:object="${personalAparato}"
+            th:action="@{/aparato/guardarNumeroPersonal}" method="post" novalidate>
+            <div class="mb-3">
+              <label for="personal" class="form-label">Seleccionar Personal</label>
+              <select class="form-select" id="personal" name="personal" th:field="*{personal}" required>
+                <option value="">Seleccionar personal...</option>
+                <option th:each="personal : ${listaAdministrativo}" th:value="${personal.duiPersonal}"
+                  th:text="${personal.nombrePersonal} + ' ' + ${personal.apellidoPersonal}"></option>
+              </select>
+              <div class="invalid-feedback">
+                Por favor selecciona personal.
               </div>
-              <div class="mb-3">
-                <label for="numeroAdministrativo" class="form-label"
-                  >Número de Aparato</label
-                >
-                <input
-                  type="number"
-                  class="form-control"
-                  th:field="*{numeroAparatoPersonal}"
-                  name="numeroAparatoPersonal"
-                  id="numeroAparatoPersonal"
-                  min="1"
-                  value="1"
-                  required
-                />
-                <div class="invalid-feedback">
-                  Por favor ingresa un número de aparato válido.
-                </div>
-                <div class="text-danger" id="mensajeAdvertenciaPersonal" style="display: none;">Identificador ya es usado por otro empleado.</div>
+            </div>
+            <div class="mb-3">
+              <label for="numeroAdministrativo" class="form-label">Número de Aparato</label>
+              <input type="number" class="form-control" th:field="*{numeroAparatoPersonal}" name="numeroAparatoPersonal"
+                id="numeroAparatoPersonal" min="1" value="1" required />
+              <div class="invalid-feedback">
+                Por favor ingresa un número de aparato válido.
               </div>
-              <div class="modal-footer">
-                <button
-                  id="btnCancelarAdministrativo"
-                  type="button"
-                  class="btn btn-secondary"
-                  data-bs-dismiss="modal"
-                >
-                  Cancelar
-                </button>
-                <button type="submit" class="btn btn-primary" id="btnGuardarPersonal">Guardar</button>
-              </div>
-            </form>
-          </div>
+              <div class="text-danger" id="mensajeAdvertenciaPersonal" style="display: none;">Identificador ya es usado
+                por otro empleado.</div>
+            </div>
+            <div class="modal-footer">
+              <button id="btnCancelarAdministrativo" type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                Cancelar
+              </button>
+              <button type="submit" class="btn btn-primary" id="btnGuardarPersonal">Guardar</button>
+            </div>
+          </form>
         </div>
       </div>
     </div>
+  </div>
 
-    <!-- MODAL EDITAR NÚMERO A DOCENTE -->
-    <div
-      class="modal fade"
-      id="editarNumeroDocenteModal"
-      tabindex="-1"
-      aria-labelledby="docenteModalLabel"
-      aria-hidden="true"
-    >
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="docenteModalLabel">
-              Editar Número del Docente
-            </h5>
-            <button
-              id="cancelarDocente"
-              type="button"
-              class="btn-close"
-              data-bs-dismiss="modal"
-              aria-label="Close"
-            ></button>
-          </div>
-          <div class="modal-body">
-            <form
-              class="needs-validation"
-              id="formEditarDocente"
-              th:action="@{/aparato/actualizarNumeroDocente}"
-              method="post"
-              novalidate
-            >
-              <div class="mb-3">
-                <label for="docente" class="form-label"
-                  >Seleccionar Docente</label
-                >
-                <select
-                  class="form-select"
-                  id="docenteAsignado"
-                  name="docenteAsignado"
-                  required
-                  readonly
-                >
-                  <option value="">Seleccionar docentes...</option>
-                  <option
-                    th:each="docente : ${listaDocentes}"
-                    th:value="${docente.duiDocente}"
-                    th:text="${docente.nombreDocente} + ' ' + ${docente.apellidoDocente}"
-                  ></option>
-                </select>
-                <div class="invalid-feedback">
-                  Por favor selecciona un docente.
-                </div>
+  <!-- MODAL EDITAR NÚMERO A DOCENTE -->
+  <div class="modal fade" id="editarNumeroDocenteModal" tabindex="-1" aria-labelledby="docenteModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="docenteModalLabel">
+            Editar Número del Docente
+          </h5>
+          <button id="cancelarDocente" type="button" class="btn-close" data-bs-dismiss="modal"
+            aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form class="needs-validation" id="formEditarDocente" th:action="@{/aparato/actualizarNumeroDocente}"
+            method="post" novalidate>
+            <div class="mb-3">
+              <label for="docente" class="form-label">Seleccionar Docente</label>
+              <select class="form-select" id="docenteAsignado" name="docenteAsignado" required readonly>
+                <option value="">Seleccionar docentes...</option>
+                <option th:each="docente : ${listaDocentes}" th:value="${docente.duiDocente}"
+                  th:text="${docente.nombreDocente} + ' ' + ${docente.apellidoDocente}"></option>
+              </select>
+              <div class="invalid-feedback">
+                Por favor selecciona un docente.
               </div>
-              <div class="mb-3">
-                <label for="numeroDocente" class="form-label"
-                  >Número de Aparato</label
-                >
-                <input
-                  type="number"
-                  class="form-control"
-                  id="numAparatoDocente"
-                  name="numAparatoDocente"
-                  min="1"
-                  required
-                />
-                <div class="invalid-feedback">
-                  Por favor ingresa un número de aparato válido.
-                </div>
-                <div class="text-danger" id="mensajeAdvertenciaActD" style="display: none;">Identificador ya es usado por otro empleado.</div>
+            </div>
+            <div class="mb-3">
+              <label for="numeroDocente" class="form-label">Número de Aparato</label>
+              <input type="number" class="form-control" id="numAparatoDocente" name="numAparatoDocente" min="1"
+                required />
+              <div class="invalid-feedback">
+                Por favor ingresa un número de aparato válido.
+              </div>
+              <div class="text-danger" id="mensajeAdvertenciaActD" style="display: none;">Identificador ya es usado por
+                otro empleado.</div>
 
-                <input
-                  type="hidden"
-                  class="form-control"
-                  id="idAparatoDocente"
-                  name="idAparatoDocente"
-                  readonly
-                  required
-                />
-              </div>
-              <div class="modal-footer">
-                <button
-                  id="btnCancelarDocente"
-                  type="button"
-                  class="btn btn-secondary"
-                  data-bs-dismiss="modal"
-                >
-                  Cancelar
-                </button>
-                <button type="submit" class="btn btn-primary" id="btnActD">Guardar Cambios</button>
-              </div>
-            </form>
-          </div>
+              <input type="hidden" class="form-control" id="idAparatoDocente" name="idAparatoDocente" readonly
+                required />
+            </div>
+            <div class="modal-footer">
+              <button id="btnCancelarDocente" type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                Cancelar
+              </button>
+              <button type="submit" class="btn btn-primary" id="btnActD">Guardar Cambios</button>
+            </div>
+          </form>
         </div>
       </div>
     </div>
+  </div>
 
-    <!-- MODAL EDITAR NÚMERO DE PERSONAL ADMINISTRATIVO -->
-    <div
-      class="modal fade"
-      id="editarNumeroAdministrativoModal"
-      tabindex="-1"
-      aria-labelledby="editarAdministrativoModalLabel"
-      aria-hidden="true"
-    >
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="editarAdministrativoModalLabel">
-              Editar Número del Personal Administrativo
-            </h5>
-            <button
-              type="button"
-              class="btn-close"
-              data-bs-dismiss="modal"
-              aria-label="Close"
-            ></button>
-          </div>
-          <div class="modal-body">
-            <form
-              id="formEditarAdministrativo"
-              th:action="@{/aparato/actualizarNumeroPersonal}"
-              method="post"
-              novalidate
-            >
-              <div class="mb-3">
-                <label for="editarAdministrativo" class="form-label"
-                  >Personal</label
-                >
-                <select
-                  class="form-select"
-                  id="personalAsignado"
-                  name="personalAsignado"
-                  required
-                  readonly
-                >
-                  <option
-                    th:each="personal : ${listaAdministrativo}"
-                    th:value="${personal.duiPersonal}"
-                    th:text="${personal.nombrePersonal} + ' ' + ${personal.apellidoPersonal}"
-                  ></option>
-                </select>
-                <div class="invalid-feedback">
-                  Por favor selecciona personal.
-                </div>
+  <!-- MODAL EDITAR NÚMERO DE PERSONAL ADMINISTRATIVO -->
+  <div class="modal fade" id="editarNumeroAdministrativoModal" tabindex="-1"
+    aria-labelledby="editarAdministrativoModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="editarAdministrativoModalLabel">
+            Editar Número del Personal Administrativo
+          </h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form id="formEditarAdministrativo" th:action="@{/aparato/actualizarNumeroPersonal}" method="post" novalidate>
+            <div class="mb-3">
+              <label for="editarAdministrativo" class="form-label">Personal</label>
+              <select class="form-select" id="personalAsignado" name="personalAsignado" required readonly>
+                <option th:each="personal : ${listaAdministrativo}" th:value="${personal.duiPersonal}"
+                  th:text="${personal.nombrePersonal} + ' ' + ${personal.apellidoPersonal}"></option>
+              </select>
+              <div class="invalid-feedback">
+                Por favor selecciona personal.
               </div>
-              <div class="mb-3">
-                <label for="editarNumeroAdministrativo" class="form-label"
-                  >Número de Aparato</label
-                >
-                <input
-                  type="number"
-                  class="form-control"
-                  id="numAparatoPersonal"
-                  name="numAparatoPersonal"
-                  min="1"
-                  required
-                />
-                <div class="invalid-feedback">
-                  Por favor ingresa un número de aparato válido.
-                </div>
-                <div class="text-danger" id="mensajeAdvertenciaActP" style="display: none;">Identificador ya es usado por otro empleado.</div>
+            </div>
+            <div class="mb-3">
+              <label for="editarNumeroAdministrativo" class="form-label">Número de Aparato</label>
+              <input type="number" class="form-control" id="numAparatoPersonal" name="numAparatoPersonal" min="1"
+                required />
+              <div class="invalid-feedback">
+                Por favor ingresa un número de aparato válido.
               </div>
-              <div class="mb-3">
-                <label for="idAparatoPersonal" class="form-label d-none"
-                  >ID de Aparato</label
-                >
-                <input
-                  type="hidden"
-                  class="form-control"
-                  id="idAparatoPersonal"
-                  name="idAparatoPersonal"
-                  readonly
-                  required
-                />
-              </div>
-              <div class="modal-footer">
-                <button
-                  type="button"
-                  class="btn btn-secondary"
-                  data-bs-dismiss="modal"
-                >
-                  Cancelar
-                </button>
-                <button type="submit" class="btn btn-primary" id="btnActP">
-                  Guardar Cambios
-                </button>
-              </div>
-            </form>
-          </div>
+              <div class="text-danger" id="mensajeAdvertenciaActP" style="display: none;">Identificador ya es usado por
+                otro empleado.</div>
+            </div>
+            <div class="mb-3">
+              <label for="idAparatoPersonal" class="form-label d-none">ID de Aparato</label>
+              <input type="hidden" class="form-control" id="idAparatoPersonal" name="idAparatoPersonal" readonly
+                required />
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                Cancelar
+              </button>
+              <button type="submit" class="btn btn-primary" id="btnActP">
+                Guardar Cambios
+              </button>
+            </div>
+          </form>
         </div>
       </div>
     </div>
+  </div>
 
-    <!-- ID APARATO DOCENTES Y ADMINISTRATIVO VIGENTES -->
-    <script th:inline="javascript">
-      // Obtiene los datos JSON desde el modelo Thymeleaf
-      var JSONAparato = /*[[${JSONAparato}]]*/ '[]';
-      
-      // Parseo de JSON a objetos de JavaScript
-      var aparato = JSON.parse(JSONAparato);
-  
-      console.log("Datos de aparato para docentes y personal:", aparato);
+  <!-- ID APARATO DOCENTES Y ADMINISTRATIVO VIGENTES -->
+  <script th:inline="javascript">
+    // Obtiene los datos JSON desde el modelo Thymeleaf
+    var JSONAparato = /*[[${JSONAparato}]]*/ '[]';
+
+    // Parseo de JSON a objetos de JavaScript
+    var aparato = JSON.parse(JSONAparato);
+
+    console.log("Datos de aparato para docentes y personal:", aparato);
   </script>
-  
 
-    <script th:src="@{/js/bootstrap.bundle.min.js}"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script th:src="@{/js/popper.min.js}"></script>
-    <script th:src="@{/js/AparatoLista.js}"></script>
-  </body>
+
+  <script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script th:src="@{/js/popper.min.js}"></script>
+  <script th:src="@{/js/AparatoLista.js}"></script>
+</body>
+
 </html>

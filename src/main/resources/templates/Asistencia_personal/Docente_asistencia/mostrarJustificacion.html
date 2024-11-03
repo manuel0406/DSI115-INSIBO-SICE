@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <html xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
-<head th:replace="home :: head">
+<head th:replace="~{home :: head}">
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
@@ -13,7 +13,7 @@
 </head>
 
 <body style="background-color: #fcffff">
-  <header th:replace="home :: header"></header>
+  <header th:replace="~{home :: header}"></header>
   <div class="p-4 mt-5">
     <div class="d-flex justify-content-end">
       <a class="btn btn-outline-primary" th:href="@{/asistencias/listaGeneral}">Regresar</a>
